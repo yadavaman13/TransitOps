@@ -62,6 +62,21 @@ const getNavItems = (role) => {
                     icon: 'ri-dashboard-3-line',
                     route: '/driver',
                 },
+                {
+                    title: 'My Trips',
+                    icon: 'ri-roadster-line',
+                    route: '/driver/trips',
+                },
+                {
+                    title: 'Fuel Logs',
+                    icon: 'ri-gas-station-line',
+                    route: '/driver/fuel-logs',
+                },
+                {
+                    title: 'Profile',
+                    icon: 'ri-user-3-line',
+                    route: '/driver/profile',
+                },
             ];
         case 'SAFETY_OFFICER':
             return [
@@ -93,11 +108,10 @@ const getNavItems = (role) => {
             ];
         case 'FINANCIAL_ANALYST':
             return [
-                {
-                    title: 'Financial Analytics',
-                    icon: 'ri-dashboard-3-line',
-                    route: '/financial-analyst',
-                },
+                { title: 'Dashboard', icon: 'ri-bar-chart-box-line', route: '/financial-analyst' },
+                { title: 'Expenses', icon: 'ri-coins-line', route: '/financial-analyst/expenses' },
+                { title: 'Fuel Logs', icon: 'ri-gas-station-line', route: '/financial-analyst/fuel' },
+                { title: 'Reports & Analytics', icon: 'ri-line-chart-line', route: '/financial-analyst/reports' },
             ];
         default:
             return [];
@@ -199,7 +213,21 @@ const RoleDashboardLayout = () => {
                         icon: 'ri-dashboard-3-line',
                         route: '/driver',
                     },
-                    // More items (My Trips, Fuel Logs, Profile) will be added once those pages exist.
+                    {
+                        title: 'My Trips',
+                        icon: 'ri-roadster-line',
+                        route: '/driver/trips',
+                    },
+                    {
+                        title: 'Fuel Logs',
+                        icon: 'ri-gas-station-line',
+                        route: '/driver/fuel-logs',
+                    },
+                    {
+                        title: 'Profile',
+                        icon: 'ri-user-3-line',
+                        route: '/driver/profile',
+                    },
                 ];
             case 'SAFETY_OFFICER':
                 return [
