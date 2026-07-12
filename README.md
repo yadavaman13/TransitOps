@@ -91,7 +91,6 @@ TransitOps/
 │   ├── drizzle.config.js       # Drizzle CLI tools configurator
 │   └── package.json            # Backend dependency specifications
 │
-├── safety.txt                  # Safety officer dashboard specs
 └── README.md                   # Project description, installation steps & team info
 ```
 
