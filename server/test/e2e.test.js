@@ -113,7 +113,7 @@ describe('TransitOps Modules 13-16 E2E Integration Test Suite', () => {
 
         test('GET /api/search/drivers - Should search for driver by name', async () => {
             const res = await request(app)
-                .get('/api/search/drivers?q=Robert')
+                .get('/api/search/drivers?q=Rajesh')
                 .set('Authorization', `Bearer ${managerToken}`);
             expect(res.status).toBe(200);
             expect(res.body.data.drivers.length).toBeGreaterThan(0);
