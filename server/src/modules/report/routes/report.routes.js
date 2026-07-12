@@ -5,7 +5,7 @@ import { protect, restrictTo } from '../../auth/index.js';
 const router = Router();
 router.use(protect);
 
-const allowedRoles = ['ADMIN', 'FLEET_MANAGER', 'FINANCIAL_ANALYST'];
+const allowedRoles = ['ADMIN', 'FLEET_MANAGER', 'FINANCIAL_ANALYST', 'SAFETY_OFFICER'];
 
 router.get('/fleet', restrictTo(...allowedRoles), reportController.getFleetReport);
 router.get('/drivers', restrictTo(...allowedRoles), reportController.getDriverReport);

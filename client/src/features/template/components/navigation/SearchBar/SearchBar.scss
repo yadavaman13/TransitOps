@@ -3,19 +3,23 @@
 
 .t-search-bar {
     @include t-flex(flex-start, center, row, var(--t-space-2));
-    background: var(--t-bg-input);
-    border: 1.5px solid var(--t-border-color);
-    border-radius: var(--t-radius);
-    padding: 8px var(--t-space-3);
-    transition: var(--t-transition);
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 7px var(--t-space-3);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
     font-family: var(--t-font-family);
 
     &:focus-within {
         border-color: var(--t-primary);
-        box-shadow: 0 0 0 3px var(--t-primary-faint);
+        box-shadow: 0 0 0 3px rgba(113, 75, 103, 0.1);
     }
 
-    &__icon { color: var(--t-text-muted); font-size: 1rem; flex-shrink: 0; }
+    &__icon {
+        color: #9ca3af;
+        font-size: 0.95rem;
+        flex-shrink: 0;
+    }
 
     &__input {
         flex: 1;
@@ -24,22 +28,31 @@
         background: transparent;
         outline: none;
         font-family: var(--t-font-family);
-        font-size: var(--t-font-size-body-sm);
+        font-size: 0.875rem;
+        font-weight: var(--t-font-weight-regular);
         color: var(--t-text-main);
+        line-height: 1;
 
-        &::placeholder { color: var(--t-text-muted); }
+        // Remove native search cancel button
+        &::-webkit-search-cancel-button { display: none; }
+
+        &::placeholder {
+            color: #b0b7c3;
+            font-weight: var(--t-font-weight-regular);
+        }
     }
 
     &__clear {
         background: none;
         border: none;
         cursor: pointer;
-        color: var(--t-text-muted);
-        font-size: 1rem;
+        color: #b0b7c3;
+        font-size: 0.95rem;
         @include t-flex(center, center);
         padding: 0;
-        transition: var(--t-transition);
+        border-radius: 4px;
         flex-shrink: 0;
+        transition: color 0.15s ease;
 
         &:hover { color: var(--t-text-main); }
     }

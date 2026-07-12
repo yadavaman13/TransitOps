@@ -18,10 +18,11 @@ import ReportsPage from './features/fleet-manager/page/ReportsPage';
 import UsersPage from './features/fleet-manager/page/UsersPage';
 import SettingsPage from './features/fleet-manager/page/SettingsPage';
 import DriverDashboard from './features/driver/page/DriverDashboard';
-import DriverTripsPage from './features/driver/page/DriverTripsPage';
-import DriverFuelLogsPage from './features/driver/page/DriverFuelLogsPage';
-import DriverProfilePage from './features/driver/page/DriverProfilePage';
 import SafetyOfficerDashboard from './features/safety-officer/page/SafetyOfficerDashboard';
+import SafetyDriversPage from './features/safety-officer/page/SafetyDriversPage';
+import SafetyVehiclesPage from './features/safety-officer/page/SafetyVehiclesPage';
+import SafetyMaintenancePage from './features/safety-officer/page/SafetyMaintenancePage';
+import SafetyReportsPage from './features/safety-officer/page/SafetyReportsPage';
 import FinancialAnalystDashboard from './features/financial-analyst/page/FinancialAnalystDashboard';
 import AdminDashboardPage from './features/admin/pages/AdminDashboardPage';
 import { AdminProvider } from './features/admin/AdminContext';
@@ -171,19 +172,9 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: <DriverDashboard />
-            },
-            {
-                path: 'trips',
-                element: <DriverTripsPage />
-            },
-            {
-                path: 'fuel-logs',
-                element: <DriverFuelLogsPage />
-            },
-            {
-                path: 'profile',
-                element: <DriverProfilePage />
             }
+            // More driver routes (trips, fuel-logs, profile) can be added here
+            // once the corresponding page components are created.
         ]
     },
     {
@@ -197,9 +188,23 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: <SafetyOfficerDashboard />
+            },
+            {
+                path: 'drivers',
+                element: <SafetyDriversPage />
+            },
+            {
+                path: 'vehicles',
+                element: <SafetyVehiclesPage />
+            },
+            {
+                path: 'maintenance',
+                element: <SafetyMaintenancePage />
+            },
+            {
+                path: 'reports',
+                element: <SafetyReportsPage />
             }
-            // To add a new child route / tab under Safety Officer, register it here:
-            // e.g. { path: 'incidents', element: <IncidentsPage /> }
         ]
     },
     {

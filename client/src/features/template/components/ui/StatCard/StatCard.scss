@@ -3,15 +3,14 @@
 
 .t-stat-card {
     background: var(--t-bg-card);
-    border: 1px solid var(--t-border-color);
+
     border-radius: var(--t-rounded-lg);
     padding: var(--t-space-5) var(--t-space-6);
-    box-shadow: var(--t-shadow-md);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
     @include t-flex(flex-start, flex-start, row, var(--t-space-4));
-    transition: var(--t-transition);
+
     font-family: var(--t-font-family);
 
-    &:hover { box-shadow: var(--t-shadow-lg); transform: translateY(-1px); }
 
     &__icon {
         width: 48px;
