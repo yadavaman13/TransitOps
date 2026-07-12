@@ -18,11 +18,12 @@ export async function register({ name, email, password }) {
     }
 }
 
-export async function login({ email, password }) {
+export async function login({ email, password, role }) {
     try {
         const response = await authApiInstance.post('/login', {
             email,
             password,
+            role,
         });
         return response.data;
     } catch (error) {

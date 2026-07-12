@@ -84,13 +84,13 @@ export async function register(req, res, next) {
  */
 export async function login(req, res, next) {
     try {
-        const { email, password } = req.body || {};
+        const { email, password, role } = req.body || {};
 
-        if (!email || !password) {
+        if (!email || !password || !role) {
             return sendResponse({
                 res,
                 statusCode: 400,
-                message: 'Email and password are required.',
+                message: 'Email, password, and role are required.',
                 success: false,
             });
         }
@@ -101,6 +101,15 @@ export async function login(req, res, next) {
                 res,
                 statusCode: 401,
                 message: 'Invalid email or password.',
+                success: false,
+            });
+        }
+
+        if (user.role !== role) {
+            return sendResponse({
+                res,
+                statusCode: 401,
+                message: 'Invalid email, password, or role for this account.',
                 success: false,
             });
         }
