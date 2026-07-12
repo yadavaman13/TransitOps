@@ -1,9 +1,0 @@
-Use the appropriate skill from /skills for every task.
-Always invoke and follow the using-superpowers skill at the start of any conversation/task to identify and execute the correct workflow.
-To maintain the memory context, read all the relevant context files in the ./ai directory. Also make sure to read the CURRENT_SPRINT.md.
-Always keep the memory context update after each prompt.
-Refer to DESIGN.md before any design, UI, or frontend work.
-Follow DESIGN.md and the selected skill as the primary implementation guides.
-Use the skill BackendMERNServerAgent,PgDrizzleDatabaseAgent,ReactContextApiAgent to follow our folder structure and dataflow when need according to their description
-For the overall react guidlines given in the skill vercel-react-best-practices
-DON'T EVER ACCESS THE .ENV FILES. THERE IS ALREADY A CONFIG FILE FOR THE .ENV, ONLY READ THAT FILE. IF YOU STILL WANT TO KNOW THE VARIABLES OF .ENV FILES THEN ASK THE USER
