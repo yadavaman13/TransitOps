@@ -31,8 +31,8 @@ export default function FinanceDashboardPage() {
 
     const formatCurrency = (val) => {
         return typeof val === 'number'
-            ? `$${val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-            : '$0.00';
+            ? `₹${val.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            : '₹0.00';
     };
 
     const formatDate = (dateStr) => {

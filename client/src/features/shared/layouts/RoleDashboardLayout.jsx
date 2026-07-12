@@ -20,6 +20,17 @@ const RoleDashboardLayout = () => {
             case 'FLEET_MANAGER':
                 return [
                     { title: 'Fleet Overview', icon: 'ri-dashboard-3-line', route: '/fleet-manager' },
+                    { title: 'User Management', icon: 'ri-user-settings-line', route: '/fleet-manager/admin/users' },
+                    {
+                        title: 'Finance Portal',
+                        icon: 'ri-bank-card-line',
+                        children: [
+                            { title: 'Dashboard', icon: 'ri-bar-chart-box-line', route: '/fleet-manager/finance/dashboard' },
+                            { title: 'Expenses', icon: 'ri-coins-line', route: '/fleet-manager/finance/expenses' },
+                            { title: 'Fuel Logs', icon: 'ri-gas-station-line', route: '/fleet-manager/finance/fuel' },
+                            { title: 'Reports & Analytics', icon: 'ri-line-chart-line', route: '/fleet-manager/finance/reports' },
+                        ]
+                    }
                 ];
             case 'DRIVER':
                 return [
@@ -31,7 +42,10 @@ const RoleDashboardLayout = () => {
                 ];
             case 'FINANCIAL_ANALYST':
                 return [
-                    { title: 'Financial Analytics', icon: 'ri-dashboard-3-line', route: '/financial-analyst' },
+                    { title: 'Dashboard', icon: 'ri-bar-chart-box-line', route: '/financial-analyst' },
+                    { title: 'Expenses', icon: 'ri-coins-line', route: '/financial-analyst/expenses' },
+                    { title: 'Fuel Logs', icon: 'ri-gas-station-line', route: '/financial-analyst/fuel' },
+                    { title: 'Reports & Analytics', icon: 'ri-line-chart-line', route: '/financial-analyst/reports' },
                 ];
             default:
                 return [];

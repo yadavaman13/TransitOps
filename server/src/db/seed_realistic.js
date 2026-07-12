@@ -18,6 +18,19 @@ async function seedRealisticData() {
     const hashedPassword = await bcrypt.hash('TransitOpsSecure2026', 10);
 
     try {
+        console.log('Cleaning up existing database records...');
+        await db.delete(settings);
+        await db.delete(vehicleDocuments);
+        await db.delete(notifications);
+        await db.delete(expenses);
+        await db.delete(maintenance);
+        await db.delete(fuelLogs);
+        await db.delete(trips);
+        await db.delete(vehicles);
+        await db.delete(driverProfiles);
+        await db.delete(users);
+        console.log('✔ Database cleared');
+
         // 1. Seed Users (RBAC)
         const userRecords = await db.insert(users).values([
             {
@@ -32,8 +45,8 @@ async function seedRealisticData() {
                 status: 'ACTIVE'
             },
             {
-                name: 'Sarah Connor',
-                email: 'sarah.connor@transitops.com',
+                name: 'Sunita Rao',
+                email: 'sunita.rao@transitops.com',
                 password: hashedPassword,
                 role: 'SAFETY_OFFICER',
                 emailVerified: true,
@@ -43,8 +56,8 @@ async function seedRealisticData() {
                 status: 'ACTIVE'
             },
             {
-                name: 'David Kowalski',
-                email: 'david.kowalski@transitops.com',
+                name: 'Anil Sharma',
+                email: 'anil.sharma@transitops.com',
                 password: hashedPassword,
                 role: 'FINANCIAL_ANALYST',
                 emailVerified: true,
@@ -54,8 +67,8 @@ async function seedRealisticData() {
                 status: 'ACTIVE'
             },
             {
-                name: 'Robert Miller',
-                email: 'robert.miller@transitops.com',
+                name: 'Rajesh Kumar',
+                email: 'rajesh.kumar@transitops.com',
                 password: hashedPassword,
                 role: 'DRIVER',
                 emailVerified: true,
@@ -65,8 +78,8 @@ async function seedRealisticData() {
                 status: 'ACTIVE'
             },
             {
-                name: 'John Doe',
-                email: 'john.doe@transitops.com',
+                name: 'Amit Patel',
+                email: 'amit.patel@transitops.com',
                 password: hashedPassword,
                 role: 'DRIVER',
                 emailVerified: true,
@@ -76,8 +89,8 @@ async function seedRealisticData() {
                 status: 'ACTIVE'
             },
             {
-                name: 'Carlos Santoro',
-                email: 'carlos.santoro@transitops.com',
+                name: 'Vijay Singh',
+                email: 'vijay.singh@transitops.com',
                 password: hashedPassword,
                 role: 'DRIVER',
                 emailVerified: true,
@@ -87,8 +100,8 @@ async function seedRealisticData() {
                 status: 'ACTIVE'
             },
             {
-                name: 'Alex Wong',
-                email: 'alex.wong@transitops.com',
+                name: 'Sanjay Sharma',
+                email: 'sanjay.sharma@transitops.com',
                 password: hashedPassword,
                 role: 'DRIVER',
                 emailVerified: true,
@@ -100,10 +113,10 @@ async function seedRealisticData() {
         ]).returning();
 
         const manager = userRecords.find(u => u.role === 'FLEET_MANAGER');
-        const driverRobert = userRecords.find(u => u.email === 'robert.miller@transitops.com');
-        const driverJohn = userRecords.find(u => u.email === 'john.doe@transitops.com');
-        const driverCarlos = userRecords.find(u => u.email === 'carlos.santoro@transitops.com');
-        const driverAlex = userRecords.find(u => u.email === 'alex.wong@transitops.com');
+        const driverRobert = userRecords.find(u => u.email === 'rajesh.kumar@transitops.com');
+        const driverJohn = userRecords.find(u => u.email === 'amit.patel@transitops.com');
+        const driverCarlos = userRecords.find(u => u.email === 'vijay.singh@transitops.com');
+        const driverAlex = userRecords.find(u => u.email === 'sanjay.sharma@transitops.com');
 
         console.log('✔ Seeded users');
 
@@ -115,7 +128,7 @@ async function seedRealisticData() {
                 licenseExpiry: new Date('2028-10-15'),
                 joiningDate: new Date('2022-04-01'),
                 phone: '9876543210',
-                emergencyContact: 'Mary Miller (Wife) - 9876543211',
+                emergencyContact: 'Priya Kumar (Wife) - 9876543211',
                 bloodGroup: 'O+',
                 safetyScore: '98.50',
                 experienceYears: 8,
@@ -127,7 +140,7 @@ async function seedRealisticData() {
                 licenseExpiry: new Date('2027-05-20'),
                 joiningDate: new Date('2023-08-15'),
                 phone: '9812345678',
-                emergencyContact: 'Jane Doe (Mother) - 9812345679',
+                emergencyContact: 'Rekha Patel (Mother) - 9812345679',
                 bloodGroup: 'A+',
                 safetyScore: '94.00',
                 experienceYears: 5,
@@ -139,7 +152,7 @@ async function seedRealisticData() {
                 licenseExpiry: new Date('2030-01-10'),
                 joiningDate: new Date('2018-02-10'),
                 phone: '9945612378',
-                emergencyContact: 'Isabella Santoro (Sister) - 9945612379',
+                emergencyContact: 'Anjali Singh (Sister) - 9945612379',
                 bloodGroup: 'B+',
                 safetyScore: '99.10',
                 experienceYears: 12,
@@ -151,7 +164,7 @@ async function seedRealisticData() {
                 licenseExpiry: new Date('2026-08-05'), // Expiring soon
                 joiningDate: new Date('2024-01-05'),
                 phone: '9789456123',
-                emergencyContact: 'Wong Ah (Father) - 9789456124',
+                emergencyContact: 'Ramesh Sharma (Father) - 9789456124',
                 bloodGroup: 'O-',
                 safetyScore: '88.00',
                 experienceYears: 3,

@@ -13,6 +13,7 @@ import DriverDashboard from './features/driver/page/DriverDashboard';
 import SafetyOfficerDashboard from './features/safety-officer/page/SafetyOfficerDashboard';
 import FinancialAnalystDashboard from './features/financial-analyst/page/FinancialAnalystDashboard';
 import AdminDashboardPage from './features/admin/pages/AdminDashboardPage';
+import { AdminProvider } from './features/admin/AdminContext';
 
 import TemplateDemoLayout from './features/template/pages/TemplateDemoLayout';
 import DashboardTemplatePage from './features/template/pages/DashboardTemplatePage';
@@ -84,7 +85,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'admin/users',
-                element: <AdminDashboardPage />,
+                element: (
+                    <AdminProvider>
+                        <AdminDashboardPage />
+                    </AdminProvider>
+                ),
             },
             {
                 path: 'admin',
