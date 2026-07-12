@@ -134,8 +134,10 @@ const AdminDashboardPage = () => {
                         className="admin-select"
                         aria-label={`Change role for ${user.name}`}
                       >
-                        <option value="USER">USER</option>
-                        <option value="ADMIN">ADMIN</option>
+                        <option value="FLEET_MANAGER">FLEET_MANAGER</option>
+                        <option value="DRIVER">DRIVER</option>
+                        <option value="SAFETY_OFFICER">SAFETY_OFFICER</option>
+                        <option value="FINANCIAL_ANALYST">FINANCIAL_ANALYST</option>
                       </select>
                     </td>
 
@@ -233,8 +235,10 @@ const AdminDashboardPage = () => {
                       className="admin-select"
                       aria-label={`Change role for ${user.name}`}
                     >
-                      <option value="USER">USER</option>
-                      <option value="ADMIN">ADMIN</option>
+                      <option value="FLEET_MANAGER">FLEET_MANAGER</option>
+                      <option value="DRIVER">DRIVER</option>
+                      <option value="SAFETY_OFFICER">SAFETY_OFFICER</option>
+                      <option value="FINANCIAL_ANALYST">FINANCIAL_ANALYST</option>
                     </select>
                   </div>
                 </div>

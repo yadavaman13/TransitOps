@@ -7,6 +7,12 @@ const HomePage = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
 
+    React.useEffect(() => {
+        if (user?.role === 'FINANCIAL_ANALYST') {
+            navigate('/finance/dashboard', { replace: true });
+        }
+    }, [user, navigate]);
+
     return (
         <main>
             <div className="home-container">

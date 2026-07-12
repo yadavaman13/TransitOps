@@ -66,7 +66,7 @@ export async function register(req, res, next) {
             email: normalizedEmail,
             password: hashedPassword,
             name: nameValue,
-            role: 'USER',
+            role: 'DRIVER',
             emailVerified: false,
             isActive: true,
             isDeleted: false,

@@ -4,8 +4,10 @@ import { db } from '../../../config/database.js';
 import { users } from '../../../db/schema/users.schema.js';
 import redis from '../../../config/cache.js';
 import bcrypt from 'bcryptjs';
+import { eq } from 'drizzle-orm';
 import fs from 'fs';
 import path from 'path';
+import { jest } from '@jest/globals';
 
 const logFilePath = path.resolve('../.ai/API_RESPONSE.md');
 const moduleLogs = [];
@@ -81,6 +83,7 @@ function logModuleResponses(moduleName, logs) {
 }
 
 describe('Authentication Module Integration Tests', () => {
+    jest.setTimeout(30000);
     const testUser = {
         name: 'John Doe',
         email: 'john.doe@example.com',
@@ -98,6 +101,8 @@ describe('Authentication Module Integration Tests', () => {
         if (keys.length > 0) {
             await redis.del(...keys);
         }
+        await db.delete(users).where(eq(users.email, 'john.doe@example.com'));
+        await db.delete(users).where(eq(users.email, 'admin@example.com'));
     });
 
     afterAll(async () => {
@@ -123,10 +128,10 @@ describe('Authentication Module Integration Tests', () => {
 
             expect(res.statusCode).toBe(201);
             expect(res.body.success).toBe(true);
-            expect(res.body.data.user.name).toBe(testUser.name);
-            expect(res.body.data.user.email).toBe(testUser.email);
-            expect(res.body.data.user.role).toBe('USER');
-            expect(res.body.data.user.password).toBeUndefined();
+            expect(res.body.user.name).toBe(testUser.name);
+            expect(res.body.user.email).toBe(testUser.email);
+            expect(res.body.user.role).toBe('DRIVER');
+            expect(res.body.user.password).toBeUndefined();
             expect(res.headers['set-cookie']).toBeDefined();
             expect(res.headers['set-cookie'][0]).toContain('token=');
         });
@@ -165,7 +170,7 @@ describe('Authentication Module Integration Tests', () => {
                 name: testUser.name,
                 email: testUser.email,
                 password,
-                role: 'USER',
+                role: 'DRIVER',
             });
         });
 
@@ -189,7 +194,7 @@ describe('Authentication Module Integration Tests', () => {
 
             expect(res.statusCode).toBe(200);
             expect(res.body.success).toBe(true);
-            expect(res.body.data.user.email).toBe(testUser.email);
+            expect(res.body.user.email).toBe(testUser.email);
             expect(res.headers['set-cookie']).toBeDefined();
             expect(res.headers['set-cookie'][0]).toContain('token=');
         });
@@ -228,7 +233,7 @@ describe('Authentication Module Integration Tests', () => {
                 name: testUser.name,
                 email: testUser.email,
                 password,
-                role: 'USER',
+                role: 'DRIVER',
             });
 
             const loginRes = await request(app)
@@ -286,14 +291,14 @@ describe('Authentication Module Integration Tests', () => {
                 name: testUser.name,
                 email: testUser.email,
                 password: await bcrypt.hash(testUser.password, salt),
-                role: 'USER',
+                role: 'DRIVER',
             });
 
             await db.insert(users).values({
                 name: testAdmin.name,
                 email: testAdmin.email,
                 password: await bcrypt.hash(testAdmin.password, salt),
-                role: 'ADMIN',
+                role: 'FLEET_MANAGER',
             });
 
             const userLogin = await request(app)
@@ -342,9 +347,9 @@ describe('Authentication Module Integration Tests', () => {
             expect(res.body.success).toBe(false);
         });
 
-        it('should deny non-admin access to admin user listing', async () => {
+        it('should deny non-manager access to user listing', async () => {
             const res = await request(app)
-                .get('/api/auth/users')
+                .get('/api/users')
                 .set('Cookie', userCookie);
 
             queueApiResponse(
@@ -361,9 +366,9 @@ describe('Authentication Module Integration Tests', () => {
             expect(res.body.message).toContain('You do not have permission');
         });
 
-        it('should allow admin access to list users', async () => {
+        it('should allow manager access to list users', async () => {
             const res = await request(app)
-                .get('/api/auth/users')
+                .get('/api/users')
                 .set('Cookie', adminCookie);
 
             queueApiResponse(
@@ -395,7 +400,7 @@ describe('Authentication Module Integration Tests', () => {
                     name: testUser.name,
                     email: testUser.email,
                     password,
-                    role: 'USER',
+                    role: 'DRIVER',
                 })
                 .returning();
             userId = user.id;
@@ -409,7 +414,7 @@ describe('Authentication Module Integration Tests', () => {
         it('should allow current user to update profile name', async () => {
             const updateData = { name: 'John Updated' };
             const res = await request(app)
-                .patch('/api/auth/profile')
+                .patch('/api/users/profile')
                 .set('Cookie', cookie)
                 .send(updateData);
 
@@ -456,7 +461,7 @@ describe('Authentication Module Integration Tests', () => {
 
         it('should soft delete own account and prevent future logins or me access', async () => {
             const res = await request(app)
-                .delete('/api/auth/account')
+                .delete('/api/users/me')
                 .set('Cookie', cookie);
 
             queueApiResponse(

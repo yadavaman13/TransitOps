@@ -15,6 +15,10 @@ import DashboardLayout from './features/shared/components/DashboardLayout';
 import TemplateDemoLayout from './features/template/pages/TemplateDemoLayout';
 import DashboardTemplatePage from './features/template/pages/DashboardTemplatePage';
 import CrudTemplatePage from './features/template/pages/CrudTemplatePage';
+import FinanceDashboardPage from './features/finance/pages/FinanceDashboardPage';
+import FinanceExpensesPage from './features/finance/pages/FinanceExpensesPage';
+import FinanceFuelPage from './features/finance/pages/FinanceFuelPage';
+import FinanceReportsPage from './features/finance/pages/FinanceReportsPage';
 
 export const router = createBrowserRouter([
     {
@@ -60,6 +64,26 @@ export const router = createBrowserRouter([
             {
                 path: 'admin',
                 element: <Navigate to="users" replace />,
+            },
+            {
+                path: 'finance/dashboard',
+                element: <FinanceDashboardPage />
+            },
+            {
+                path: 'finance/expenses',
+                element: <FinanceExpensesPage />
+            },
+            {
+                path: 'finance/fuel',
+                element: <FinanceFuelPage />
+            },
+            {
+                path: 'finance/reports',
+                element: <FinanceReportsPage />
+            },
+            {
+                path: 'finance',
+                element: <Navigate to="dashboard" replace />
             }
         ],
     },

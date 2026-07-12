@@ -15,6 +15,7 @@ import { notificationRouter } from './modules/notifications/index.js';
 import { vehicleDocumentRouter } from './modules/vehicle-documents/index.js';
 import { settingsRouter } from './modules/settings/index.js';
 import { searchRouter } from './modules/search/index.js';
+import { financeRouter } from './modules/finance/index.js';
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use('/api/drivers', driverRouter);
 app.use('/api/trips', tripRouter);
 app.use('/api/fuel-logs', fuelLogRouter);
 app.use('/api/maintenance', maintenanceRouter);
+app.use('/api/finance', financeRouter);
 
 // Centralized error handling
 app.use(errorHandler);

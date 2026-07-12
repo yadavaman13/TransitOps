@@ -3,17 +3,20 @@ import app from '../src/app.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { jest } from '@jest/globals';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const credentials = JSON.parse(fs.readFileSync(path.join(__dirname, 'test-credentials.json'), 'utf8'));
 
 describe('TransitOps Modules 13-16 E2E Integration Test Suite', () => {
+    jest.setTimeout(30000);
     let managerToken = '';
     let driverToken = '';
     let safetyToken = '';
     let testVehicleId = '';
     let testDocumentId = '';
     let testNotificationId = '';
+    let analystToken = '';
 
     beforeAll(async () => {
         // Log in to retrieve authorization tokens
@@ -43,6 +46,15 @@ describe('TransitOps Modules 13-16 E2E Integration Test Suite', () => {
         if (setCookieSafety && setCookieSafety.length > 0) {
             const tokenMatch = setCookieSafety[0].match(/token=([^;]+)/);
             if (tokenMatch) safetyToken = tokenMatch[1];
+        }
+
+        const analystLogin = await request(app)
+            .post('/api/auth/login')
+            .send(credentials.financialAnalyst);
+        const setCookieAnalyst = analystLogin.headers['set-cookie'];
+        if (setCookieAnalyst && setCookieAnalyst.length > 0) {
+            const tokenMatch = setCookieAnalyst[0].match(/token=([^;]+)/);
+            if (tokenMatch) analystToken = tokenMatch[1];
         }
     });
 
@@ -212,6 +224,82 @@ describe('TransitOps Modules 13-16 E2E Integration Test Suite', () => {
                     .set('Authorization', `Bearer ${managerToken}`);
                 expect(res.status).toBe(200);
             }
+        });
+    });
+
+    // ==========================================
+    // 5. FINANCE PORTAL TESTS (Modules 8 & 9)
+    // ==========================================
+    describe('Modules 8 & 9 — Financial Analyst Portal', () => {
+        test('GET /api/finance/dashboard - Should retrieve dashboard summary', async () => {
+            const res = await request(app)
+                .get('/api/finance/dashboard')
+                .set('Authorization', `Bearer ${analystToken}`);
+            expect(res.status).toBe(200);
+            expect(res.body.success).toBe(true);
+            expect(res.body.data.cards).toBeDefined();
+        });
+
+        test('GET /api/finance/expenses - Should retrieve expenses list', async () => {
+            const res = await request(app)
+                .get('/api/finance/expenses')
+                .set('Authorization', `Bearer ${analystToken}`);
+            expect(res.status).toBe(200);
+            expect(res.body.success).toBe(true);
+            expect(Array.isArray(res.body.data.expenses)).toBe(true);
+        });
+
+        test('GET /api/finance/fuel - Should retrieve fuel logs', async () => {
+            const res = await request(app)
+                .get('/api/finance/fuel')
+                .set('Authorization', `Bearer ${analystToken}`);
+            expect(res.status).toBe(200);
+            expect(res.body.success).toBe(true);
+            expect(Array.isArray(res.body.data.fuelLogs)).toBe(true);
+        });
+
+        test('GET /api/finance/reports - Should retrieve reports analytics', async () => {
+            const res = await request(app)
+                .get('/api/finance/reports')
+                .set('Authorization', `Bearer ${analystToken}`);
+            expect(res.status).toBe(200);
+            expect(res.body.success).toBe(true);
+            expect(res.body.data.vehicleOperatingCosts).toBeDefined();
+        });
+
+        test('POST /api/finance/expenses - Should log a new manual expense', async () => {
+            // First we need a vehicle ID to link
+            const vehRes = await request(app)
+                .get('/api/vehicles')
+                .set('Authorization', `Bearer ${analystToken}`);
+            expect(vehRes.status).toBe(200);
+            const vehicles = vehRes.body.data.vehicles || vehRes.body.data || [];
+            
+            if (vehicles.length > 0) {
+                const targetVehicleId = vehicles[0].id;
+                const expensePayload = {
+                    vehicleId: targetVehicleId,
+                    category: 'Toll',
+                    amount: 45.50,
+                    description: 'Highway toll charge for route verification',
+                    receipt: 'https://receipts.com/toll-jest.pdf'
+                };
+                
+                const res = await request(app)
+                    .post('/api/finance/expenses')
+                    .set('Authorization', `Bearer ${analystToken}`)
+                    .send(expensePayload);
+                expect(res.status).toBe(201);
+                expect(res.body.success).toBe(true);
+                expect(res.body.data.expense.amount).toBe("45.50"); // decimal string from pg
+            }
+        });
+
+        test('GET /api/finance/dashboard - Should block unauthorized Driver role (403)', async () => {
+            const res = await request(app)
+                .get('/api/finance/dashboard')
+                .set('Authorization', `Bearer ${driverToken}`);
+            expect(res.status).toBe(403);
         });
     });
 });

@@ -15,8 +15,8 @@ router.patch('/profile', updateProfileValidator, userController.updateProfile);
 router.patch('/change-password', changePasswordValidator, userController.changePassword);
 router.delete('/me', userController.deleteAccount);
 
-// Admin Routes (Only accessible by users with role 'ADMIN')
-router.use(restrictTo('ADMIN'));
+// Admin Routes (Only accessible by users with role 'FLEET_MANAGER')
+router.use(restrictTo('FLEET_MANAGER'));
 
 router.get('/', userController.adminListUsers);
 router.get('/:id', userController.adminGetUserById);
