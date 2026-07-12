@@ -16,7 +16,7 @@ export const users = pgTable(
         name: text('name').notNull(),
         email: text('email').unique().notNull(),
         password: text('password').notNull(),
-        role: text('role').default('USER').notNull(),
+        role: text('role').notNull(),
         emailVerified: boolean('email_verified').default(false).notNull(),
         isActive: boolean('is_active').default(true).notNull(),
         isDeleted: boolean('is_deleted').default(false).notNull(),
@@ -43,7 +43,7 @@ export const users = pgTable(
             phoneDigitsCheck: check('user_phone_digits_check', sql`${table.phone} IS NULL OR ${table.phone} ~ '^[0-9]+$'`),
             
             // Role and Status constraints based on the provided specifications
-            roleCheck: check('user_role_check', sql`${table.role} IN ('FLEET_MANAGER', 'DRIVER', 'SAFETY_OFFICER', 'FINANCIAL_ANALYST', 'USER', 'ADMIN')`),
+            roleCheck: check('user_role_check', sql`${table.role} IN ('FLEET_MANAGER', 'DRIVER', 'SAFETY_OFFICER', 'FINANCIAL_ANALYST')`),
             statusCheck: check('user_status_check', sql`${table.status} IN ('ACTIVE', 'INACTIVE')`),
         };
     },
