@@ -2,7 +2,7 @@ import 'dotenv/config';
 import bcrypt from 'bcryptjs';
 import { db, pool } from '../config/database.js';
 import { users } from './schema/users.schema.js';
-import { seedCrud } from '../modules/crud/seed/index.js';
+// import { seedCrud } from '../modules/crud/seed/index.js';
 
 async function seedUsers() {
     const hashedPassword = await bcrypt.hash('password123', 10);
@@ -46,7 +46,7 @@ async function seedUsers() {
 async function main() {
     await seedUsers();
     try {
-        await seedCrud();
+        // await seedCrud();
         console.log('Seeded CRUD entities and records successfully');
     } catch (err) {
         console.error('Error seeding CRUD:', err);

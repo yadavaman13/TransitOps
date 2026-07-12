@@ -10,7 +10,8 @@ import {
     Select,
     ConfirmDialog,
     Dropdown,
-    useToast
+    useToast,
+    StatCard
 } from '../../template';
 import '../../template/styles/index.scss';
 import * as fleetApi from '../service/fleet.api';
@@ -185,6 +186,40 @@ const UsersPage = () => {
                 <Button iconLeft="ri-user-add-line" onClick={() => setCreateModalOpen(true)}>
                     Create User
                 </Button>
+            </div>
+
+            {/* KPI Cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'var(--t-space-4)' }}>
+                <StatCard
+                    title="Total Accounts"
+                    value={users.length}
+                    icon="ri-group-line"
+                    color="primary"
+                />
+                <StatCard
+                    title="Fleet Managers"
+                    value={users.filter(u => u.role === 'FLEET_MANAGER').length}
+                    icon="ri-user-star-line"
+                    color="primary"
+                />
+                <StatCard
+                    title="Drivers"
+                    value={users.filter(u => u.role === 'DRIVER').length}
+                    icon="ri-steering-2-line"
+                    color="info"
+                />
+                <StatCard
+                    title="Safety Officers"
+                    value={users.filter(u => u.role === 'SAFETY_OFFICER').length}
+                    icon="ri-shield-user-line"
+                    color="warning"
+                />
+                <StatCard
+                    title="Financial Analysts"
+                    value={users.filter(u => u.role === 'FINANCIAL_ANALYST').length}
+                    icon="ri-wallet-3-line"
+                    color="success"
+                />
             </div>
 
             {/* Filters */}
