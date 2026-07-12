@@ -3,6 +3,7 @@ import axios from 'axios';
 import { getReportsApi } from '../services/finance.api.js';
 import { CategoryBreakdownChart, MonthlyTrendChart, FuelCostTrendChart } from '../components/FinanceCharts.jsx';
 import '../styles/finance.scss';
+import { Button } from '../../template/index.js';
 
 export default function FinanceReportsPage() {
     const [reportsData, setReportsData] = useState(null);
@@ -162,22 +163,19 @@ export default function FinanceReportsPage() {
                     <p>Compile financial reports, export logs, and analyze vehicle cost efficiencies</p>
                 </div>
                 <div className="finance-header__actions no-print">
-                    <button
-                        className="button-secondary"
+                    <Button
+                        variant="outline"
                         onClick={handleExportCSV}
-                        style={{ display: 'flex', alignItems: 'center', gap: '8px', height: '38px' }}
+                        iconLeft="ri-file-excel-line"
                     >
-                        <i className="ri-file-excel-line" />
-                        <span>Export CSV</span>
-                    </button>
-                    <button
-                        className="button-primary"
+                        Export CSV
+                    </Button>
+                    <Button
                         onClick={handleExportPDF}
-                        style={{ display: 'flex', alignItems: 'center', gap: '8px', height: '38px' }}
+                        iconLeft="ri-file-pdf-line"
                     >
-                        <i className="ri-file-pdf-line" />
-                        <span>Export PDF / Print</span>
-                    </button>
+                        Export PDF / Print
+                    </Button>
                 </div>
             </div>
 

@@ -2,6 +2,17 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getExpensesApi, createExpenseApi } from '../services/finance.api.js';
 import '../styles/finance.scss';
+import {
+    Button,
+    Select,
+    Input,
+    DatePicker,
+    Modal,
+    Form,
+    FormSection,
+    FormRow,
+    FormActions
+} from '../../template/index.js';
 
 export default function FinanceExpensesPage() {
     const [expensesList, setExpensesList] = useState([]);
@@ -139,84 +150,79 @@ export default function FinanceExpensesPage() {
                     <p>Track operating costs, toll expenses, maintenance bills, and manual logs</p>
                 </div>
                 <div className="finance-header__actions">
-                    <button 
-                        className="button-primary"
+                    <Button 
+                        iconLeft="ri-add-line"
                         onClick={() => setIsModalOpen(true)}
-                        style={{ display: 'flex', alignItems: 'center', gap: '8px', height: '38px', padding: '0 var(--space-4)' }}
                     >
-                        <i className="ri-add-line" />
-                        <span>Add Manual Expense</span>
-                    </button>
+                        Add Manual Expense
+                    </Button>
                 </div>
             </div>
 
             {/* Filter Section */}
-            <div className="filters-panel">
-                <div className="filter-group">
-                    <label htmlFor="filter-cat">Category</label>
-                    <select
-                        id="filter-cat"
+            <div className="filters-panel" style={{ display: 'flex', gap: '16px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
+                <div style={{ minWidth: '160px' }}>
+                    <Select
+                        label="Category"
+                        options={[
+                            { value: 'Toll', label: 'Toll' },
+                            { value: 'Parking', label: 'Parking' },
+                            { value: 'Repair', label: 'Repair' },
+                            { value: 'Insurance', label: 'Insurance' },
+                            { value: 'Misc', label: 'Misc' }
+                        ]}
                         value={filterCategory}
                         onChange={(e) => setFilterCategory(e.target.value)}
-                    >
-                        <option value="">All Categories</option>
-                        <option value="Toll">Toll</option>
-                        <option value="Parking">Parking</option>
-                        <option value="Repair">Repair</option>
-                        <option value="Insurance">Insurance</option>
-                        <option value="Misc">Misc</option>
-                    </select>
+                        size="sm"
+                        clearable
+                        placeholder="All Categories"
+                    />
                 </div>
 
-                <div className="filter-group">
-                    <label htmlFor="filter-veh">Vehicle</label>
-                    <select
-                        id="filter-veh"
+                <div style={{ minWidth: '220px' }}>
+                    <Select
+                        label="Vehicle"
+                        options={vehicles.map(v => ({
+                            value: v.id,
+                            label: `${v.registrationNumber} (${v.brand} ${v.model})`
+                        }))}
                         value={filterVehicle}
                         onChange={(e) => setFilterVehicle(e.target.value)}
-                    >
-                        <option value="">All Vehicles</option>
-                        {vehicles.map(v => (
-                            <option key={v.id} value={v.id}>
-                                {v.registrationNumber} ({v.brand} {v.model})
-                            </option>
-                        ))}
-                    </select>
+                        size="sm"
+                        clearable
+                        placeholder="All Vehicles"
+                    />
                 </div>
 
-                <div className="filter-group">
-                    <label htmlFor="filter-start">Start Date</label>
-                    <input
-                        id="filter-start"
-                        type="date"
+                <div style={{ minWidth: '150px' }}>
+                    <DatePicker
+                        label="Start Date"
                         value={filterStartDate}
                         onChange={(e) => setFilterStartDate(e.target.value)}
                     />
                 </div>
 
-                <div className="filter-group">
-                    <label htmlFor="filter-end">End Date</label>
-                    <input
-                        id="filter-end"
-                        type="date"
+                <div style={{ minWidth: '150px' }}>
+                    <DatePicker
+                        label="End Date"
                         value={filterEndDate}
                         onChange={(e) => setFilterEndDate(e.target.value)}
                     />
                 </div>
 
                 {(filterCategory || filterVehicle || filterStartDate || filterEndDate) && (
-                    <button
-                        className="button-secondary"
+                    <Button
+                        variant="secondary"
+                        size="sm"
                         onClick={() => {
                             setFilterCategory('');
                             setFilterVehicle('');
                             setFilterStartDate('');
                             setFilterEndDate('');
                         }}
-                        style={{ height: '36px', marginTop: '16px' }}
                     >
                         Clear Filters
-                    </button>
+                    </Button>
                 )}
             </div>
 
@@ -286,132 +292,125 @@ export default function FinanceExpensesPage() {
             </div>
 
             {/* Manual Expense Modal */}
-            {isModalOpen && (
-                <div className="modal-overlay" role="dialog" aria-modal="true" style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(31, 26, 55, 0.4)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}>
-                    <div className="modal-content" style={{ width: '100%', maxWidth: 'var(--detail-modal-width)', backgroundColor: 'var(--bg-card)', padding: 'var(--space-6)', borderRadius: 'var(--border-radius-lg)', boxShadow: 'var(--shadow-lg)' }}>
-                        <div className="modal-content__header" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: 'var(--space-4)' }}>
-                            <i className="ri-add-circle-line" style={{ fontSize: '22px', color: 'var(--primary)' }} />
-                            <span className="modal-content__title" style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-main)' }}>Log Manual Expense</span>
-                        </div>
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => {
+                    setIsModalOpen(false);
+                    setModalError(null);
+                }}
+                title="Log Manual Expense"
+            >
+                {modalError && (
+                    <div style={{ backgroundColor: 'var(--danger-bg)', border: '1px solid var(--danger)', padding: '10px', borderRadius: 'var(--border-radius)', color: 'var(--danger-dark)', fontSize: '13px', marginBottom: '16px' }}>
+                        {modalError}
+                    </div>
+                )}
 
-                        {modalError && (
-                            <div style={{ backgroundColor: 'var(--danger-bg)', border: '1px solid var(--danger)', padding: '10px', borderRadius: 'var(--border-radius)', color: 'var(--danger-dark)', fontSize: '13px', marginBottom: '16px' }}>
-                                {modalError}
-                            </div>
-                        )}
-
-                        <form onSubmit={handleCreateExpense} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                            <div className="filter-group" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Vehicle *</label>
-                                <select
-                                    required
-                                    value={modalVehicleId}
-                                    onChange={(e) => setModalVehicleId(e.target.value)}
-                                    style={{ height: '38px', borderRadius: 'var(--border-radius)', border: '1px solid var(--border-color)', padding: '0 8px', outline: 'none', backgroundColor: 'var(--bg-input)' }}
-                                >
-                                    <option value="">Select Fleet Vehicle</option>
-                                    {vehicles.map(v => (
-                                        <option key={v.id} value={v.id}>
-                                            {v.registrationNumber} ({v.brand} {v.model})
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div className="filter-group" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Category *</label>
-                                <select
-                                    required
-                                    value={modalCategory}
-                                    onChange={(e) => setModalCategory(e.target.value)}
-                                    style={{ height: '38px', borderRadius: 'var(--border-radius)', border: '1px solid var(--border-color)', padding: '0 8px', outline: 'none', backgroundColor: 'var(--bg-input)' }}
-                                >
-                                    <option value="Toll">Toll</option>
-                                    <option value="Parking">Parking</option>
-                                    <option value="Repair">Repair</option>
-                                    <option value="Insurance">Insurance</option>
-                                    <option value="Misc">Misc</option>
-                                </select>
-                            </div>
-
-                            <div className="filter-group" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Amount (₹) *</label>
-                                <input
-                                    required
-                                    type="number"
-                                    step="0.01"
-                                    min="0.01"
-                                    placeholder="Enter cost amount"
-                                    value={modalAmount}
-                                    onChange={(e) => setModalAmount(e.target.value)}
-                                    style={{ height: '38px', borderRadius: 'var(--border-radius)', border: '1px solid var(--border-color)', padding: '0 10px', outline: 'none', backgroundColor: 'var(--bg-input)' }}
-                                />
-                            </div>
-
-                            <div className="filter-group" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Associated Trip (Optional)</label>
-                                <select
-                                    value={modalTripId}
-                                    onChange={(e) => setModalTripId(e.target.value)}
-                                    style={{ height: '38px', borderRadius: 'var(--border-radius)', border: '1px solid var(--border-color)', padding: '0 8px', outline: 'none', backgroundColor: 'var(--bg-input)' }}
-                                >
-                                    <option value="">None / Not associated</option>
-                                    {trips.map(t => (
-                                        <option key={t.id} value={t.id}>
-                                            Trip #{t.tripNumber} ({t.source} → {t.destination})
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div className="filter-group" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Receipt URL / File Path</label>
-                                <input
-                                    type="text"
-                                    placeholder="e.g. https://receipts.com/bill.pdf"
-                                    value={modalReceipt}
-                                    onChange={(e) => setModalReceipt(e.target.value)}
-                                    style={{ height: '38px', borderRadius: 'var(--border-radius)', border: '1px solid var(--border-color)', padding: '0 10px', outline: 'none', backgroundColor: 'var(--bg-input)' }}
-                                />
-                            </div>
-
-                            <div className="filter-group" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <Form onSubmit={handleCreateExpense}>
+                    <FormSection>
+                        <FormRow>
+                            <Select
+                                label="Vehicle *"
+                                required
+                                options={vehicles.map(v => ({
+                                    value: v.id,
+                                    label: `${v.registrationNumber} (${v.brand} ${v.model})`
+                                }))}
+                                value={modalVehicleId}
+                                onChange={(e) => setModalVehicleId(e.target.value)}
+                                placeholder="Select Fleet Vehicle"
+                            />
+                        </FormRow>
+                        <FormRow cols={2}>
+                            <Select
+                                label="Category *"
+                                required
+                                options={[
+                                    { value: 'Toll', label: 'Toll' },
+                                    { value: 'Parking', label: 'Parking' },
+                                    { value: 'Repair', label: 'Repair' },
+                                    { value: 'Insurance', label: 'Insurance' },
+                                    { value: 'Misc', label: 'Misc' }
+                                ]}
+                                value={modalCategory}
+                                onChange={(e) => setModalCategory(e.target.value)}
+                            />
+                            <Input
+                                type="number"
+                                label="Amount (₹) *"
+                                required
+                                step="0.01"
+                                min="0.01"
+                                placeholder="Enter cost amount"
+                                value={modalAmount}
+                                onChange={(e) => setModalAmount(e.target.value)}
+                            />
+                        </FormRow>
+                        <FormRow>
+                            <Select
+                                label="Associated Trip (Optional)"
+                                options={trips.map(t => ({
+                                    value: t.id,
+                                    label: `Trip #${t.tripNumber} (${t.source} → ${t.destination})`
+                                }))}
+                                value={modalTripId}
+                                onChange={(e) => setModalTripId(e.target.value)}
+                                clearable
+                                placeholder="None / Not associated"
+                            />
+                        </FormRow>
+                        <FormRow>
+                            <Input
+                                type="text"
+                                label="Receipt URL / File Path"
+                                placeholder="e.g. https://receipts.com/bill.pdf"
+                                value={modalReceipt}
+                                onChange={(e) => setModalReceipt(e.target.value)}
+                            />
+                        </FormRow>
+                        <FormRow>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '100%' }}>
                                 <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Description</label>
                                 <textarea
                                     rows="3"
                                     placeholder="Provide detailed breakdown"
                                     value={modalDescription}
                                     onChange={(e) => setModalDescription(e.target.value)}
-                                    style={{ borderRadius: 'var(--border-radius)', border: '1px solid var(--border-color)', padding: '8px 10px', outline: 'none', backgroundColor: 'var(--bg-input)', resize: 'vertical' }}
+                                    style={{
+                                        borderRadius: 'var(--border-radius)',
+                                        border: '1px solid var(--border-color)',
+                                        padding: '8px 10px',
+                                        outline: 'none',
+                                        backgroundColor: 'var(--bg-input)',
+                                        resize: 'vertical',
+                                        color: 'var(--text-main)',
+                                        fontSize: '13px'
+                                    }}
                                 />
                             </div>
+                        </FormRow>
+                    </FormSection>
 
-                            <div className="modal-content__actions" style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '10px' }}>
-                                <button
-                                    type="button"
-                                    className="button-secondary"
-                                    onClick={() => {
-                                        setIsModalOpen(false);
-                                        setModalError(null);
-                                    }}
-                                    disabled={modalSubmitting}
-                                    style={{ height: '38px', padding: '0 16px' }}
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="button-primary"
-                                    disabled={modalSubmitting}
-                                    style={{ height: '38px', padding: '0 20px', display: 'flex', alignItems: 'center', gap: '6px' }}
-                                >
-                                    {modalSubmitting ? 'Logging...' : 'Log Expense'}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
+                    <FormActions>
+                        <Button
+                            variant="secondary"
+                            onClick={() => {
+                                setIsModalOpen(false);
+                                setModalError(null);
+                            }}
+                            disabled={modalSubmitting}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            type="submit"
+                            loading={modalSubmitting}
+                        >
+                            Log Expense
+                        </Button>
+                    </FormActions>
+                </Form>
+            </Modal>
         </div>
     );
 }
