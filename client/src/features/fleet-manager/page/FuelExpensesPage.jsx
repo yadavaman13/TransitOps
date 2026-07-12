@@ -395,7 +395,7 @@ const FuelExpensesPage = () => {
                 isOpen={fuelModalOpen}
                 onClose={() => !submitLoading && setFuelModalOpen(false)}
                 title="Log Fuel Transaction Record"
-                size="md"
+                size="lg"
                 footer={
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--t-space-3)' }}>
                         <Button variant="ghost" onClick={() => setFuelModalOpen(false)} disabled={submitLoading}>

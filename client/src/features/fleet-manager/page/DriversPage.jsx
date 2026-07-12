@@ -383,7 +383,7 @@ const DriversPage = () => {
                 isOpen={modalOpen}
                 onClose={() => !submitLoading && closeRegisterModal()}
                 title={editTarget ? 'Edit Driver Profile' : 'Register New Driver'}
-                size="md"
+                size="lg"
                 footer={
                     !createdCredentials && (
                         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--t-space-3)' }}>

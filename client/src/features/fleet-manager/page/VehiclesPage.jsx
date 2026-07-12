@@ -395,7 +395,7 @@ const VehiclesPage = () => {
                 isOpen={modalOpen}
                 onClose={() => !submitLoading && setModalOpen(false)}
                 title={editTarget ? 'Edit Vehicle Profile' : 'Register New Vehicle'}
-                size="md"
+                size="lg"
                 footer={
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--t-space-3)' }}>
                         <Button variant="ghost" onClick={() => setModalOpen(false)} disabled={submitLoading}>

@@ -26,6 +26,8 @@ export async function getUserByEmail(email, includeDeleted = false) {
             deletedAt: users.deletedAt,
             phone: users.phone,
             driverPhone: driverProfiles.phone,
+            profileImage: users.profileImage,
+            status: users.status,
             createdAt: users.createdAt,
             updatedAt: users.updatedAt,
         })
@@ -63,6 +65,8 @@ export async function getUserById(id, includeDeleted = false) {
             deletedAt: users.deletedAt,
             phone: users.phone,
             driverPhone: driverProfiles.phone,
+            profileImage: users.profileImage,
+            status: users.status,
             createdAt: users.createdAt,
             updatedAt: users.updatedAt,
         })
@@ -135,6 +139,8 @@ export async function listUsers(includeDeleted = false) {
             deletedAt: users.deletedAt,
             phone: users.phone,
             driverPhone: driverProfiles.phone,
+            profileImage: users.profileImage,
+            status: users.status,
             createdAt: users.createdAt,
             updatedAt: users.updatedAt,
         })

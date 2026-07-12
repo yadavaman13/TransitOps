@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     Card,
     Breadcrumb,
@@ -39,6 +39,9 @@ const SettingsPage = () => {
     // Profile settings forms
     const [profileForm, setProfileForm] = useState({ name: '', email: '' });
     const [profileErrors, setProfileErrors] = useState({});
+    
+    const fileInputRef = useRef(null);
+    const [uploading, setUploading] = useState(false);
 
     // Password forms
     const [passwordForm, setPasswordForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
@@ -94,6 +97,42 @@ const SettingsPage = () => {
         loadSettings();
     }, []);
 
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            showToast('Please select a valid image file.', 'error');
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            showToast('Image size should be less than 5MB.', 'error');
+            return;
+        }
+
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const res = await fleetApi.updateProfileImage(formData);
+            if (res.success) {
+                showToast('Profile image updated successfully.', 'success');
+                if (handleGetMe) await handleGetMe(true);
+            }
+        } catch (err) {
+            console.error('Failed to upload profile image:', err);
+            const msg = err.response?.data?.message || 'Failed to upload profile image.';
+            showToast(msg, 'error');
+        } finally {
+            setUploading(false);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
+        }
+    };
+
     const handleProfileSubmit = async () => {
         const errors = {};
         if (!profileForm.name.trim()) errors.name = 'Full Name is required';
@@ -115,7 +154,7 @@ const SettingsPage = () => {
             if (res.success) {
                 showToast('Profile details updated successfully.', 'success');
                 // Refresh authentication details
-                if (handleGetMe) await handleGetMe();
+                if (handleGetMe) await handleGetMe(true);
             }
         } catch (err) {
             showToast('Failed to update profile.', 'error');
@@ -273,6 +312,57 @@ const SettingsPage = () => {
                             <Card>
                                 <h3 style={{ margin: '0 0 var(--t-space-4)', fontSize: 'var(--t-font-size-base)', fontWeight: 'var(--t-font-weight-semibold)' }}>Personal Information</h3>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--t-space-4)', maxWidth: '480px' }}>
+                                    
+                                    {/* Profile Picture Upload Section */}
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--t-space-4)', marginBottom: 'var(--t-space-2)' }}>
+                                        <div style={{ position: 'relative', width: '80px', height: '80px', borderRadius: '50%', overflow: 'hidden', border: '3px solid var(--t-color-primary-light, #e0e7ff)' }}>
+                                            <img
+                                                src={user?.profileImage || "https://ik.imagekit.io/2bzzjhgkg/defaul_profile_image.jpeg"}
+                                                alt={user?.name}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            />
+                                            {uploading && (
+                                                <div style={{
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    backgroundColor: 'rgba(0,0,0,0.5)',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    color: '#fff'
+                                                }}>
+                                                    <i className="ri-loader-4-line ri-spin" style={{ fontSize: '20px' }}></i>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--t-space-2)' }}>
+                                            <div style={{ display: 'flex', gap: 'var(--t-space-2)' }}>
+                                                <Button
+                                                    variant="secondary"
+                                                    size="sm"
+                                                    onClick={() => fileInputRef.current?.click()}
+                                                    disabled={uploading}
+                                                    style={{ fontSize: 'var(--t-font-size-body-xs)', padding: '6px 12px' }}
+                                                >
+                                                    <i className="ri-upload-2-line" style={{ marginRight: '4px' }}></i> Upload Photo
+                                                </Button>
+                                                <input
+                                                    type="file"
+                                                    ref={fileInputRef}
+                                                    onChange={handleImageUpload}
+                                                    accept="image/*"
+                                                    style={{ display: 'none' }}
+                                                />
+                                            </div>
+                                            <p style={{ margin: 0, fontSize: 'var(--t-font-size-xs)', color: 'var(--t-text-muted)' }}>
+                                                JPG, PNG or GIF, max 5MB.
+                                            </p>
+                                        </div>
+                                    </div>
+
                                     <Input
                                         label="Full Name"
                                         value={profileForm.name}

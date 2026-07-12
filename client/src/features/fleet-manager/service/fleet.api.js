@@ -406,3 +406,13 @@ export const changePassword = async (data) => {
     const res = await api.patch('/users/change-password', data);
     return res.data;
 };
+
+export const updateProfileImage = async (formData) => {
+    const res = await api.patch('/users/profile-image', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    return res.data;
+};
+
