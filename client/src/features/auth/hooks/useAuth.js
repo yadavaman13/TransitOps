@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useCallback } from 'react';
 
 import { AuthContext } from '../auth.context';
 import {
@@ -200,7 +200,6 @@ export const useAuth = () => {
     };
 
     const handleGetMe = async (force = false) => {
-        let data;
         try {
             setLoading(true);
             if (!force && sessionStorage.getItem('user')) {
@@ -209,19 +208,26 @@ export const useAuth = () => {
                 return;
             }
 
-            data = await getMe();
-            if (data?.user) {
-                setUser(data.user);
-                sessionStorage.setItem('user', JSON.stringify(data.user));
-            } else {
-                setUser(null);
-                sessionStorage.removeItem('user');
+            try {
+                const data = await getMe();
+                if (data?.user) {
+                    setUser(data.user);
+                    sessionStorage.setItem('user', JSON.stringify(data.user));
+                } else {
+                    setUser(null);
+                    sessionStorage.removeItem('user');
+                }
+            } catch (apiError) {
+                const cached = sessionStorage.getItem('user');
+                if (cached) {
+                    console.warn('getMe API failed; restoring user from sessionStorage.', apiError);
+                    setUser(JSON.parse(cached));
+                } else {
+                    console.error('Failed to fetch user data and no cached session found.', apiError);
+                    setError('Failed to fetch user data');
+                    setUser(null);
+                }
             }
-        } catch (error) {
-            console.error('Failed to fetch user data', error);
-            setError('Failed to fetch user data');
-            setUser(null);
-            sessionStorage.removeItem('user');
         } finally {
             setLoading(false);
         }
