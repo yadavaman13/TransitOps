@@ -172,19 +172,7 @@ export async function updateDriverStatus(userId, status) {
         .limit(1);
 
     if (existing.length === 0) {
-        const [profile] = await db
-            .insert(driverProfiles)
-            .values({
-                userId,
-                licenseNumber: 'DL-' + Math.floor(100000 + Math.random() * 900000),
-                licenseExpiry: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-                joiningDate: new Date(),
-                phone: '9999999999',
-                emergencyContact: '9999999999',
-                availabilityStatus: status,
-            })
-            .returning();
-        return profile;
+        return null;
     }
 
     const [profile] = await db
@@ -194,6 +182,7 @@ export async function updateDriverStatus(userId, status) {
         .returning();
     return profile || null;
 }
+
 
 export async function updateDriverLicense(userId, licenseNumber, licenseExpiry) {
     const [profile] = await db
