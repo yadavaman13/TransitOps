@@ -38,6 +38,12 @@ export const loginValidator = [
     body('password')
         .notEmpty()
         .withMessage('Password is required'),
+    body('role')
+        .trim()
+        .notEmpty()
+        .withMessage('Role is required')
+        .isIn(['FLEET_MANAGER', 'DRIVER', 'SAFETY_OFFICER', 'FINANCIAL_ANALYST'])
+        .withMessage('Role must be FLEET_MANAGER, DRIVER, SAFETY_OFFICER, or FINANCIAL_ANALYST'),
     validateRequest,
 ];
 

@@ -50,3 +50,16 @@ export const adminUpdateRoleValidator = [
         .withMessage('Role must be FLEET_MANAGER, DRIVER, SAFETY_OFFICER, or FINANCIAL_ANALYST'),
     validateRequest,
 ];
+
+export const createUserValidator = [
+    body('name')
+        .trim()
+        .notEmpty()
+        .withMessage('Name is required'),
+    body('email')
+        .trim()
+        .isEmail()
+        .withMessage('A valid email is required'),
+    validateRequest,
+];
+

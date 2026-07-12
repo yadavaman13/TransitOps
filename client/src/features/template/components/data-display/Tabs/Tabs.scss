@@ -1,7 +1,6 @@
 // client/src/features/template/components/data-display/Tabs/Tabs.scss
 .t-tabs {
     display: flex;
-    border-bottom: 2px solid var(--t-border-color);
     overflow-x: auto;
     overflow-y: hidden;
     font-family: var(--t-font-family);
@@ -25,7 +24,6 @@
         border-bottom: 2px solid transparent;
         cursor: pointer;
         transition: var(--t-transition);
-        margin-bottom: -2px;
         white-space: nowrap;
         font-family: inherit;
 
