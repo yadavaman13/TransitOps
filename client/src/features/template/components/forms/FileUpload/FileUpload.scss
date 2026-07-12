@@ -1,0 +1,224 @@
+// client/src/features/template/components/forms/FileUpload/FileUpload.scss
+
+.t-fileupload-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--t-space-2, 8px);
+    width: 100%;
+    margin-bottom: var(--t-space-4, 16px);
+}
+
+.t-fileupload-label {
+    font-size: var(--t-font-size-sm, 14px);
+    font-weight: var(--t-font-weight-medium, 500);
+    color: var(--t-text-main, #1e293b);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &__required {
+        color: var(--t-danger, #ef4444);
+    }
+}
+
+.t-fileupload-input {
+    display: none;
+}
+
+.t-fileupload-zone {
+    border: 2px dashed var(--t-border-main, #cbd5e1);
+    background-color: var(--t-bg-card, #ffffff);
+    border-radius: var(--t-border-radius-lg, 12px);
+    padding: var(--t-space-6, 24px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 120px;
+    position: relative;
+    overflow: hidden;
+
+    &:hover:not(.t-fileupload-zone--disabled):not(.t-fileupload-zone--has-value) {
+        border-color: var(--t-primary, #6366f1);
+        background-color: rgba(99, 102, 241, 0.02);
+    }
+
+    &--dragover {
+        border-color: var(--t-primary, #6366f1);
+        background-color: rgba(99, 102, 241, 0.05) !important;
+        transform: scale(1.01);
+    }
+
+    &--error {
+        border-color: var(--t-danger, #ef4444);
+        background-color: rgba(239, 68, 68, 0.01);
+    }
+
+    &--disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+        background-color: var(--t-bg-muted, #f8fafc);
+    }
+
+    &--has-value {
+        cursor: default;
+        border-style: solid;
+        border-color: var(--t-border-main, #e2e8f0);
+        padding: var(--t-space-3, 12px);
+        background-color: var(--t-bg-muted, #f8fafc);
+    }
+}
+
+.t-fileupload-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: var(--t-space-2, 8px);
+    width: 100%;
+
+    &--loading {
+        color: var(--t-text-muted, #64748b);
+    }
+}
+
+.t-fileupload-icon-container {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--t-border-radius-full, 9999px);
+    background-color: var(--t-bg-muted, #f1f5f9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--t-space-1, 4px);
+    transition: all 0.2s ease;
+
+    .t-fileupload-zone:hover & {
+        background-color: rgba(99, 102, 241, 0.1);
+        color: var(--t-primary, #6366f1);
+    }
+}
+
+.t-fileupload-icon {
+    font-size: 20px;
+    color: var(--t-text-muted, #64748b);
+    transition: color 0.2s ease;
+
+    .t-fileupload-zone:hover & {
+        color: var(--t-primary, #6366f1);
+    }
+}
+
+.t-fileupload-instruction {
+    font-size: var(--t-font-size-sm, 14px);
+    color: var(--t-text-main, #334155);
+}
+
+.t-fileupload-browse-text {
+    color: var(--t-primary, #6366f1);
+    font-weight: var(--t-font-weight-semibold, 600);
+}
+
+.t-fileupload-helper-text {
+    font-size: var(--t-font-size-caption, 12px);
+    color: var(--t-text-muted, #64748b);
+}
+
+.t-fileupload-spinner {
+    font-size: 24px;
+    color: var(--t-primary, #6366f1);
+    animation: t-spin 0.8s linear infinite;
+}
+
+.t-fileupload-value {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: var(--t-space-4, 16px);
+}
+
+.t-fileupload-preview {
+    max-width: 120px;
+    max-height: 80px;
+    border-radius: var(--t-border-radius-md, 8px);
+    overflow: hidden;
+    border: 1px solid var(--t-border-main, #e2e8f0);
+    box-shadow: var(--t-shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.t-fileupload-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-height: 80px;
+}
+
+.t-fileupload-file-info {
+    display: flex;
+    align-items: center;
+    gap: var(--t-space-2, 8px);
+    overflow: hidden;
+    flex: 1;
+}
+
+.t-fileupload-file-icon {
+    font-size: 24px;
+    color: var(--t-primary, #6366f1);
+}
+
+.t-fileupload-file-url {
+    font-size: var(--t-font-size-sm, 14px);
+    font-weight: var(--t-font-weight-medium, 500);
+    color: var(--t-text-main, #1e293b);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.t-fileupload-clear-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--t-border-radius-full, 9999px);
+    background-color: var(--t-bg-muted, #f1f5f9);
+    border: none;
+    color: var(--t-text-muted, #64748b);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: var(--t-danger-light, #fee2e2);
+        color: var(--t-danger, #ef4444);
+    }
+}
+
+.t-fileupload-error-text {
+    font-size: var(--t-font-size-caption, 12px);
+    color: var(--t-danger, #ef4444);
+    margin: 0;
+}
+
+.t-fileupload-helper-desc {
+    font-size: var(--t-font-size-caption, 12px);
+    color: var(--t-text-muted, #64748b);
+    margin: 0;
+}
+
+@keyframes t-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
