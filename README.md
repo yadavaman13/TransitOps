@@ -1,4 +1,4 @@
-# TransitOps
+# We selected TransitOps
 
 TransitOps is a unified ERP solution for fleet operations, safety compliance, driver monitoring, and financial analytics. It features a React-based single-page application client and an Express/Node.js backend API using PostgreSQL and Drizzle ORM.
 
