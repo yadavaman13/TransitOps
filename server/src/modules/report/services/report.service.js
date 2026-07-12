@@ -281,44 +281,69 @@ function convertToCSV(headers, rows) {
 }
 
 export function generateSimplePDF(title, headers, columnWidths, rows) {
-    const lines = [];
-    lines.push("=========================================================================================");
-    lines.push(`                     TRANSITOPS SYSTEM REPORT: ${title.toUpperCase()}`);
-    lines.push("=========================================================================================");
-    lines.push(`Generated On: ${new Date().toUTCString()}`);
-    lines.push("");
+    const reportTitle = `TransitOps - ${title}`;
+    const generatedOn = `Generated on: ${new Date().toUTCString()}`;
 
     // Create table header
     let headerLine = "";
     headers.forEach((h, idx) => {
         const width = columnWidths[idx] || 10;
-        headerLine += h.slice(0, width).padEnd(width) + " | ";
+        headerLine += h.slice(0, width).padEnd(width) + "  ";
     });
-    lines.push(headerLine);
-    lines.push("-".repeat(headerLine.length));
 
-    // Create table rows
+    // PDF Stream Builder (PDF-1.4 format, pure JS)
+    let streamContent = "BT\n";
+    
+    // Title: Helvetica-Bold, 16pt, primary color (mauve: 0.44 0.29 0.40 rg)
+    streamContent += "/F2 16 Tf\n";
+    streamContent += "20 TL\n";
+    streamContent += "0.44 0.29 0.40 rg\n";
+    streamContent += "40 730 Td\n";
+    streamContent += `(${reportTitle.replace(/[()]/g, "")}) Tj T*\n`;
+    
+    // Subtitle: Helvetica, 9pt, muted color (grey-purple: 0.42 0.40 0.47 rg)
+    streamContent += "/F3 9 Tf\n";
+    streamContent += "14 TL\n";
+    streamContent += "0.42 0.40 0.47 rg\n";
+    streamContent += `(${generatedOn}) Tj T*\n`;
+    streamContent += "() Tj T*\n"; // Empty line
+
+    // Header divider: Courier, 8.5pt, muted color (0.42 0.40 0.47 rg)
+    const divider = "_".repeat(headerLine.trimEnd().length);
+    streamContent += "/F1 8.5 Tf\n";
+    streamContent += "12 TL\n";
+    streamContent += "0.42 0.40 0.47 rg\n";
+    streamContent += "() Tj T*\n"; // Spacer
+    
+    // Table Header: Courier-Bold, 9pt, main text color (deep purple-black: 0.12 0.10 0.22 rg)
+    streamContent += "/F4 9 Tf\n";
+    streamContent += "0.12 0.10 0.22 rg\n";
+    streamContent += `(${headerLine.replace(/[()]/g, "")}) Tj T*\n`;
+
+    // Divider line: Courier, 8.5pt, muted color (0.42 0.40 0.47 rg)
+    streamContent += "/F1 8.5 Tf\n";
+    streamContent += "0.42 0.40 0.47 rg\n";
+    streamContent += `(${divider}) Tj T*\n`;
+    streamContent += "() Tj T*\n"; // Spacer
+
+    // Table Content: Courier, 8.5pt, main text color (0.12 0.10 0.22 rg)
+    streamContent += "0.12 0.10 0.22 rg\n";
     rows.forEach(r => {
         let rowLine = "";
         r.forEach((cell, idx) => {
             const width = columnWidths[idx] || 10;
             const strVal = cell !== undefined && cell !== null ? String(cell) : "";
-            rowLine += strVal.slice(0, width).padEnd(width) + " | ";
+            rowLine += strVal.slice(0, width).padEnd(width) + "  ";
         });
-        lines.push(rowLine);
-    });
-    lines.push("-".repeat(headerLine.length));
-    lines.push("");
-    lines.push("=========================================================================================");
-    lines.push("                                 END OF REPORT");
-    lines.push("=========================================================================================");
-
-    // PDF Stream Builder (PDF-1.4 format, pure JS)
-    let streamContent = "BT\n/F1 9 Tf\n10 Tld\n40 730 Td\n";
-    lines.forEach(line => {
-        const escaped = line.replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
+        const escaped = rowLine.replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
         streamContent += `(${escaped}) Tj T*\n`;
     });
+
+    // Bottom Divider: Courier, 8.5pt, muted color (0.42 0.40 0.47 rg)
+    streamContent += "0.42 0.40 0.47 rg\n";
+    streamContent += `(${divider}) Tj T*\n`;
+    
+    // End text object
     streamContent += "ET";
 
     const streamLength = Buffer.byteLength(streamContent);
@@ -328,9 +353,12 @@ export function generateSimplePDF(title, headers, columnWidths, rows) {
     
     const obj1 = "1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n";
     const obj2 = "2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n";
-    const obj3 = "3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>\nendobj\n";
+    const obj3 = "3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R /F2 6 0 R /F3 7 0 R /F4 8 0 R >> >> /Contents 5 0 R >>\nendobj\n";
     const obj4 = "4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>\nendobj\n";
     const obj5 = `5 0 obj\n<< /Length ${streamLength} >>\nstream\n${streamContent}\nendstream\nendobj\n`;
+    const obj6 = "6 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>\nendobj\n";
+    const obj7 = "7 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n";
+    const obj8 = "8 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Courier-Bold >>\nendobj\n";
 
     const body = objects[0];
     const offsets = [];
@@ -345,16 +373,22 @@ export function generateSimplePDF(title, headers, columnWidths, rows) {
     const p4 = p3 + obj4;
     offsets.push(p4.length);
     const p5 = p4 + obj5;
+    offsets.push(p5.length);
+    const p6 = p5 + obj6;
+    offsets.push(p6.length);
+    const p7 = p6 + obj7;
+    offsets.push(p7.length);
+    const p8 = p7 + obj8;
 
-    const startXref = p5.length;
-    let xref = "xref\n0 6\n0000000000 65535 f \n";
+    const startXref = p8.length;
+    let xref = "xref\n0 9\n0000000000 65535 f \n";
     offsets.forEach(offset => {
         xref += String(offset).padStart(10, '0') + " 00000 n \n";
     });
     
-    const trailer = `trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${startXref}\n%%EOF\n`;
+    const trailer = `trailer\n<< /Size 9 /Root 1 0 R >>\nstartxref\n${startXref}\n%%EOF\n`;
     
-    return Buffer.from(p5 + xref + trailer, "utf-8");
+    return Buffer.from(p8 + xref + trailer, "utf-8");
 }
 
 export async function compileCSV(type) {
@@ -394,7 +428,7 @@ export async function compileCSV(type) {
         return convertToCSV(headers, rows);
     }
 
-    if (type === 'operational-cost') {
+    if (type === 'operational-cost' || type === 'costs') {
         const data = await getOperationalCostReport();
         const headers = ['Registration Number', 'Brand', 'Model', 'Fuel Cost', 'Maintenance Cost', 'General Expense Cost', 'Total Operational Cost'];
         const rows = data.breakdown.map(b => [
@@ -447,7 +481,7 @@ export async function compilePDF(type) {
         return generateSimplePDF('Fleet Expenses Ledger Report', headers, widths, rows);
     }
 
-    if (type === 'operational-cost') {
+    if (type === 'operational-cost' || type === 'costs') {
         const data = await getOperationalCostReport();
         const headers = ['VEHICLE REG', 'BRAND', 'MODEL', 'FUEL COST', 'MAINT COST', 'GENERAL EXP', 'TOTAL COST'];
         const widths = [14, 12, 12, 12, 12, 12, 14];

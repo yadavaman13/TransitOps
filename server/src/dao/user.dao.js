@@ -1,5 +1,6 @@
 import { db } from '../config/database.js';
 import { users } from '../db/schema/users.schema.js';
+import { driverProfiles } from '../db/schema/driver-profiles.schema.js';
 import { eq, and } from 'drizzle-orm';
 
 /**
@@ -12,8 +13,31 @@ export async function getUserByEmail(email, includeDeleted = false) {
     if (!includeDeleted) {
         filters.push(eq(users.isDeleted, false));
     }
-    const [user] = await db.select().from(users).where(and(...filters));
-    return user || null;
+    const [row] = await db
+        .select({
+            id: users.id,
+            name: users.name,
+            email: users.email,
+            password: users.password,
+            role: users.role,
+            emailVerified: users.emailVerified,
+            isActive: users.isActive,
+            isDeleted: users.isDeleted,
+            deletedAt: users.deletedAt,
+            phone: users.phone,
+            driverPhone: driverProfiles.phone,
+            createdAt: users.createdAt,
+            updatedAt: users.updatedAt,
+        })
+        .from(users)
+        .leftJoin(driverProfiles, eq(users.id, driverProfiles.userId))
+        .where(and(...filters));
+
+    if (!row) return null;
+    return {
+        ...row,
+        phone: row.phone || row.driverPhone || null,
+    };
 }
 
 /**
@@ -26,8 +50,31 @@ export async function getUserById(id, includeDeleted = false) {
     if (!includeDeleted) {
         filters.push(eq(users.isDeleted, false));
     }
-    const [user] = await db.select().from(users).where(and(...filters));
-    return user || null;
+    const [row] = await db
+        .select({
+            id: users.id,
+            name: users.name,
+            email: users.email,
+            password: users.password,
+            role: users.role,
+            emailVerified: users.emailVerified,
+            isActive: users.isActive,
+            isDeleted: users.isDeleted,
+            deletedAt: users.deletedAt,
+            phone: users.phone,
+            driverPhone: driverProfiles.phone,
+            createdAt: users.createdAt,
+            updatedAt: users.updatedAt,
+        })
+        .from(users)
+        .leftJoin(driverProfiles, eq(users.id, driverProfiles.userId))
+        .where(and(...filters));
+
+    if (!row) return null;
+    return {
+        ...row,
+        phone: row.phone || row.driverPhone || null,
+    };
 }
 
 /**
@@ -75,8 +122,28 @@ export async function softDeleteUser(id) {
  * @param {boolean} includeDeleted
  */
 export async function listUsers(includeDeleted = false) {
-    if (includeDeleted) {
-        return db.select().from(users);
-    }
-    return db.select().from(users).where(eq(users.isDeleted, false));
+    const results = await db
+        .select({
+            id: users.id,
+            name: users.name,
+            email: users.email,
+            password: users.password,
+            role: users.role,
+            emailVerified: users.emailVerified,
+            isActive: users.isActive,
+            isDeleted: users.isDeleted,
+            deletedAt: users.deletedAt,
+            phone: users.phone,
+            driverPhone: driverProfiles.phone,
+            createdAt: users.createdAt,
+            updatedAt: users.updatedAt,
+        })
+        .from(users)
+        .leftJoin(driverProfiles, eq(users.id, driverProfiles.userId))
+        .where(includeDeleted ? undefined : eq(users.isDeleted, false));
+
+    return results.map(row => ({
+        ...row,
+        phone: row.phone || row.driverPhone || null,
+    }));
 }
