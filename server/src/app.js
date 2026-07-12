@@ -8,6 +8,7 @@ import dashboardRouter from './modules/dashboard/index.js';
 import vehicleRouter from './modules/vehicle/index.js';
 import driverRouter from './modules/driver/index.js';
 import tripRouter from './modules/trip/index.js';
+import fuelLogRouter from './modules/fuel-log/index.js';
 import { errorHandler } from './modules/auth/middleware/errorHandler.js';
 import { notificationRouter } from './modules/notifications/index.js';
 import { vehicleDocumentRouter } from './modules/vehicle-documents/index.js';
@@ -38,6 +39,7 @@ app.use('/api/dashboard', dashboardRouter);
 app.use('/api/vehicles', vehicleRouter);
 app.use('/api/drivers', driverRouter);
 app.use('/api/trips', tripRouter);
+app.use('/api/fuel-logs', fuelLogRouter);
 
 // Centralized error handling
 app.use(errorHandler);
