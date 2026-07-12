@@ -7,6 +7,9 @@ import { driverProfiles } from '../../../db/schema/driver-profiles.schema.js';
 import { AppError } from '../../auth/utils/appError.js';
 import bcrypt from 'bcryptjs';
 import { eq, and, sql, inArray } from 'drizzle-orm';
+import { generatePassword } from '../../../utils/password-generator.utils.js';
+import { sendEmail } from '../../../services/mail/mail.service.js';
+
 
 export async function registerDriver(data) {
     const { name, email, phone, licenseNumber, licenseExpiry, emergencyContact, bloodGroup, experienceYears } = data;
@@ -29,8 +32,8 @@ export async function registerDriver(data) {
         throw new AppError('Driver license must not be expired before dispatch', 400);
     }
 
-    // Generate random password
-    const plainPassword = data.password || `TOPS@${Math.floor(100000 + Math.random() * 900000)}`;
+    // Generate random password automatically
+    const plainPassword = generatePassword();
     const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
     const userData = {
@@ -50,6 +53,26 @@ export async function registerDriver(data) {
     };
 
     const result = await driverDao.createDriver(userData, profileData);
+
+    // Send email with credentials
+    const subject = 'Your TransitOps Driver Account Credentials';
+    const html = `
+        <h3>Welcome to TransitOps</h3>
+        <p>Hi ${name},</p>
+        <p>Your Driver account has been created successfully.</p>
+        <p>Here are your login credentials:</p>
+        <ul>
+            <li><strong>Email:</strong> ${email.trim().toLowerCase()}</li>
+            <li><strong>Password:</strong> ${plainPassword}</li>
+        </ul>
+        <p>Please log in and update your password.</p>
+    `;
+    try {
+        await sendEmail({ to: email.trim().toLowerCase(), subject, html });
+    } catch (mailError) {
+        console.error('Failed to send Driver credential email:', mailError);
+    }
+
     return {
         driver: {
             id: result.id,
