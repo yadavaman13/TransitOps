@@ -14,15 +14,16 @@ import { settings } from './schema/settings.schema.js';
 
 async function seedRealisticData() {
     console.log('Seeding realistic database records...');
+    const managerHashedPassword = await bcrypt.hash('Admin@123', 10);
     const hashedPassword = await bcrypt.hash('TransitOpsSecure2026', 10);
 
     try {
         // 1. Seed Users (RBAC)
         const userRecords = await db.insert(users).values([
             {
-                name: 'James Bennett',
-                email: 'james.bennett@transitops.com',
-                password: hashedPassword,
+                name: 'Fleet Manager',
+                email: 'admin@transitops.com',
+                password: managerHashedPassword,
                 role: 'FLEET_MANAGER',
                 emailVerified: true,
                 isActive: true,

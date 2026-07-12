@@ -46,7 +46,7 @@ export const adminUpdateRoleValidator = [
         .trim()
         .notEmpty()
         .withMessage('Role is required')
-        .isIn(['FLEET_MANAGER', 'DRIVER', 'SAFETY_OFFICER', 'FINANCIAL_ANALYST', 'USER', 'ADMIN'])
-        .withMessage('Role must be FLEET_MANAGER, DRIVER, SAFETY_OFFICER, FINANCIAL_ANALYST, USER, or ADMIN'),
+        .isIn(['FLEET_MANAGER', 'DRIVER', 'SAFETY_OFFICER', 'FINANCIAL_ANALYST'])
+        .withMessage('Role must be FLEET_MANAGER, DRIVER, SAFETY_OFFICER, or FINANCIAL_ANALYST'),
     validateRequest,
 ];
