@@ -91,7 +91,6 @@ TransitOps/
 │   ├── drizzle.config.js       # Drizzle CLI tools configurator
 │   └── package.json            # Backend dependency specifications
 │
-├── safety.txt                  # Safety officer dashboard specs
 └── README.md                   # Project description, installation steps & team info
 ```
 
@@ -103,9 +102,6 @@ TransitOps/
 - Database schema aggregator: [schema.js](server/src/db/schema/schema.js)
 - Server App config: [app.js](server/src/app.js)
 - Server Entrypoint: [server.js](server/server.js)
-- Visual specs guideline: [DESIGN.md](docs/DESIGN.md)
-- Safety spec requirements: [safety.txt](safety.txt)
-- Full features list: [feature.txt](docs/feature.txt)
 
 ---
 
@@ -360,9 +356,7 @@ npm run dev             # Start development server (defaults to http://localhost
 
 ## UI Components & Design System
 
-The frontend implements a unified design system that defines:
-* App tokens, HSL/HEX color variables, typography, and interactive components in [DESIGN.md](docs/DESIGN.md)
-* ERP starter components, layout templates, data tables, and input forms documented in [template-component-docs.md](client/src/features/template/template-component-docs.md)
+The frontend implements a unified design system that defines ERP starter components, layout templates, data tables, and input forms documented in [template-component-docs.md](client/src/features/template/template-component-docs.md).
 
 ---
 
