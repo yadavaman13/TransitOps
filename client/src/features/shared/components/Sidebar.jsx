@@ -209,7 +209,7 @@ const Sidebar = () => {
                                     onClick={closeSidebar}
                                 >
                                     <i className="ri-dashboard-2-line" aria-hidden="true" />
-                                    <span>📊 Dashboard</span>
+                                    <span>Dashboard</span>
                                 </Link>
                                 <Link
                                     to={`${prefix}/expenses`}
@@ -217,7 +217,7 @@ const Sidebar = () => {
                                     onClick={closeSidebar}
                                 >
                                     <i className="ri-coins-line" aria-hidden="true" />
-                                    <span>💰 Expenses</span>
+                                    <span>Expenses</span>
                                 </Link>
                                 <Link
                                     to={`${prefix}/fuel`}
@@ -225,7 +225,7 @@ const Sidebar = () => {
                                     onClick={closeSidebar}
                                 >
                                     <i className="ri-gas-station-line" aria-hidden="true" />
-                                    <span>⛽ Fuel</span>
+                                    <span>Fuel</span>
                                 </Link>
                                 <Link
                                     to={`${prefix}/reports`}
@@ -233,7 +233,7 @@ const Sidebar = () => {
                                     onClick={closeSidebar}
                                 >
                                     <i className="ri-line-chart-line" aria-hidden="true" />
-                                    <span>📈 Reports</span>
+                                    <span>Reports</span>
                                 </Link>
                             </>
                         );

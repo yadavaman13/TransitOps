@@ -158,7 +158,7 @@ export default function FinanceReportsPage() {
             {/* Header */}
             <div className="finance-header">
                 <div className="finance-header__title">
-                    <h1>📈 Reports & Analytics</h1>
+                    <h1><i className="ri-line-chart-line" aria-hidden="true" /> Reports &amp; Analytics</h1>
                     <p>Compile financial reports, export logs, and analyze vehicle cost efficiencies</p>
                 </div>
                 <div className="finance-header__actions no-print">

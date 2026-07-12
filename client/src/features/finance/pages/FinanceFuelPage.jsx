@@ -48,7 +48,7 @@ export default function FinanceFuelPage() {
             {/* Header */}
             <div className="finance-header">
                 <div className="finance-header__title">
-                    <h1>⛽ Fuel Logs</h1>
+                    <h1><i className="ri-gas-station-line" aria-hidden="true" /> Fuel Logs</h1>
                     <p>Audit vehicle refueling transactions, fuel rates, and total consumption costs</p>
                 </div>
             </div>

@@ -135,7 +135,7 @@ export default function FinanceExpensesPage() {
             {/* Header */}
             <div className="finance-header">
                 <div className="finance-header__title">
-                    <h1>💰 Expense Log</h1>
+                    <h1><i className="ri-receipt-line" aria-hidden="true" /> Expense Log</h1>
                     <p>Track operating costs, toll expenses, maintenance bills, and manual logs</p>
                 </div>
                 <div className="finance-header__actions">

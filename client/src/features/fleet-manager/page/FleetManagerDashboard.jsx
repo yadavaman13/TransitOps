@@ -70,8 +70,9 @@ const FleetManagerDashboard = () => {
                     />
                 )}
                 {activeTab === 'alerts' && (
-                    <div style={{ padding: 'var(--t-space-8)', textAlign: 'center', color: 'var(--t-text-muted)' }}>
-                        ⚠️ Speed alert triggered for Eicher Pro (MH-12-XY-9876) on Route 5B.
+                    <div style={{ padding: 'var(--t-space-8)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: 'var(--t-text-muted)' }}>
+                        <i className="ri-error-warning-line" style={{ color: 'var(--t-color-danger, #ef4444)', fontSize: '18px' }} />
+                        Speed alert triggered for Eicher Pro (MH-12-XY-9876) on Route 5B.
                     </div>
                 )}
             </Card>

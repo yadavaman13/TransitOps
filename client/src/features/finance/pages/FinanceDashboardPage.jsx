@@ -74,7 +74,7 @@ export default function FinanceDashboardPage() {
             {/* Header */}
             <div className="finance-header">
                 <div className="finance-header__title">
-                    <h1>📊 Financial Dashboard</h1>
+                    <h1><i className="ri-bar-chart-box-line" aria-hidden="true" /> Financial Dashboard</h1>
                     <p>Track operating costs, maintenance expenses, and fuel usage trends</p>
                 </div>
             </div>
