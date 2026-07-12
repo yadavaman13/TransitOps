@@ -1,21 +1,17 @@
 // client/src/features/template/components/data-display/DataTable/TableToolbar.jsx
 import React from 'react';
+import SearchBar from '../../navigation/SearchBar/index.js';
 
 const TableToolbar = ({ searchable, search, onSearch, totalCount, toolbarActions }) => {
     if (!searchable && !toolbarActions) return null;
     return (
         <div className="t-table-toolbar">
             {searchable && (
-                <div className="t-table-search">
-                    <i className="ri-search-line" aria-hidden="true" />
-                    <input
-                        type="search"
-                        placeholder="Search..."
-                        value={search}
-                        onChange={(e) => onSearch(e.target.value)}
-                        aria-label="Search table"
-                    />
-                </div>
+                <SearchBar
+                    value={search}
+                    onChange={(v) => onSearch(v)}
+                    placeholder="Search..."
+                />
             )}
             {toolbarActions && <div>{toolbarActions}</div>}
             <span className="t-table-count">

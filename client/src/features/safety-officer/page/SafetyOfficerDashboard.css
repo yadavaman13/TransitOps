@@ -1,0 +1,235 @@
+/* SafetyOfficerDashboard.css */
+
+/* ── Loading state ─────────────────────────────────────────────────────────── */
+.sod-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    height: 80vh;
+    color: var(--t-text-muted);
+    font-size: 0.9rem;
+    font-family: var(--t-font-family);
+}
+.sod-loading__icon {
+    font-size: 1.75rem;
+    color: var(--t-primary);
+}
+
+/* ── Mid-row two-column grid ───────────────────────────────────────────────── */
+.sod-mid-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--t-space-6);
+}
+@media (max-width: 820px) {
+    .sod-mid-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Card header (shared for both mid cards) ───────────────────────────────── */
+.sod-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+.sod-card-header__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--t-text-main);
+}
+.sod-card-header__icon {
+    font-size: 1rem;
+    color: var(--t-primary);
+}
+.sod-card-header__icon--danger {
+    color: var(--t-danger);
+}
+.sod-card-header__meta {
+    font-size: 0.78rem;
+    color: var(--t-text-muted);
+    font-weight: 500;
+}
+.sod-card-header__right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ── Score distribution ────────────────────────────────────────────────────── */
+.sod-dist-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.sod-dist-row__labels {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    margin-bottom: 0.35rem;
+}
+.sod-dist-row__label {
+    font-size: 0.825rem;
+    font-weight: 600;
+    color: var(--t-text-main);
+    flex: 1;
+}
+.sod-dist-row__range {
+    font-size: 0.75rem;
+    color: var(--t-text-muted);
+    background: var(--t-bg-app);
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+.sod-dist-row__count {
+    font-size: 0.75rem;
+    color: var(--t-text-muted);
+    margin-left: auto;
+}
+.sod-dist-row__track {
+    height: 6px;
+    background: #ebebeb;
+    border-radius: 99px;
+    overflow: hidden;
+}
+.sod-dist-row__fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 0;
+}
+
+/* ── Alert count badge ─────────────────────────────────────────────────────── */
+.sod-alert-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background: var(--t-danger);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 99px;
+    line-height: 1;
+}
+
+/* ── Alerts list ───────────────────────────────────────────────────────────── */
+.sod-alerts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-height: 280px;
+    overflow-y: auto;
+    margin: 0 -1px;
+
+    /* slim scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: var(--t-border-color) transparent;
+}
+.sod-alerts-list::-webkit-scrollbar { width: 4px; }
+.sod-alerts-list::-webkit-scrollbar-thumb {
+    background: var(--t-border-color);
+    border-radius: 99px;
+}
+
+.sod-alert-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+.sod-alert-item:last-child { border-bottom: none; }
+
+.sod-alert-item__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--t-border-color);
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+.sod-alert-item--critical .sod-alert-item__dot {
+    background: var(--t-danger);
+}
+
+.sod-alert-item__body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+.sod-alert-item__title {
+    font-size: 0.825rem;
+    font-weight: 600;
+    color: var(--t-text-main);
+    line-height: 1.3;
+}
+.sod-alert-item--critical .sod-alert-item__title {
+    color: var(--t-danger);
+}
+.sod-alert-item__message {
+    font-size: 0.78rem;
+    color: var(--t-text-muted);
+    line-height: 1.4;
+}
+.sod-alert-item__time {
+    font-size: 0.72rem;
+    color: var(--t-text-muted);
+    margin-top: 2px;
+}
+
+.sod-alert-item__resolve {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--t-text-muted);
+    font-size: 1rem;
+    padding: 2px 4px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+.sod-alert-item__resolve:hover {
+    background: var(--t-success-bg);
+    color: var(--t-success-text);
+}
+
+/* ── Alerts empty state ────────────────────────────────────────────────────── */
+.sod-alerts-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2.5rem 1rem;
+    color: var(--t-text-muted);
+    text-align: center;
+}
+.sod-alerts-empty__icon {
+    font-size: 2rem;
+    color: var(--t-success);
+}
+.sod-alerts-empty p {
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+/* ── Expired date cell ─────────────────────────────────────────────────────── */
+.sod-expired-date {
+    color: var(--t-danger);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}

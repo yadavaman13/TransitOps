@@ -22,34 +22,12 @@
     gap: var(--t-space-3);
 }
 
-.t-table-search {
-    @include t-flex(flex-start, center, row, var(--t-space-2));
-    background: var(--t-bg-input);
-    border: 1.5px solid var(--t-border-color);
-    border-radius: var(--t-radius);
-    padding: 7px var(--t-space-3);
+// SearchBar inside toolbar — constrain its width
+.t-table-toolbar .t-search-bar {
     flex: 1;
     max-width: 280px;
-    transition: var(--t-transition);
-
-    &:focus-within {
-        border-color: var(--t-primary);
-        box-shadow: 0 0 0 3px var(--t-primary-faint);
-    }
-
-    i { color: var(--t-text-muted); font-size: 1rem; flex-shrink: 0; }
-
-    input {
-        border: none;
-        background: transparent;
-        outline: none;
-        font-family: var(--t-font-family);
-        font-size: var(--t-font-size-body-sm);
-        color: var(--t-text-main);
-        width: 100%;
-        &::placeholder { color: var(--t-text-muted); }
-    }
 }
+
 
 .t-table-count {
     font-size: var(--t-font-size-caption);
