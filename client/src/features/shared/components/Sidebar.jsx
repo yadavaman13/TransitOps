@@ -196,49 +196,48 @@ const Sidebar = () => {
                         </Link>
                     )}
 
-                    {(user?.role === 'FINANCIAL_ANALYST' || user?.role === 'FLEET_MANAGER') && (
-                        <>
-                            {user?.role === 'FLEET_MANAGER' && (
-                                <div className="sidebar__section-title" style={{ padding: '12px 16px 4px', fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Finance Portal</div>
-                            )}
-                            <Link
-                                to="/finance/dashboard"
-                                className={`sidebar__link ${isActive('/finance/dashboard') ? 'sidebar__link--active' : ''}`}
-                                onClick={closeSidebar}
-                                aria-current={isActive('/finance/dashboard') ? 'page' : undefined}
-                            >
-                                <i className="ri-dashboard-2-line" aria-hidden="true" />
-                                <span>📊 Dashboard</span>
-                            </Link>
-                            <Link
-                                to="/finance/expenses"
-                                className={`sidebar__link ${isActive('/finance/expenses') ? 'sidebar__link--active' : ''}`}
-                                onClick={closeSidebar}
-                                aria-current={isActive('/finance/expenses') ? 'page' : undefined}
-                            >
-                                <i className="ri-coins-line" aria-hidden="true" />
-                                <span>💰 Expenses</span>
-                            </Link>
-                            <Link
-                                to="/finance/fuel"
-                                className={`sidebar__link ${isActive('/finance/fuel') ? 'sidebar__link--active' : ''}`}
-                                onClick={closeSidebar}
-                                aria-current={isActive('/finance/fuel') ? 'page' : undefined}
-                            >
-                                <i className="ri-gas-station-line" aria-hidden="true" />
-                                <span>⛽ Fuel</span>
-                            </Link>
-                            <Link
-                                to="/finance/reports"
-                                className={`sidebar__link ${isActive('/finance/reports') ? 'sidebar__link--active' : ''}`}
-                                onClick={closeSidebar}
-                                aria-current={isActive('/finance/reports') ? 'page' : undefined}
-                            >
-                                <i className="ri-line-chart-line" aria-hidden="true" />
-                                <span>📈 Reports</span>
-                            </Link>
-                        </>
-                    )}
+                    {(user?.role === 'FINANCIAL_ANALYST' || user?.role === 'FLEET_MANAGER') && (() => {
+                        const prefix = user?.role === 'FINANCIAL_ANALYST' ? '/financial-analyst' : '/fleet-manager/finance';
+                        return (
+                            <>
+                                {user?.role === 'FLEET_MANAGER' && (
+                                    <div className="sidebar__section-title" style={{ padding: '12px 16px 4px', fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Finance Portal</div>
+                                )}
+                                <Link
+                                    to={`${prefix}`}
+                                    className={`sidebar__link ${location.pathname.startsWith(prefix) && !location.pathname.includes('/expenses') && !location.pathname.includes('/fuel') && !location.pathname.includes('/reports') ? 'sidebar__link--active' : ''}`}
+                                    onClick={closeSidebar}
+                                >
+                                    <i className="ri-dashboard-2-line" aria-hidden="true" />
+                                    <span>📊 Dashboard</span>
+                                </Link>
+                                <Link
+                                    to={`${prefix}/expenses`}
+                                    className={`sidebar__link ${isActive(`${prefix}/expenses`) ? 'sidebar__link--active' : ''}`}
+                                    onClick={closeSidebar}
+                                >
+                                    <i className="ri-coins-line" aria-hidden="true" />
+                                    <span>💰 Expenses</span>
+                                </Link>
+                                <Link
+                                    to={`${prefix}/fuel`}
+                                    className={`sidebar__link ${isActive(`${prefix}/fuel`) ? 'sidebar__link--active' : ''}`}
+                                    onClick={closeSidebar}
+                                >
+                                    <i className="ri-gas-station-line" aria-hidden="true" />
+                                    <span>⛽ Fuel</span>
+                                </Link>
+                                <Link
+                                    to={`${prefix}/reports`}
+                                    className={`sidebar__link ${isActive(`${prefix}/reports`) ? 'sidebar__link--active' : ''}`}
+                                    onClick={closeSidebar}
+                                >
+                                    <i className="ri-line-chart-line" aria-hidden="true" />
+                                    <span>📈 Reports</span>
+                                </Link>
+                            </>
+                        );
+                    })()}
 
 
                 </nav>

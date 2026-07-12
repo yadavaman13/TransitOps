@@ -12,6 +12,7 @@ import FleetManagerDashboard from './features/fleet-manager/page/FleetManagerDas
 import DriverDashboard from './features/driver/page/DriverDashboard';
 import SafetyOfficerDashboard from './features/safety-officer/page/SafetyOfficerDashboard';
 import FinancialAnalystDashboard from './features/financial-analyst/page/FinancialAnalystDashboard';
+import AdminDashboardPage from './features/admin/pages/AdminDashboardPage';
 
 import TemplateDemoLayout from './features/template/pages/TemplateDemoLayout';
 import DashboardTemplatePage from './features/template/pages/DashboardTemplatePage';
@@ -79,17 +80,11 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-<<<<<<< HEAD
-                element: <HomePage />,
+                element: <FleetManagerDashboard />,
             },
-
             {
                 path: 'admin/users',
-                element: (
-                    <AdminProvider>
-                        <AdminDashboardPage />
-                    </AdminProvider>
-                ),
+                element: <AdminDashboardPage />,
             },
             {
                 path: 'admin',
@@ -114,9 +109,6 @@ export const router = createBrowserRouter([
             {
                 path: 'finance',
                 element: <Navigate to="dashboard" replace />
-=======
-                element: <FleetManagerDashboard />
->>>>>>> b639ad43fe7ded9bbe84eb66ab9b85483c88128b
             }
             // To add a new child route / tab under Fleet Manager, register it here:
             // e.g. { path: 'vehicles', element: <VehiclesPage /> }
@@ -164,10 +156,20 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <FinancialAnalystDashboard />
+                element: <FinanceDashboardPage />
+            },
+            {
+                path: 'expenses',
+                element: <FinanceExpensesPage />
+            },
+            {
+                path: 'fuel',
+                element: <FinanceFuelPage />
+            },
+            {
+                path: 'reports',
+                element: <FinanceReportsPage />
             }
-            // To add a new child route / tab under Financial Analyst, register it here:
-            // e.g. { path: 'expenses', element: <ExpensesPage /> }
         ]
     },
     {
