@@ -24,8 +24,13 @@ const TopNavbar = ({ title, user, actions }) => {
                         className="t-topnavbar__avatar"
                         title={user.name}
                         aria-label={`Logged in as ${user.name}`}
+                        style={{ padding: 0, overflow: 'hidden' }}
                     >
-                        {avatarLetter}
+                        <img
+                            src={user.profileImage || "https://ik.imagekit.io/2bzzjhgkg/defaul_profile_image.jpeg"}
+                            alt={user.name}
+                            style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
+                        />
                     </div>
                 )}
             </div>

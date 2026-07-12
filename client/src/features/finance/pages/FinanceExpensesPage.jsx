@@ -310,7 +310,7 @@ export default function FinanceExpensesPage() {
                     <FormSection>
                         <FormRow>
                             <Select
-                                label="Vehicle *"
+                                label="Vehicle"
                                 required
                                 options={vehicles.map(v => ({
                                     value: v.id,
@@ -323,7 +323,7 @@ export default function FinanceExpensesPage() {
                         </FormRow>
                         <FormRow cols={2}>
                             <Select
-                                label="Category *"
+                                label="Category"
                                 required
                                 options={[
                                     { value: 'Toll', label: 'Toll' },
@@ -337,7 +337,7 @@ export default function FinanceExpensesPage() {
                             />
                             <Input
                                 type="number"
-                                label="Amount (₹) *"
+                                label="Amount (₹)"
                                 required
                                 step="0.01"
                                 min="0.01"

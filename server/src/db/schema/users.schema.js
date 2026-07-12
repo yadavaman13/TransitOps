@@ -22,7 +22,7 @@ export const users = pgTable(
         isDeleted: boolean('is_deleted').default(false).notNull(),
         deletedAt: timestamp('deleted_at', { withTimezone: true }),
         phone: text('phone'),
-        profileImage: text('profile_image'),
+        profileImage: text('profile_image').default('https://ik.imagekit.io/2bzzjhgkg/defaul_profile_image.jpeg'),
         status: text('status').default('ACTIVE').notNull(), // Added status field
         createdAt: timestamp('created_at', { withTimezone: true })
             .defaultNow()
