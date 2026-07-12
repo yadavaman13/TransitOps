@@ -26,6 +26,18 @@ export const updateProfileValidator = [
         .trim()
         .isEmail()
         .withMessage('A valid email is required'),
+    body('phone')
+        .optional()
+        .trim()
+        .isLength({ min: 10, max: 10 })
+        .withMessage('Phone number must be exactly 10 digits')
+        .matches(/^[0-9]+$/)
+        .withMessage('Phone number must contain only digits'),
+    body('profileImage')
+        .optional()
+        .trim()
+        .isURL()
+        .withMessage('Profile image must be a valid URL'),
     validateRequest,
 ];
 
@@ -34,7 +46,7 @@ export const adminUpdateRoleValidator = [
         .trim()
         .notEmpty()
         .withMessage('Role is required')
-        .isIn(['USER', 'ADMIN'])
-        .withMessage('Role must be either USER or ADMIN'),
+        .isIn(['FLEET_MANAGER', 'DRIVER', 'SAFETY_OFFICER', 'FINANCIAL_ANALYST', 'USER', 'ADMIN'])
+        .withMessage('Role must be FLEET_MANAGER, DRIVER, SAFETY_OFFICER, FINANCIAL_ANALYST, USER, or ADMIN'),
     validateRequest,
 ];

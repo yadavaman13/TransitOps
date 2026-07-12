@@ -13,10 +13,12 @@ import { AppError } from '../utils/appError.js';
  * @param {object} updates name, email
  * @returns {object} updated user
  */
-export async function updateProfile(userId, { name, email }) {
+export async function updateProfile(userId, { name, email, phone, profileImage }) {
     const updates = {};
     if (name) updates.name = name;
     if (email) updates.email = email;
+    if (phone !== undefined) updates.phone = phone;
+    if (profileImage !== undefined) updates.profileImage = profileImage;
 
     const user = await updateUser(userId, updates);
     if (!user) {

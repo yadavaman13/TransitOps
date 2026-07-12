@@ -5,6 +5,8 @@ integration.md
 skills
 skills-lock.json
 *.md
+!docs/
+!docs/*.md
 
 # IDE & Editor files
 .vscode/
