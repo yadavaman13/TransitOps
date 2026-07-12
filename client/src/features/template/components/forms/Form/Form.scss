@@ -44,3 +44,8 @@
     }
 }
 
+@media (max-width: 600px) {
+    .t-form-row {
+        grid-template-columns: 1fr !important;
+    }
+}

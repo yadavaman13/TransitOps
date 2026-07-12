@@ -11,24 +11,15 @@
 
     &__menu {
         position: absolute;
-        top: 100%;
         margin-top: var(--t-space-2);
         background-color: var(--t-bg-card);
         border: 1px solid var(--t-border-color);
         border-radius: var(--t-radius);
         box-shadow: var(--t-shadow-lg);
         min-width: 180px;
-        z-index: 100;
+        z-index: 9999;
         overflow: hidden;
         animation: t-dropdown-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-
-        &--align-right {
-            right: 0;
-        }
-
-        &--align-left {
-            left: 0;
-        }
     }
 
     &__list {
