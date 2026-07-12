@@ -70,8 +70,9 @@ const FinancialAnalystDashboard = () => {
                     />
                 )}
                 {activeTab === 'reports' && (
-                    <div style={{ padding: 'var(--t-space-8)', textAlign: 'center', color: 'var(--t-text-muted)' }}>
-                        📊 Operating budget at 64% utilization for Q3. Fuel costs account for 55% of the total spend.
+                    <div style={{ padding: 'var(--t-space-8)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: 'var(--t-text-muted)' }}>
+                        <i className="ri-bar-chart-box-line" style={{ color: 'var(--t-color-primary, #6366f1)', fontSize: '18px' }} />
+                        Operating budget at 64% utilization for Q3. Fuel costs account for 55% of the total spend.
                     </div>
                 )}
             </Card>

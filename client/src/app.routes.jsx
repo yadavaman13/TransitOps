@@ -18,12 +18,21 @@ import ReportsPage from './features/fleet-manager/page/ReportsPage';
 import UsersPage from './features/fleet-manager/page/UsersPage';
 import SettingsPage from './features/fleet-manager/page/SettingsPage';
 import DriverDashboard from './features/driver/page/DriverDashboard';
+import DriverTripsPage from './features/driver/page/DriverTripsPage';
+import DriverFuelLogsPage from './features/driver/page/DriverFuelLogsPage';
+import DriverProfilePage from './features/driver/page/DriverProfilePage';
 import SafetyOfficerDashboard from './features/safety-officer/page/SafetyOfficerDashboard';
 import FinancialAnalystDashboard from './features/financial-analyst/page/FinancialAnalystDashboard';
+import AdminDashboardPage from './features/admin/pages/AdminDashboardPage';
+import { AdminProvider } from './features/admin/AdminContext';
 
 import TemplateDemoLayout from './features/template/pages/TemplateDemoLayout';
 import DashboardTemplatePage from './features/template/pages/DashboardTemplatePage';
 import CrudTemplatePage from './features/template/pages/CrudTemplatePage';
+import FinanceDashboardPage from './features/finance/pages/FinanceDashboardPage';
+import FinanceExpensesPage from './features/finance/pages/FinanceExpensesPage';
+import FinanceFuelPage from './features/finance/pages/FinanceFuelPage';
+import FinanceReportsPage from './features/finance/pages/FinanceReportsPage';
 
 // Centralized role-based redirection component at "/"
 const RootRedirect = () => {
@@ -83,7 +92,39 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <FleetManagerDashboard />
+                element: <FleetManagerDashboard />,
+            },
+            {
+                path: 'admin/users',
+                element: (
+                    <AdminProvider>
+                        <AdminDashboardPage />
+                    </AdminProvider>
+                ),
+            },
+            {
+                path: 'admin',
+                element: <Navigate to="users" replace />,
+            },
+            {
+                path: 'finance/dashboard',
+                element: <FinanceDashboardPage />
+            },
+            {
+                path: 'finance/expenses',
+                element: <FinanceExpensesPage />
+            },
+            {
+                path: 'finance/fuel',
+                element: <FinanceFuelPage />
+            },
+            {
+                path: 'finance/reports',
+                element: <FinanceReportsPage />
+            },
+            {
+                path: 'finance',
+                element: <Navigate to="dashboard" replace />
             },
             {
                 path: 'vehicles',
@@ -130,9 +171,19 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: <DriverDashboard />
+            },
+            {
+                path: 'trips',
+                element: <DriverTripsPage />
+            },
+            {
+                path: 'fuel-logs',
+                element: <DriverFuelLogsPage />
+            },
+            {
+                path: 'profile',
+                element: <DriverProfilePage />
             }
-            // To add a new child route / tab under Driver, register it here:
-            // e.g. { path: 'trips', element: <DriverTripsPage /> }
         ]
     },
     {
@@ -161,10 +212,20 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <FinancialAnalystDashboard />
+                element: <FinanceDashboardPage />
+            },
+            {
+                path: 'expenses',
+                element: <FinanceExpensesPage />
+            },
+            {
+                path: 'fuel',
+                element: <FinanceFuelPage />
+            },
+            {
+                path: 'reports',
+                element: <FinanceReportsPage />
             }
-            // To add a new child route / tab under Financial Analyst, register it here:
-            // e.g. { path: 'expenses', element: <ExpensesPage /> }
         ]
     },
     {

@@ -1,0 +1,1 @@
+ALTER TABLE "fuel_logs" ADD COLUMN "receipt_url" text;

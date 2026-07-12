@@ -4,4 +4,5 @@ node_modules
 
 /generated/prisma
 package-lock.json
-test
+test/test-credentials.json
+test-credentials.json

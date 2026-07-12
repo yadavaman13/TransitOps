@@ -1,0 +1,295 @@
+// Finance Portal modular stylesheet
+.finance-container {
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-6);
+
+  @media (max-width: 576px) {
+    padding: var(--space-2);
+  }
+}
+
+// Header Section
+.finance-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--space-4);
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &__title {
+    h1 {
+      font-size: 26px;
+      font-weight: var(--font-weight-bold);
+      color: var(--text-main);
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+}
+
+// KPI Grid
+.kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.kpi-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(113, 75, 103, 0.08);
+  }
+
+  &__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--border-radius);
+    background-color: var(--primary-faint);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__label {
+    font-size: 12px;
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+  }
+
+  &__value {
+    font-size: 20px;
+    font-weight: var(--font-weight-bold);
+    color: var(--text-main);
+  }
+}
+
+// Charts Grid
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+
+  @media (min-width: 992px) {
+    grid-template-columns: 1fr 2fr;
+  }
+
+  &--reports {
+    @media (min-width: 992px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}
+
+.chart-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-md);
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-5);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: var(--space-3);
+
+    h2 {
+      font-size: 16px;
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-main);
+    }
+  }
+
+  &__body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 240px;
+    position: relative;
+  }
+}
+
+// Table Wrapper
+.finance-table-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  margin-bottom: var(--space-6);
+
+  &__header {
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--bg-input);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-main);
+    font-size: 15px;
+  }
+
+  &__table-wrapper {
+    overflow-x: auto;
+  }
+}
+
+.finance-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  th {
+    padding: var(--space-4) var(--space-5);
+    font-size: 11px;
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.88px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background-color: var(--bg-input);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  td {
+    padding: var(--space-4) var(--space-5);
+    font-size: 14px;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background-color: var(--primary-faint);
+  }
+}
+
+// Filters Panel
+.filters-panel {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+  background-color: var(--bg-card);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    label {
+      font-size: 11px;
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    select, input {
+      height: 36px;
+      padding: 0 10px;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-input);
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      transition: border-color var(--transition-smooth);
+
+      &:focus {
+        border-color: var(--primary);
+      }
+    }
+  }
+}
+
+// SVG Chart CSS utilities
+.svg-pie-segment {
+  transition: opacity var(--transition-smooth), transform var(--transition-smooth);
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.85;
+    transform: scale(1.02);
+    transform-origin: center;
+  }
+}
+
+.svg-bar {
+  transition: fill var(--transition-smooth), opacity var(--transition-smooth);
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.svg-tooltip {
+  position: absolute;
+  background: var(--text-main);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-weight: 500;
+}

@@ -1,1 +1,4 @@
 docs
+*credentials.json
+test-credentials.json
+**/test-credentials.json
