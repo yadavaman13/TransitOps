@@ -9,6 +9,14 @@ import { useAuth } from './features/auth/hooks/useAuth';
 
 import RoleDashboardLayout from './features/shared/layouts/RoleDashboardLayout';
 import FleetManagerDashboard from './features/fleet-manager/page/FleetManagerDashboard';
+import VehiclesPage from './features/fleet-manager/page/VehiclesPage';
+import DriversPage from './features/fleet-manager/page/DriversPage';
+import TripsPage from './features/fleet-manager/page/TripsPage';
+import MaintenancePage from './features/fleet-manager/page/MaintenancePage';
+import FuelExpensesPage from './features/fleet-manager/page/FuelExpensesPage';
+import ReportsPage from './features/fleet-manager/page/ReportsPage';
+import UsersPage from './features/fleet-manager/page/UsersPage';
+import SettingsPage from './features/fleet-manager/page/SettingsPage';
 import DriverDashboard from './features/driver/page/DriverDashboard';
 import SafetyOfficerDashboard from './features/safety-officer/page/SafetyOfficerDashboard';
 import SafetyDriversPage from './features/safety-officer/page/SafetyDriversPage';
@@ -80,9 +88,39 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: <FleetManagerDashboard />
+            },
+            {
+                path: 'vehicles',
+                element: <VehiclesPage />
+            },
+            {
+                path: 'drivers',
+                element: <DriversPage />
+            },
+            {
+                path: 'trips',
+                element: <TripsPage />
+            },
+            {
+                path: 'maintenance',
+                element: <MaintenancePage />
+            },
+            {
+                path: 'fuel-expenses',
+                element: <FuelExpensesPage />
+            },
+            {
+                path: 'reports',
+                element: <ReportsPage />
+            },
+            {
+                path: 'users',
+                element: <UsersPage />
+            },
+            {
+                path: 'settings',
+                element: <SettingsPage />
             }
-            // To add a new child route / tab under Fleet Manager, register it here:
-            // e.g. { path: 'vehicles', element: <VehiclesPage /> }
         ]
     },
     {

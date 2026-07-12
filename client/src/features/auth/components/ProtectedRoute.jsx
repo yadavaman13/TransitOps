@@ -16,7 +16,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
         const loadUser = async () => {
             try {
-                await handleGetMe();
+                await handleGetMe(true);
             } finally {
                 setHasChecked(true);
             }

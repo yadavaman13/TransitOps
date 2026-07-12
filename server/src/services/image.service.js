@@ -13,6 +13,7 @@ export async function uploadImageOnImageKit({ image }) {
         fileName: image.originalname,
         folder: 'hackathon/images',
     });
+    return file;
 }
 
 export async function uploadMultipleImagesOnImageKit(files) {

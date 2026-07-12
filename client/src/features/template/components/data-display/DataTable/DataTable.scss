@@ -2,6 +2,9 @@
 @use '../../../styles/mixins' as *;
 
 .t-table-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     background: var(--t-bg-card);
     border-radius: var(--t-rounded-lg);
     border: 1px solid var(--t-border-color);
@@ -34,7 +37,10 @@
 }
 
 // ── Table ─────────────────────────────────────────────────────────────
-.t-table-scroll { overflow-x: auto; }
+.t-table-scroll { 
+    flex: 1;
+    overflow-x: auto; 
+}
 
 .t-table {
     width: 100%;
