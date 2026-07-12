@@ -51,13 +51,13 @@ export const useAuth = () => {
         }
     };
 
-    const handleLogin = async ({ email, password }) => {
+    const handleLogin = async ({ email, password, role }) => {
         setLoading(true);
         setError(null);
 
         let data;
         try {
-            data = await login({ email, password });
+            data = await login({ email, password, role });
             if (data?.user) {
                 setUser(data.user);
                 sessionStorage.setItem('user', JSON.stringify(data.user));

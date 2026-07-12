@@ -3,9 +3,13 @@ import {
     getUserById, 
     updateUser, 
     softDeleteUser, 
-    listUsers 
+    listUsers,
+    getUserByEmail,
+    createUser
 } from '../../../dao/user.dao.js';
 import { AppError } from '../utils/appError.js';
+import { generatePassword } from '../../../utils/password-generator.utils.js';
+import { sendEmail } from '../../../services/mail/mail.service.js';
 
 /**
  * Update current user profile
@@ -103,3 +107,120 @@ export async function adminDeleteUser(targetUserId) {
     }
     return user;
 }
+
+/**
+ * Create a new Safety Officer user and email credentials
+ * @param {object} param0 name, email
+ */
+export async function createSafetyOfficer({ name, email }) {
+    const normalizedEmail = email.trim().toLowerCase();
+    const existing = await getUserByEmail(normalizedEmail);
+    if (existing) {
+        throw new AppError('Email is already registered', 400);
+    }
+
+    const plainPassword = generatePassword();
+    const hashedPassword = await bcrypt.hash(plainPassword, 10);
+
+    const user = await createUser({
+        name: name.trim(),
+        email: normalizedEmail,
+        password: hashedPassword,
+        role: 'SAFETY_OFFICER',
+        emailVerified: true,
+        isActive: true,
+        isDeleted: false,
+    });
+
+    // Send email with credentials
+    const subject = 'Your TransitOps Safety Officer Account Credentials';
+    const html = `
+        <h3>Welcome to TransitOps</h3>
+        <p>Hi ${name},</p>
+        <p>Your Safety Officer account has been created successfully.</p>
+        <p>Here are your login credentials:</p>
+        <ul>
+            <li><strong>Email:</strong> ${normalizedEmail}</li>
+            <li><strong>Password:</strong> ${plainPassword}</li>
+        </ul>
+        <p>Please log in and update your password.</p>
+    `;
+    try {
+        await sendEmail({ to: normalizedEmail, subject, html });
+    } catch (mailError) {
+        console.error('Failed to send Safety Officer credential email:', mailError);
+    }
+
+    return {
+        user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            createdAt: user.createdAt,
+        },
+        credentials: {
+            email: user.email,
+            password: plainPassword,
+        }
+    };
+}
+
+/**
+ * Create a new Financial Analyst user and email credentials
+ * @param {object} param0 name, email
+ */
+export async function createFinancialAnalyst({ name, email }) {
+    const normalizedEmail = email.trim().toLowerCase();
+    const existing = await getUserByEmail(normalizedEmail);
+    if (existing) {
+        throw new AppError('Email is already registered', 400);
+    }
+
+    const plainPassword = generatePassword();
+    const hashedPassword = await bcrypt.hash(plainPassword, 10);
+
+    const user = await createUser({
+        name: name.trim(),
+        email: normalizedEmail,
+        password: hashedPassword,
+        role: 'FINANCIAL_ANALYST',
+        emailVerified: true,
+        isActive: true,
+        isDeleted: false,
+    });
+
+    // Send email with credentials
+    const subject = 'Your TransitOps Financial Analyst Account Credentials';
+    const html = `
+        <h3>Welcome to TransitOps</h3>
+        <p>Hi ${name},</p>
+        <p>Your Financial Analyst account has been created successfully.</p>
+        <p>Here are your login credentials:</p>
+        <ul>
+            <li><strong>Email:</strong> ${normalizedEmail}</li>
+            <li><strong>Password:</strong> ${plainPassword}</li>
+        </ul>
+        <p>Please log in and update your password.</p>
+    `;
+    try {
+        await sendEmail({ to: normalizedEmail, subject, html });
+    } catch (mailError) {
+        console.error('Failed to send Financial Analyst credential email:', mailError);
+    }
+
+    return {
+        user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            createdAt: user.createdAt,
+        },
+        credentials: {
+            email: user.email,
+            password: plainPassword,
+        }
+    };
+}
+

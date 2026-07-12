@@ -12,6 +12,7 @@ import '../styles/auth.scss';
 const createInitialErrors = () => ({
     email: '',
     password: '',
+    role: '',
 });
 
 const Login = () => {
@@ -19,12 +20,14 @@ const Login = () => {
     const [formValues, setFormValues] = useState({
         email: '',
         password: '',
+        role: '',
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [touched, setTouched] = useState({
         email: false,
         password: false,
+        role: false,
     });
 
     const [errors, setErrors] = useState(createInitialErrors);
@@ -47,6 +50,10 @@ const Login = () => {
             return validateRequiredPassword(fieldValue);
         }
 
+        if (fieldName === 'role') {
+            return fieldValue ? '' : 'Role is required';
+        }
+
         return '';
     };
 
@@ -54,10 +61,11 @@ const Login = () => {
         const nextErrors = {
             email: validateField('email', formValues.email),
             password: validateField('password', formValues.password),
+            role: validateField('role', formValues.role),
         };
 
         setErrors(nextErrors);
-        setTouched({ email: true, password: true });
+        setTouched({ email: true, password: true, role: true });
 
         return !Object.values(nextErrors).some(Boolean);
     };
@@ -91,6 +99,7 @@ const Login = () => {
         setIsSubmitting(true);
 
         if (!validateForm()) {
+            setIsSubmitting(false);
             return;
         }
 
@@ -98,6 +107,7 @@ const Login = () => {
             await handleLogin({
                 email: formValues.email,
                 password: formValues.password,
+                role: formValues.role,
             });
         } finally {
             setIsSubmitting(false);
@@ -139,6 +149,35 @@ const Login = () => {
                         onChange={handleChange}
                         disabled={isBusy}
                     />
+
+                    <div className={`form-group${touched.role && errors.role ? ' error' : ''}`}>
+                        <select
+                            id="role"
+                            name="role"
+                            value={formValues.role}
+                            onChange={handleInputChange}
+                            onBlur={handleBlur}
+                            className="form-input"
+                            disabled={isBusy}
+                        >
+                            <option value="" disabled hidden></option>
+                            <option value="FLEET_MANAGER">Fleet Manager</option>
+                            <option value="DRIVER">Driver</option>
+                            <option value="SAFETY_OFFICER">Safety Officer</option>
+                            <option value="FINANCIAL_ANALYST">Financial Analyst</option>
+                        </select>
+                        <label 
+                            className={`form-label ${formValues.role ? 'form-label--active' : ''}`} 
+                            htmlFor="role"
+                        >
+                            Role
+                        </label>
+                        {touched.role && errors.role ? (
+                            <p className="form-error" id="role-error">
+                                {errors.role}
+                            </p>
+                        ) : null}
+                    </div>
 
                     <FormGroup
                         label="Password"

@@ -207,3 +207,37 @@ export async function adminDeleteUser(req, res, next) {
         next(error);
     }
 }
+
+/**
+ * Create a new Safety Officer (Fleet Manager only)
+ */
+export async function createSafetyOfficer(req, res, next) {
+    try {
+        const { name, email } = req.body;
+        const data = await userService.createSafetyOfficer({ name, email });
+        return res.status(201).json({
+            success: true,
+            message: 'Safety Officer created successfully',
+            data,
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
+/**
+ * Create a new Financial Analyst (Fleet Manager only)
+ */
+export async function createFinancialAnalyst(req, res, next) {
+    try {
+        const { name, email } = req.body;
+        const data = await userService.createFinancialAnalyst({ name, email });
+        return res.status(201).json({
+            success: true,
+            message: 'Financial Analyst created successfully',
+            data,
+        });
+    } catch (error) {
+        next(error);
+    }
+}
