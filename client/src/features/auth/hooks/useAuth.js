@@ -199,21 +199,29 @@ export const useAuth = () => {
         }
     };
 
-    const handleGetMe = async () => {
+    const handleGetMe = async (force = false) => {
         let data;
         try {
             setLoading(true);
-            //TODO: remove session storage and use only get-me api, the session storage can be easily altered by the user.
-            if (sessionStorage.getItem('user')) {
+            if (!force && sessionStorage.getItem('user')) {
                 setUser(JSON.parse(sessionStorage.getItem('user')));
+                setLoading(false);
                 return;
             }
 
             data = await getMe();
-            setUser(data?.user || null);
+            if (data?.user) {
+                setUser(data.user);
+                sessionStorage.setItem('user', JSON.stringify(data.user));
+            } else {
+                setUser(null);
+                sessionStorage.removeItem('user');
+            }
         } catch (error) {
             console.error('Failed to fetch user data', error);
-            setError(data?.message || 'Failed to fetch user data');
+            setError('Failed to fetch user data');
+            setUser(null);
+            sessionStorage.removeItem('user');
         } finally {
             setLoading(false);
         }

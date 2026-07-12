@@ -23,7 +23,16 @@ const Sidebar = ({
     const [isOpen, setIsOpen] = useState(false);
     const [expanded, setExpanded] = useState({});
 
-    const isActive = (route) => !!route && location.pathname === route;
+    const isActive = (route) => {
+        if (!route) return false;
+        const normPath = location.pathname.endsWith('/') && location.pathname !== '/'
+            ? location.pathname.slice(0, -1)
+            : location.pathname;
+        const normRoute = route.endsWith('/') && route !== '/'
+            ? route.slice(0, -1)
+            : route;
+        return normPath === normRoute;
+    };
     const closeSidebar = () => setIsOpen(false);
     const toggleGroup = (title) =>
         setExpanded((prev) => ({ ...prev, [title]: !prev[title] }));
