@@ -41,6 +41,7 @@
     outline: none;
     transition: var(--t-transition);
     user-select: none;
+    box-sizing: border-box;
 
     &:focus, &--open {
         border-color: var(--t-primary);

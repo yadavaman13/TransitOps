@@ -436,7 +436,7 @@ const TripsPage = () => {
                 isOpen={createModalOpen}
                 onClose={() => !submitLoading && setCreateModalOpen(false)}
                 title="Schedule Transportation Route"
-                size="md"
+                size="lg"
                 footer={
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--t-space-3)' }}>
                         <Button variant="ghost" onClick={() => setCreateModalOpen(false)} disabled={submitLoading}>

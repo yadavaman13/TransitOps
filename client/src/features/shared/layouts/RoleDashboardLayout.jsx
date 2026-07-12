@@ -72,7 +72,7 @@ const RoleDashboardLayout = () => {
         <Sidebar
             logo="TransitOps"
             logoIcon="ri-bus-wifi-line"
-            user={{ name: user.name || user.email, role: formattedRole }}
+            user={{ name: user.name || user.email, role: formattedRole, profileImage: user.profileImage }}
             navItems={getNavItems(user.role)}
             onLogout={onLogout}
         />
@@ -81,7 +81,7 @@ const RoleDashboardLayout = () => {
     const topbar = (
         <TopNavbar
             title={`${formattedRole} Portal`}
-            user={{ name: user.name || user.email, role: formattedRole }}
+            user={{ name: user.name || user.email, role: formattedRole, profileImage: user.profileImage }}
             actions={<NotificationsBell />}
         />
     );
