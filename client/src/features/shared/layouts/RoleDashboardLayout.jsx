@@ -21,7 +21,14 @@ const RoleDashboardLayout = () => {
             case 'FLEET_MANAGER':
                 return [
                     { title: 'Fleet Overview', icon: 'ri-dashboard-3-line', route: '/fleet-manager' },
-                    { title: 'User Management', icon: 'ri-user-settings-line', route: '/fleet-manager/admin/users' },
+                    { title: 'Vehicles', icon: 'ri-bus-line', route: '/fleet-manager/vehicles' },
+                    { title: 'Drivers', icon: 'ri-user-star-line', route: '/fleet-manager/drivers' },
+                    { title: 'Trips Management', icon: 'ri-roadster-line', route: '/fleet-manager/trips' },
+                    { title: 'Maintenance', icon: 'ri-tools-line', route: '/fleet-manager/maintenance' },
+                    { title: 'Fuel & Expenses', icon: 'ri-gas-station-line', route: '/fleet-manager/fuel-expenses' },
+                    { title: 'Reports & Analytics', icon: 'ri-bar-chart-2-line', route: '/fleet-manager/reports' },
+                    { title: 'Users Management', icon: 'ri-team-line', route: '/fleet-manager/users' },
+                    { title: 'Settings', icon: 'ri-settings-4-line', route: '/fleet-manager/settings' },
                     {
                         title: 'Finance Portal',
                         icon: 'ri-bank-card-line',

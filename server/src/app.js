@@ -19,6 +19,7 @@ import { vehicleDocumentRouter } from './modules/vehicle-documents/index.js';
 import { settingsRouter } from './modules/settings/index.js';
 import { searchRouter } from './modules/search/index.js';
 import { financeRouter } from './modules/finance/index.js';
+import uploadRouter from './modules/upload/index.js';
 
 const app = express();
 
@@ -47,6 +48,10 @@ app.use('/api/trips', tripRouter);
 app.use('/api/fuel-logs', fuelLogRouter);
 app.use('/api/maintenance', maintenanceRouter);
 app.use('/api/finance', financeRouter);
+app.use('/api/expenses', expenseRouter);
+app.use('/api/reports', reportRouter);
+app.use('/api/analytics', analyticsRouter);
+app.use('/api/upload', uploadRouter);
 
 // Centralized error handling
 app.use(errorHandler);
