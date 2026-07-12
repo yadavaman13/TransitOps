@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from 'react-router';
 import { AppLayout, Sidebar, TopNavbar, ToastProvider } from '../../template/index.js';
 import { useAuth } from '../../auth/hooks/useAuth.js';
 import '../../template/styles/index.scss';
+import NotificationsBell from '../components/NotificationsBell.jsx';
 
 const RoleDashboardLayout = () => {
     const { user, handleLogout } = useAuth();
@@ -71,6 +72,7 @@ const RoleDashboardLayout = () => {
         <TopNavbar
             title={`${formattedRole} Portal`}
             user={{ name: user.name || user.email, role: formattedRole }}
+            actions={<NotificationsBell />}
         />
     );
 
