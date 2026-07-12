@@ -1,18 +1,19 @@
-# We selected TransitOps
+# We Selected TransitOps
 
-TransitOps is a unified ERP solution for fleet operations, safety compliance, driver monitoring, and financial analytics. It features a React-based single-page application client and an Express/Node.js backend API using PostgreSQL and Drizzle ORM.
+It features a React-based single-page application client and an Express/Node.js backend API using PostgreSQL and Drizzle ORM.
 
 ## Table of Contents
 1. [Team Members & Roles](#team-members--roles)
 2. [Project Structure](#project-structure)
 3. [Core Modules & Features](#core-modules--features)
 4. [Role-Based Access Control (RBAC)](#role-based-access-control-rbac)
-5. [API Endpoint Reference](#api-endpoint-reference)
-6. [Tech Stack](#tech-stack)
-7. [Prerequisites](#prerequisites)
-8. [Getting Started](#getting-started)
-9. [UI Components & Design System](#ui-components--design-system)
-10. [Verification & Testing](#verification--testing)
+5. [Frontend Routes](#frontend-routes)
+6. [API Endpoint Reference](#api-endpoint-reference)
+7. [Tech Stack](#tech-stack)
+8. [Prerequisites](#prerequisites)
+9. [Getting Started](#getting-started)
+10. [UI Components & Design System](#ui-components--design-system)
+11. [Verification & Testing](#verification--testing)
 
 ---
 
@@ -22,7 +23,7 @@ TransitOps is a unified ERP solution for fleet operations, safety compliance, dr
 | :--- | :--- | :--- |
 | **Aman Yadav** | Full Stack | Overall architecture, Backend API |
 | **Aryan Patel** | Full Stack | REST API design, route validation, JWT authentication |
-| **Iteshkumar Prajapati** | Full Stack | REST API design | client state | 
+| **Iteshkumar Prajapati** | Full Stack | REST API design, client state |
 | **Ankur Singh** | Full Stack | Database migrations, and endpoint testing |
 
 ---
@@ -40,18 +41,69 @@ TransitOps/
 ├── client/                     # Frontend client dashboard
 │   ├── src/
 │   │   ├── features/
-│   │   │   ├── admin/          # Admin portal features (e.g. user management)
-│   │   │   │   ├── hooks/
-│   │   │   │   ├── pages/      # Admin dashboard pages
-│   │   │   │   ├── services/   # Admin API integration services
-│   │   │   │   └── styles/
+│   │   │   ├── admin/          # Admin portal — user management & role control
+│   │   │   │   ├── AdminContext.jsx   # React context for admin state
+│   │   │   │   ├── hooks/             # useAdmin hook (CRUD, role update)
+│   │   │   │   ├── pages/             # AdminDashboardPage
+│   │   │   │   ├── services/          # Admin API integration
+│   │   │   │   └── styles/            # admin.scss
 │   │   │   ├── auth/           # Authentication features (Login, Register, verification)
+│   │   │   │   ├── components/        # ProtectedRoute, FormGroup, PasswordMeter
+│   │   │   │   ├── hooks/             # useAuth hook
+│   │   │   │   ├── pages/             # Login, Register, VerifyEmail, ForgotPassword
+│   │   │   │   └── services/          # Auth API calls
+│   │   │   ├── driver/         # Driver-role portal
 │   │   │   │   ├── components/
 │   │   │   │   ├── hooks/
-│   │   │   │   ├── pages/
-│   │   │   │   └── services/
+│   │   │   │   ├── page/              # DriverDashboard
+│   │   │   │   ├── service/
+│   │   │   │   └── styles/
+│   │   │   ├── finance/        # Shared financial pages (Fleet Manager & Financial Analyst)
+│   │   │   │   ├── components/
+│   │   │   │   ├── pages/             # FinanceDashboardPage, FinanceExpensesPage,
+│   │   │   │   │                      # FinanceFuelPage, FinanceReportsPage
+│   │   │   │   ├── services/
+│   │   │   │   └── styles/
+│   │   │   ├── financial-analyst/     # Financial Analyst portal
+│   │   │   │   ├── components/
+│   │   │   │   ├── hooks/
+│   │   │   │   ├── page/              # FinancialAnalystDashboard
+│   │   │   │   ├── service/
+│   │   │   │   └── styles/
+│   │   │   ├── fleet-manager/  # Fleet Manager portal
+│   │   │   │   ├── components/
+│   │   │   │   ├── hooks/
+│   │   │   │   ├── page/              # FleetManagerDashboard, VehiclesPage, DriversPage,
+│   │   │   │   │                      # TripsPage, MaintenancePage, FuelExpensesPage,
+│   │   │   │   │                      # ReportsPage, UsersPage, SettingsPage
+│   │   │   │   ├── service/
+│   │   │   │   └── styles/
+│   │   │   ├── safety-officer/ # Safety Officer portal
+│   │   │   │   ├── components/
+│   │   │   │   ├── hooks/
+│   │   │   │   ├── page/              # SafetyOfficerDashboard, SafetyDriversPage,
+│   │   │   │   │                      # SafetyVehiclesPage, SafetyMaintenancePage,
+│   │   │   │   │                      # SafetyReportsPage
+│   │   │   │   ├── service/
+│   │   │   │   └── styles/
 │   │   │   ├── shared/         # Reusable layouts, context providers, and pages
-│   │   │   └── template/       # ERP style UI component library & reference implementation
+│   │   │   │   ├── components/        # Sidebar.jsx, NotificationsBell.jsx
+│   │   │   │   ├── layouts/           # RoleDashboardLayout.jsx (universal role wrapper)
+│   │   │   │   ├── pages/
+│   │   │   │   └── styles/
+│   │   │   └── template/       # ERP-style UI component library & reference implementation
+│   │   │       ├── components/
+│   │   │       │   ├── dashboard/     # KPI cards, activity feeds
+│   │   │       │   ├── data-display/  # Tables, lists, badges
+│   │   │       │   ├── feedback/      # Toast, loaders, alerts
+│   │   │       │   ├── forms/         # Input, select, checkbox components
+│   │   │       │   ├── layout/        # AppLayout, Sidebar, TopNavbar
+│   │   │       │   ├── navigation/    # Nav links, breadcrumbs
+│   │   │       │   ├── overlays/      # Modals, drawers, popovers
+│   │   │       │   └── ui/            # Buttons, tags, dividers
+│   │   │       ├── pages/             # DashboardTemplatePage, CrudTemplatePage
+│   │   │       ├── index.js           # Component library public exports
+│   │   │       └── template-component-docs.md
 │   │   ├── App.jsx             # Main App layout entrypoint
 │   │   ├── app.routes.jsx      # React Router route configuration
 │   │   ├── index.scss          # Core/global styling & CSS variables
@@ -77,9 +129,11 @@ TransitOps/
 │   │   │   ├── fuel-log/       # Fuel intake monitoring & efficiency logs
 │   │   │   ├── maintenance/    # Scheduled & reactive vehicle servicing
 │   │   │   ├── expense/        # Tolls, maintenance, fuel, and custom costs
+│   │   │   ├── finance/        # Aggregated financial portal (expenses + fuel + reports)
 │   │   │   ├── report/         # Analytical reports, PDF/CSV generation
 │   │   │   ├── analytics/      # Utilization, performance, and ROI trend charts
 │   │   │   ├── notifications/  # Actionable system alerts & email reminders
+│   │   │   ├── upload/         # File upload handling
 │   │   │   ├── vehicle-documents/ # Document uploads & storage
 │   │   │   ├── settings/       # System customizer & compliance parameters
 │   │   │   └── search/         # Fuzzy search across vehicles, drivers, and trips
@@ -91,11 +145,16 @@ TransitOps/
 │   ├── drizzle.config.js       # Drizzle CLI tools configurator
 │   └── package.json            # Backend dependency specifications
 │
+├── docs/                       # Project documentation
+│   ├── AUTH_UI_CHANGES.md      # Auth page UI design changelog
+│   └── DESIGN.md               # Design system reference
+│
 └── README.md                   # Project description, installation steps & team info
 ```
 
 - Main App Routing: [app.routes.jsx](client/src/app.routes.jsx)
 - Root Layout entrypoint: [App.jsx](client/src/App.jsx)
+- Shared Role Layout: [RoleDashboardLayout.jsx](client/src/features/shared/layouts/RoleDashboardLayout.jsx)
 - Main Stylesheet: [index.scss](client/src/index.scss)
 - DB Migrations script: [migrate.js](server/src/db/migrate.js)
 - DB Seed script: [seed.js](server/src/db/seed.js)
@@ -108,20 +167,24 @@ TransitOps/
 ## Core Modules & Features
 
 TransitOps contains fully-integrated modules designed to map real-world logistics activities:
-1. **Authentication & RBAC**: Multi-tenant environment protecting endpoints based on 5 precise roles (`FLEET_MANAGER`, `DRIVER`, `SAFETY_OFFICER`, `FINANCIAL_ANALYST`, and `ADMIN`). Supports registration, secure password resets via OTP/emails, and secure JWT-based cookies.
+1. **Authentication & RBAC**: Multi-tenant environment protecting endpoints based on 5 precise roles (`FLEET_MANAGER`, `DRIVER`, `SAFETY_OFFICER`, `FINANCIAL_ANALYST`, and `ADMIN`). Supports registration with email OTP verification, secure password resets, and JWT-based cookie sessions.
 2. **Driver Management**: Registers driver details, emergency contacts, licenses, experience, and safety scores. Includes active state machines for driver availability and automatic license expiry reminders.
 3. **Vehicle Management**: Registers trucks/vehicles, tracks current statuses (`AVAILABLE`, `IN_MAINTENANCE`, `ON_TRIP`, `RETIRED`), manages active odometers, and integrates with maintenance logs.
 4. **Trip Management**: Connects drivers and vehicles to schedule, dispatch, cancel, start, and complete deliveries. Computes active trip timelines and records cargo and distance data.
 5. **Fuel Management**: Monitors diesel/gasoline intake per vehicle, logs fuel stations, and calculates average consumption metrics.
 6. **Maintenance Management**: Automates creation of service orders (upcoming, active, closed, or cancelled) to ensure vehicle uptime and compliance.
 7. **Expense Management**: Records operational costs across categories (fuel, maintenance, toll, miscellaneous) mapped to vehicles and trips.
-8. **Dashboard & KPIs**: Provides real-world aggregated indicators (total active trips, vehicles in maintenance, expiring licenses, recent activities).
-9. **Analytical Reports**: Generates detailed records on fleet utilization, expenses, drivers, and operational costs. Supports exporting as standard CSV or PDF.
-10. **Analytics Engine**: Evaluates fuel efficiency, ROI on vehicles, driver performance over time, and monthly expense trends.
-11. **Notifications Module**: Distributes actionable alerts to personnel, sending reminder notifications when licenses or inspections are nearing expiration.
-12. **Vehicle Documents**: Stores vehicle registrations, insurance forms, and PUC certificates safely using secure storage integrations (e.g., ImageKit).
-13. **Settings**: Configures system configurations, theme adjustments, compliance limits, and notifications settings.
-14. **Global Search**: Provides fuzzy search capabilities across all vehicles, drivers, and trips directly.
+8. **Finance Portal**: Dedicated aggregated financial view combining expenses, fuel logs, and analytical reports. Accessible to both `FLEET_MANAGER` and `FINANCIAL_ANALYST` roles via `/api/finance/*` endpoints.
+9. **Dashboard & KPIs**: Provides real-world aggregated indicators (total active trips, vehicles in maintenance, expiring licenses, recent activities).
+10. **Analytical Reports**: Generates detailed records on fleet utilization, expenses, drivers, and operational costs. Supports exporting as standard CSV or PDF.
+11. **Analytics Engine**: Evaluates fuel efficiency, ROI on vehicles, driver performance over time, and monthly expense trends.
+12. **Notifications Module**: Distributes actionable alerts to personnel, sending reminder notifications when licenses or inspections are nearing expiration. Includes a real-time `NotificationsBell` component in the top navigation bar.
+13. **Admin Panel**: Full user administration interface (`AdminDashboardPage`) allowing `FLEET_MANAGER` users to view all platform users, update roles, and soft-delete accounts, backed by `AdminContext` and `useAdmin` hook.
+14. **Safety Officer Dashboard**: Dedicated read-only portal for `SAFETY_OFFICER` role with overview metrics, driver safety scores, vehicle inspection status, maintenance tracking, and compliance reports across 5 sub-pages.
+15. **File Upload Module**: Dedicated `/api/upload` endpoint for handling image and document uploads via the `upload` module.
+16. **Vehicle Documents**: Stores vehicle registrations, insurance forms, and PUC certificates safely using secure storage integrations (e.g., ImageKit).
+17. **Settings**: Configures system configurations, theme adjustments, compliance limits, and notifications settings.
+18. **Global Search**: Provides fuzzy search capabilities across all vehicles, drivers, and trips directly.
 
 ---
 
@@ -129,11 +192,77 @@ TransitOps contains fully-integrated modules designed to map real-world logistic
 
 TransitOps enforces role limits on both frontend routes and backend APIs:
 
-* **FLEET_MANAGER**: Full administrative control over logistics. Can add/modify vehicles, drivers, trips, maintenance orders, and configure settings.
+* **FLEET_MANAGER**: Full administrative control over logistics. Can add/modify vehicles, drivers, trips, maintenance orders, configure settings, and access the Admin Users panel and Finance Portal.
 * **DRIVER**: Restricted access to view and update their own assigned trips and log fuel inputs or trip expenses. Cannot view administrative dashboards or modify settings.
 * **SAFETY_OFFICER**: Read-only oversight of driver profiles, licenses, safety metrics, and vehicle inspection documents. Authorized to update safety scores and toggle driver suspensions.
-* **FINANCIAL_ANALYST**: Read-only access to operational logs, but has read/write privileges over expense logs and reports.
+* **FINANCIAL_ANALYST**: Read-only access to operational logs, but has read/write privileges over expense logs and financial reports. Has a dedicated finance portal with dashboard, expenses, fuel logs, and reports.
 * **ADMIN**: Absolute control over the system, including user role updates and complete DB operations.
+
+---
+
+## Frontend Routes
+
+All authenticated routes are wrapped in `ProtectedRoute` and rendered inside `RoleDashboardLayout`, which provides the role-specific sidebar navigation, top navbar, and toast notification system.
+
+### Authentication (Public)
+
+| Path | Component | Description |
+| :--- | :--- | :--- |
+| `/login` | `Login` | User login page |
+| `/register` | `Register` | New user registration with OTP email verification |
+| `/verify-email` | `VerifyEmail` | Email OTP confirmation page |
+| `/forgot-password` | `ForgotPassword` | Password recovery via email OTP |
+
+### Fleet Manager Portal (`/fleet-manager`)
+
+| Path | Component | Description |
+| :--- | :--- | :--- |
+| `/fleet-manager` | `FleetManagerDashboard` | Fleet overview & KPIs |
+| `/fleet-manager/vehicles` | `VehiclesPage` | Vehicle fleet management |
+| `/fleet-manager/drivers` | `DriversPage` | Driver records & status |
+| `/fleet-manager/trips` | `TripsPage` | Trip scheduling & dispatch |
+| `/fleet-manager/maintenance` | `MaintenancePage` | Maintenance order management |
+| `/fleet-manager/fuel-expenses` | `FuelExpensesPage` | Fuel & expense logs |
+| `/fleet-manager/reports` | `ReportsPage` | Reports & analytics |
+| `/fleet-manager/users` | `UsersPage` | Users list view |
+| `/fleet-manager/settings` | `SettingsPage` | System settings |
+| `/fleet-manager/admin/users` | `AdminDashboardPage` | Admin user management panel |
+| `/fleet-manager/finance/dashboard` | `FinanceDashboardPage` | Financial overview |
+| `/fleet-manager/finance/expenses` | `FinanceExpensesPage` | Expenses management |
+| `/fleet-manager/finance/fuel` | `FinanceFuelPage` | Fuel log finance view |
+| `/fleet-manager/finance/reports` | `FinanceReportsPage` | Financial reports & analytics |
+
+### Driver Portal (`/driver`)
+
+| Path | Component | Description |
+| :--- | :--- | :--- |
+| `/driver` | `DriverDashboard` | Driver personal dashboard |
+
+### Safety Officer Portal (`/safety-officer`)
+
+| Path | Component | Description |
+| :--- | :--- | :--- |
+| `/safety-officer` | `SafetyOfficerDashboard` | Safety overview & compliance KPIs |
+| `/safety-officer/drivers` | `SafetyDriversPage` | Driver safety scores & license status |
+| `/safety-officer/vehicles` | `SafetyVehiclesPage` | Vehicle inspection & status overview |
+| `/safety-officer/maintenance` | `SafetyMaintenancePage` | Maintenance records (read-only) |
+| `/safety-officer/reports` | `SafetyReportsPage` | Safety compliance reports |
+
+### Financial Analyst Portal (`/financial-analyst`)
+
+| Path | Component | Description |
+| :--- | :--- | :--- |
+| `/financial-analyst` | `FinanceDashboardPage` | Financial analytics dashboard |
+| `/financial-analyst/expenses` | `FinanceExpensesPage` | Expense records & categories |
+| `/financial-analyst/fuel` | `FinanceFuelPage` | Fuel log analytics |
+| `/financial-analyst/reports` | `FinanceReportsPage` | Financial reports & exports |
+
+### Demo / Template (Development Reference)
+
+| Path | Component | Description |
+| :--- | :--- | :--- |
+| `/demo/dashboard` | `DashboardTemplatePage` | Template dashboard reference |
+| `/demo/crud` | `CrudTemplatePage` | Template CRUD reference |
 
 ---
 
@@ -245,6 +374,17 @@ All endpoints are prefix-routed through `/api` and require a valid auth cookie o
 | `PATCH` | `/api/expenses/:id` | Update expense record | `FLEET_MANAGER`, `ADMIN` |
 | `DELETE`| `/api/expenses/:id` | Remove expense record | `FLEET_MANAGER`, `ADMIN` |
 
+### Finance Portal
+- Router: [finance.routes.js](server/src/modules/finance/routes/finance.routes.js)
+
+| Method | Endpoint | Description | Allowed Roles |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/finance/dashboard` | Aggregated financial overview | `FLEET_MANAGER`, `FINANCIAL_ANALYST` |
+| `GET` | `/api/finance/expenses` | Finance-scoped expense list | `FLEET_MANAGER`, `FINANCIAL_ANALYST` |
+| `POST` | `/api/finance/expenses` | Create new finance expense | `FLEET_MANAGER`, `FINANCIAL_ANALYST` |
+| `GET` | `/api/finance/fuel` | Finance-scoped fuel log list | `FLEET_MANAGER`, `FINANCIAL_ANALYST` |
+| `GET` | `/api/finance/reports` | Financial reports & analytics | `FLEET_MANAGER`, `FINANCIAL_ANALYST` |
+
 ### Reports, Analytics, Notifications, Documents
 - Router: [report.routes.js](server/src/modules/report/routes/report.routes.js), [analytics.routes.js](server/src/modules/analytics/routes/analytics.routes.js), [notification.routes.js](server/src/modules/notifications/routes/notification.routes.js), [vehicleDocument.routes.js](server/src/modules/vehicle-documents/routes/vehicleDocument.routes.js), [settings.routes.js](server/src/modules/settings/routes/settings.routes.js), [search.routes.js](server/src/modules/search/routes/search.routes.js)
 
@@ -257,6 +397,7 @@ All endpoints are prefix-routed through `/api` and require a valid auth cookie o
 | `GET` | `/api/notifications` | Fetch current active user alerts | Authenticated |
 | `PATCH`| `/api/notifications/read-all` | Mark all alerts as read | Authenticated |
 | `POST` | `/api/notifications/license-reminder` | Manually run driver license check reminders | `FLEET_MANAGER`, `ADMIN` |
+| `POST` | `/api/upload` | Upload a file (image/document) | Authenticated |
 | `POST` | `/api/vehicle-documents` | Upload registration/PUC/insurance file | `FLEET_MANAGER`, `ADMIN` |
 | `GET` | `/api/vehicle-documents/:vehicleId` | List documents for a vehicle | Authenticated |
 | `PATCH`| `/api/settings/fleet-rules` | Configure compliance thresholds | `FLEET_MANAGER`, `ADMIN` |
@@ -270,7 +411,7 @@ All endpoints are prefix-routed through `/api` and require a valid auth cookie o
 * **Framework**: React 19 + Vite
 * **Routing**: React Router 7
 * **Styling**: Modular SCSS (SASS-embedded)
-* **Icons**: Lucide React
+* **Icons**: Lucide React + Remix Icons (`ri-*`)
 * **Network Client**: Axios
 
 ### Backend (`server/`)
@@ -357,6 +498,19 @@ npm run dev             # Start development server (defaults to http://localhost
 ## UI Components & Design System
 
 The frontend implements a unified design system that defines ERP starter components, layout templates, data tables, and input forms documented in [template-component-docs.md](client/src/features/template/template-component-docs.md).
+
+### Key Shared Components
+
+| Component | Location | Purpose |
+| :--- | :--- | :--- |
+| `RoleDashboardLayout` | `shared/layouts/` | Universal wrapper for all role portals — provides `AppLayout`, `Sidebar`, `TopNavbar`, and `ToastProvider` |
+| `Sidebar` | `shared/components/` | Role-aware navigation sidebar with collapsible sub-menus |
+| `NotificationsBell` | `shared/components/` | Real-time notification indicator in the top navbar |
+| `ProtectedRoute` | `auth/components/` | Route guard enforcing authentication and role restrictions |
+| `PasswordMeter` | `auth/components/` | Visual password strength indicator on register/reset forms |
+
+### Auth UI
+The authentication pages (`Login`, `Register`, `VerifyEmail`, `ForgotPassword`) were redesigned with a modern, premium aesthetic. See [AUTH_UI_CHANGES.md](docs/AUTH_UI_CHANGES.md) for a full changelog of the visual improvements.
 
 ---
 
