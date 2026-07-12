@@ -1,0 +1,68 @@
+// client/src/features/template/components/ui/StatCard/StatCard.scss
+@use '../../../styles/mixins' as *;
+
+.t-stat-card {
+    background: var(--t-bg-card);
+    border: 1px solid var(--t-border-color);
+    border-radius: var(--t-rounded-lg);
+    padding: var(--t-space-5) var(--t-space-6);
+    box-shadow: var(--t-shadow-md);
+    @include t-flex(flex-start, flex-start, row, var(--t-space-4));
+    transition: var(--t-transition);
+    font-family: var(--t-font-family);
+
+    &:hover { box-shadow: var(--t-shadow-lg); transform: translateY(-1px); }
+
+    &__icon {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--t-rounded-md);
+        @include t-flex(center, center);
+        flex-shrink: 0;
+        font-size: 1.4rem;
+
+        &--primary { background: var(--t-primary-faint); color: var(--t-primary); }
+        &--success  { background: var(--t-success-bg);   color: var(--t-success-text); }
+        &--danger   { background: var(--t-danger-bg);    color: var(--t-danger); }
+        &--warning  { background: var(--t-warning-bg);   color: var(--t-warning); }
+        &--info     { background: var(--t-info-bg);      color: var(--t-info); }
+    }
+
+    &__body { flex: 1; min-width: 0; }
+
+    &__title {
+        font-size: var(--t-font-size-body-sm);
+        font-weight: var(--t-font-weight-medium);
+        color: var(--t-text-muted);
+        margin-bottom: var(--t-space-1);
+    }
+
+    &__value {
+        font-size: var(--t-font-size-lg);
+        font-weight: var(--t-font-weight-bold);
+        color: var(--t-text-main);
+        line-height: 1.2;
+    }
+
+    &__meta {
+        margin-top: var(--t-space-2);
+        @include t-flex(flex-start, center, row, var(--t-space-2));
+        flex-wrap: wrap;
+    }
+
+    &__trend {
+        font-size: var(--t-font-size-caption);
+        font-weight: var(--t-font-weight-semibold);
+        padding: 2px 7px;
+        border-radius: var(--t-rounded-pill);
+        @include t-flex(center, center, row, 2px);
+
+        &--up   { background: var(--t-success-bg); color: var(--t-success-text); }
+        &--down { background: var(--t-danger-bg);  color: var(--t-danger); }
+    }
+
+    &__subtitle {
+        font-size: var(--t-font-size-caption);
+        color: var(--t-text-muted);
+    }
+}

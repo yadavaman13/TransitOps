@@ -1,0 +1,46 @@
+// client/src/features/template/components/navigation/SearchBar/SearchBar.scss
+@use '../../../styles/mixins' as *;
+
+.t-search-bar {
+    @include t-flex(flex-start, center, row, var(--t-space-2));
+    background: var(--t-bg-input);
+    border: 1.5px solid var(--t-border-color);
+    border-radius: var(--t-radius);
+    padding: 8px var(--t-space-3);
+    transition: var(--t-transition);
+    font-family: var(--t-font-family);
+
+    &:focus-within {
+        border-color: var(--t-primary);
+        box-shadow: 0 0 0 3px var(--t-primary-faint);
+    }
+
+    &__icon { color: var(--t-text-muted); font-size: 1rem; flex-shrink: 0; }
+
+    &__input {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        background: transparent;
+        outline: none;
+        font-family: var(--t-font-family);
+        font-size: var(--t-font-size-body-sm);
+        color: var(--t-text-main);
+
+        &::placeholder { color: var(--t-text-muted); }
+    }
+
+    &__clear {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--t-text-muted);
+        font-size: 1rem;
+        @include t-flex(center, center);
+        padding: 0;
+        transition: var(--t-transition);
+        flex-shrink: 0;
+
+        &:hover { color: var(--t-text-main); }
+    }
+}

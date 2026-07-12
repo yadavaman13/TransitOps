@@ -1,0 +1,48 @@
+// client/src/features/template/components/dashboard/FilterPanel/FilterPanel.scss
+@use '../../../styles/mixins' as *;
+
+.t-filter-panel {
+    @include t-flex(flex-start, flex-end, row, var(--t-space-3));
+    padding: var(--t-space-4) var(--t-space-5);
+    background: var(--t-bg-card);
+    border: 1px solid var(--t-border-color);
+    border-radius: var(--t-rounded-lg);
+    flex-wrap: wrap;
+    font-family: var(--t-font-family);
+
+    &--inline {
+        align-items: center;
+    }
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--t-space-1);
+        min-width: 160px;
+
+        &--inline {
+            flex-direction: row;
+            align-items: center;
+            gap: var(--t-space-2);
+            min-width: auto;
+
+            .t-filter-panel__label {
+                margin-bottom: 0;
+                white-space: nowrap;
+            }
+        }
+    }
+
+    &__label {
+        font-size: var(--t-font-size-caption);
+        font-weight: var(--t-font-weight-semibold);
+        color: var(--t-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    &__actions {
+        @include t-flex(flex-start, flex-end, row, var(--t-space-2));
+        margin-left: auto;
+    }
+}

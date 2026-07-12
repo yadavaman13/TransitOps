@@ -1,0 +1,302 @@
+@use '../../shared/styles/mixins' as *;
+
+main.auth-page {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    background: #ffffff;
+}
+
+.auth-form-container {
+    width: min(100%, 440px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    border-radius: 28px;
+    padding: var(--space-8);
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+.auth-form-container--register {
+    width: min(100%, 460px);
+}
+
+.auth-form-container--forgot-password {
+    width: min(100%, var(--auth-card-width));
+}
+
+.auth-branding {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    text-align: center;
+}
+
+.auth-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.auth-eyebrow {
+    margin: 0;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.form-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.form-title {
+    margin: 0;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #1f1a37;
+}
+
+.form-subtitle {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.96rem;
+    line-height: 1.6;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.auth-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.auth-submit-btn {
+    width: 100%;
+}
+
+.form-error {
+    margin: 0;
+}
+
+.form-error--inline {
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: rgba(230, 91, 101, 0.08);
+    color: #b43140;
+    border: 1px solid rgba(230, 91, 101, 0.12);
+}
+
+.toast-banner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 12px 14px;
+    border-radius: 16px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    animation: toast-in 0.2s ease-out;
+
+    &.is-success {
+        border: 1px solid rgba(34, 197, 94, 0.18);
+        background: rgba(34, 197, 94, 0.08);
+        color: #1d7a48;
+    }
+
+    &.is-error {
+        border: 1px solid rgba(230, 91, 101, 0.18);
+        background: rgba(230, 91, 101, 0.08);
+        color: #b43140;
+    }
+}
+
+.password-rules {
+    margin: 0.25rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.5rem;
+    color: #1f1a37;
+
+    li {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        color: #1f1a37;
+        font-size: 0.88rem;
+        line-height: 1.35;
+    }
+
+    .password-rule-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: rgba(31, 26, 55, 0.35);
+        flex: 0 0 auto;
+    }
+
+    .is-valid {
+        color: #1f1a37;
+
+        .password-rule-dot {
+            background: #1f1a37;
+        }
+    }
+}
+
+.auth-footer-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.form-footer {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.auth-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+    transition: var(--transition-smooth);
+
+    &:hover {
+        color: var(--primary-hover);
+    }
+}
+
+.forgot-password-copy {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.otp-help {
+    margin: -0.25rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.forgot-password-resend-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding: 0.15rem 0 0;
+}
+
+.forgot-password-resend-hint {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.forgot-password-resend-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.forgot-password-resend-count {
+    color: #1f1a37;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.forgot-password-resend-btn {
+    min-width: 130px;
+}
+
+.forgot-password-resend-btn:disabled {
+    opacity: 0.7;
+}
+
+.resend-otp-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    margin-top: -0.25rem;
+}
+
+.resend-otp-cooldown {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.resend-otp-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--primary);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 700;
+    transition: var(--transition-smooth);
+
+    &:hover:not(:disabled) {
+        color: var(--primary-hover);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+@keyframes toast-in {
+    from {
+        transform: translateY(-4px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@include respond-below('sm') {
+    .auth-form-container {
+        padding: var(--space-6);
+        border-radius: var(--border-radius);
+    }
+
+    .form-title {
+        font-size: var(--font-size-md);
+    }
+
+    .forgot-password-resend-meta {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .forgot-password-resend-btn {
+        width: 100%;
+    }
+}

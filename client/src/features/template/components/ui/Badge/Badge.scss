@@ -1,0 +1,24 @@
+// client/src/features/template/components/ui/Badge/Badge.scss
+
+.t-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--t-font-family);
+    font-weight: var(--t-font-weight-semibold);
+    border-radius: var(--t-rounded-pill);
+    line-height: 1;
+    white-space: nowrap;
+
+    &--sm { padding: 3px 8px;  font-size: 0.72rem; }
+    &--md { padding: 4px 10px; font-size: var(--t-font-size-caption); }
+
+    &--success { background: var(--t-success-bg);  color: var(--t-success-text); }
+    &--danger  { background: var(--t-danger-bg);   color: var(--t-danger); }
+    &--warning { background: var(--t-warning-bg);  color: var(--t-warning); }
+    &--info    { background: var(--t-info-bg);     color: var(--t-info); }
+    &--primary { background: var(--t-primary-faint); color: var(--t-primary); }
+    &--neutral { background: var(--t-bg-input); color: var(--t-text-muted); }
+
+    i { font-size: 0.85em; }
+}

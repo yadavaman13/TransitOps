@@ -1,0 +1,16 @@
+// client/src/features/template/styles/_reset.scss
+// Scoped to .t-root to avoid polluting global styles
+
+.t-root {
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    font-family: var(--t-font-family);
+    color: var(--t-text-main);
+    background-color: var(--t-bg-app);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

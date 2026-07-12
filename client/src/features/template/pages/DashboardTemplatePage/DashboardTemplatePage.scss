@@ -1,0 +1,43 @@
+// client/src/features/template/pages/DashboardTemplatePage/DashboardTemplatePage.scss
+@use '../../styles/mixins' as *;
+
+.t-dash-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--t-space-6);
+    font-family: var(--t-font-family);
+
+    &__header {
+        @include t-flex(space-between, flex-start, row, var(--t-space-3));
+        flex-wrap: wrap;
+    }
+
+    &__title-block {
+        display: flex;
+        flex-direction: column;
+        gap: var(--t-space-2);
+    }
+
+    &__heading {
+        font-size: var(--t-font-size-md);
+        font-weight: var(--t-font-weight-semibold);
+        color: var(--t-text-main);
+        margin: 0;
+    }
+
+    &__subtitle {
+        font-size: var(--t-font-size-body-sm);
+        color: var(--t-text-muted);
+        margin: 0;
+    }
+
+    &__actions {
+        @include t-flex(flex-end, center, row, var(--t-space-3));
+    }
+
+    &__stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: var(--t-space-4);
+    }
+}

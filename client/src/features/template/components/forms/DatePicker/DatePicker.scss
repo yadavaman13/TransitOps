@@ -1,0 +1,280 @@
+// client/src/features/template/components/forms/DatePicker/DatePicker.scss
+@use '../../../styles/mixins' as *;
+
+.t-datepicker-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--t-space-1);
+    width: 100%;
+
+    &--inline {
+        flex-direction: row;
+        align-items: center;
+        gap: var(--t-space-3);
+
+        .t-input-label {
+            margin-bottom: 0;
+            min-width: 80px;
+            flex-shrink: 0;
+        }
+    }
+}
+
+.t-datepicker-field {
+    position: relative;
+    width: 100%;
+}
+
+.t-datepicker-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px var(--t-space-4);
+    background-color: var(--t-bg-input);
+    border: 1.5px solid var(--t-border-color);
+    border-radius: var(--t-radius);
+    font-size: var(--t-font-size-base);
+    font-family: var(--t-font-family);
+    color: var(--t-text-main);
+    cursor: pointer;
+    outline: none;
+    transition: var(--t-transition);
+    user-select: none;
+
+    &:focus, &--open {
+        border-color: var(--t-primary);
+        box-shadow: 0 0 0 3px var(--t-primary-faint);
+        background-color: var(--t-bg-card);
+    }
+
+    &--error {
+        border-color: var(--t-danger);
+        &:focus { box-shadow: 0 0 0 3px var(--t-danger-bg); }
+    }
+
+    &--disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        background-color: var(--t-bg-input);
+    }
+}
+
+.t-datepicker-placeholder {
+    color: var(--t-text-muted);
+}
+
+.t-datepicker-icon {
+    color: var(--t-text-muted);
+    font-size: 1.1rem;
+    @include t-flex(center, center);
+    flex-shrink: 0;
+}
+
+.t-datepicker-dropdown {
+    position: absolute;
+    margin-top: 4px;
+    background-color: var(--t-bg-card);
+    border: 1px solid var(--t-border-color);
+    border-radius: var(--t-radius-lg);
+    box-shadow: var(--t-shadow-lg);
+    width: 280px;
+    z-index: 9999;
+    padding: var(--t-space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--t-space-3);
+    animation: t-datepicker-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.t-datepicker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.t-datepicker-month-year-btn {
+    background: none;
+    border: none;
+    font-size: var(--t-font-size-body-sm);
+    font-weight: var(--t-font-weight-semibold);
+    color: var(--t-text-main);
+    cursor: pointer;
+    padding: var(--t-space-1) var(--t-space-2);
+    border-radius: var(--t-radius);
+    transition: var(--t-transition);
+    font-family: var(--t-font-family);
+
+    &:hover {
+        background-color: var(--t-primary-faint);
+        color: var(--t-primary);
+    }
+
+    &:active {
+        transform: scale(0.97);
+    }
+}
+
+.t-datepicker-nav-btn {
+    background: none;
+    border: none;
+    padding: var(--t-space-1);
+    border-radius: var(--t-radius);
+    color: var(--t-text-muted);
+    cursor: pointer;
+    transition: var(--t-transition);
+    font-size: 1.2rem;
+    @include t-flex(center, center);
+
+    &:hover {
+        background-color: var(--t-primary-faint);
+        color: var(--t-primary);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+.t-datepicker-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    text-align: center;
+}
+
+.t-datepicker-months-grid,
+.t-datepicker-years-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--t-space-2);
+    text-align: center;
+    padding: var(--t-space-1) 0;
+}
+
+.t-datepicker-month-btn,
+.t-datepicker-year-btn {
+    background: none;
+    border: none;
+    border-radius: var(--t-radius);
+    padding: var(--t-space-2) var(--t-space-1);
+    font-size: var(--t-font-size-body-sm);
+    font-family: var(--t-font-family);
+    color: var(--t-text-main);
+    cursor: pointer;
+    transition: var(--t-transition);
+    @include t-flex(center, center);
+
+    &:hover {
+        background-color: var(--t-primary-faint);
+        color: var(--t-primary);
+    }
+
+    &--selected {
+        background-color: var(--t-primary) !important;
+        color: var(--t-on-primary) !important;
+        font-weight: var(--t-font-weight-bold);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+.t-datepicker-weekday {
+    font-size: 0.75rem;
+    font-weight: var(--t-font-weight-semibold);
+    color: var(--t-text-muted);
+    padding: var(--t-space-1) 0;
+}
+
+.t-datepicker-day {
+    background: none;
+    border: none;
+    border-radius: 50%;
+    height: 32px;
+    font-size: 0.8rem;
+    font-family: var(--t-font-family);
+    color: var(--t-text-main);
+    cursor: pointer;
+    transition: var(--t-transition);
+    @include t-flex(center, center);
+
+    &:hover:not(&--muted) {
+        background-color: var(--t-primary-faint);
+        color: var(--t-primary);
+    }
+
+    &--muted {
+        color: var(--t-text-muted);
+        opacity: 0.4;
+        cursor: default;
+    }
+
+    &--today {
+        border: 1px solid var(--t-primary);
+        color: var(--t-primary);
+        font-weight: var(--t-font-weight-medium);
+    }
+
+    &--selected {
+        background-color: var(--t-primary) !important;
+        color: var(--t-on-primary) !important;
+        font-weight: var(--t-font-weight-bold);
+    }
+}
+
+.t-datepicker-footer {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--t-border-color);
+    padding-top: var(--t-space-2);
+}
+
+.t-datepicker-footer-btn {
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    font-family: var(--t-font-family);
+    color: var(--t-text-muted);
+    cursor: pointer;
+    padding: var(--t-space-1) var(--t-space-2);
+    border-radius: var(--t-radius);
+    transition: var(--t-transition);
+
+    &:hover {
+        background-color: var(--t-bg-input);
+        color: var(--t-text-main);
+    }
+
+    &--primary {
+        color: var(--t-primary);
+        font-weight: var(--t-font-weight-medium);
+
+        &:hover {
+            background-color: var(--t-primary-faint);
+            color: var(--t-primary);
+        }
+    }
+}
+
+.t-datepicker-error {
+    font-size: var(--t-font-size-caption);
+    color: var(--t-danger);
+}
+
+.t-datepicker-helper {
+    font-size: var(--t-font-size-caption);
+    color: var(--t-text-muted);
+}
+
+@keyframes t-datepicker-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

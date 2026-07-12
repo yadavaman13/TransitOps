@@ -1,0 +1,107 @@
+// client/src/features/template/components/forms/Input/Input.scss
+@use '../../../styles/mixins' as *;
+
+.t-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--t-space-1);
+    width: 100%;
+}
+
+.t-input-label {
+    @include t-label;
+    color: var(--t-text-main);
+
+    &__required {
+        color: var(--t-danger);
+        margin-left: 2px;
+    }
+}
+
+.t-input-field {
+    position: relative;
+    @include t-flex(flex-start, center, row, 0);
+    background-color: var(--t-bg-input);
+    border: 1.5px solid var(--t-border-color);
+    border-radius: var(--t-radius);
+    transition: var(--t-transition);
+
+    &:focus-within {
+        border-color: var(--t-primary);
+        box-shadow: 0 0 0 3px var(--t-primary-faint);
+    }
+
+    &--error {
+        border-color: var(--t-danger);
+        &:focus-within { box-shadow: 0 0 0 3px var(--t-danger-bg); }
+    }
+
+    &--disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+    }
+}
+
+.t-input-icon {
+    padding-left: var(--t-space-3);
+    color: var(--t-text-muted);
+    font-size: 1rem;
+    @include t-flex(center, center);
+    flex-shrink: 0;
+}
+
+.t-input-prefix,
+.t-input-suffix {
+    padding: 0 var(--t-space-3);
+    color: var(--t-text-muted);
+    @include t-caption;
+    white-space: nowrap;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.t-input-control {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 10px var(--t-space-4);
+    font-size: var(--t-font-size-base);
+    font-family: var(--t-font-family);
+    color: var(--t-text-main);
+    line-height: 1.5;
+
+    &::placeholder { color: var(--t-text-muted); }
+    &:disabled { cursor: not-allowed; }
+    &::-ms-reveal { display: none; }
+}
+
+.t-input-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 var(--t-space-3);
+    color: var(--t-text-muted);
+    @include t-flex(center, center);
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: var(--t-transition);
+
+    &:hover { color: var(--t-text-main); }
+
+    &:focus-visible {
+        outline: 2px solid var(--t-primary);
+        border-radius: 4px;
+    }
+}
+
+.t-input-error {
+    @include t-caption;
+    color: var(--t-danger);
+}
+
+.t-input-helper {
+    @include t-caption;
+    color: var(--t-text-muted);
+}

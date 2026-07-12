@@ -1,0 +1,31 @@
+// client/src/features/template/components/ui/Card/Card.scss
+@use '../../../styles/mixins' as *;
+
+.t-card {
+    background: var(--t-bg-card);
+    border: 1px solid var(--t-border-color);
+    border-radius: var(--t-rounded-lg);
+    box-shadow: var(--t-shadow-md);
+    overflow: hidden;
+    font-family: var(--t-font-family);
+
+    &__header {
+        @include t-flex(space-between, center, row, var(--t-space-3));
+        padding: var(--t-space-4) var(--t-space-5);
+        border-bottom: 1px solid var(--t-border-color);
+    }
+
+    &__title {
+        font-size: var(--t-font-size-sm);
+        font-weight: var(--t-font-weight-semibold);
+        color: var(--t-text-main);
+        margin: 0;
+    }
+
+    &__body {
+        &--none { padding: 0; }
+        &--sm   { padding: var(--t-space-3); }
+        &--md   { padding: var(--t-space-5); }
+        &--lg   { padding: var(--t-space-6); }
+    }
+}

@@ -1,0 +1,46 @@
+// client/src/features/template/components/forms/Form/Form.scss
+
+.t-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--t-space-6);
+    width: 100%;
+}
+
+.t-form-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--t-space-4);
+    border: none;
+    padding: 0;
+    margin: 0;
+
+    &__title {
+        font-size: var(--t-font-size-sm);
+        font-weight: var(--t-font-weight-semibold);
+        color: var(--t-text-main);
+        margin-bottom: var(--t-space-2);
+    }
+}
+
+.t-form-row {
+    display: grid;
+    gap: var(--t-space-4);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.t-form-actions {
+    display: flex;
+    gap: var(--t-space-3);
+    justify-content: flex-end;
+    padding-top: var(--t-space-4);
+    border-top: 1px solid var(--t-border-color);
+    flex-wrap: wrap;
+
+    // Do not show the border-top and padding-top when nested in a modal footer or body
+    .t-modal & {
+        border-top: none;
+        padding-top: 0;
+    }
+}
+

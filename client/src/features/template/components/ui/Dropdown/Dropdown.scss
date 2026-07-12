@@ -1,0 +1,121 @@
+// client/src/features/template/components/ui/Dropdown/Dropdown.scss
+
+.t-dropdown {
+    position: relative;
+    display: inline-block;
+
+    &__trigger {
+        cursor: pointer;
+        display: inline-flex;
+    }
+
+    &__menu {
+        position: absolute;
+        top: 100%;
+        margin-top: var(--t-space-2);
+        background-color: var(--t-bg-card);
+        border: 1px solid var(--t-border-color);
+        border-radius: var(--t-radius);
+        box-shadow: var(--t-shadow-lg);
+        min-width: 180px;
+        z-index: 100;
+        overflow: hidden;
+        animation: t-dropdown-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+        &--align-right {
+            right: 0;
+        }
+
+        &--align-left {
+            left: 0;
+        }
+    }
+
+    &__list {
+        list-style: none;
+        padding: var(--t-space-2) 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__item-wrapper {
+        padding: 0;
+    }
+
+    &__item {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: var(--t-space-2);
+        padding: var(--t-space-2) var(--t-space-4);
+        background: none;
+        border: none;
+        color: var(--t-text-main);
+        font-family: var(--t-font-family);
+        font-size: var(--t-font-size-body-sm);
+        text-align: left;
+        cursor: pointer;
+        transition: var(--t-transition);
+
+        &:hover:not(:disabled) {
+            background-color: var(--t-primary-faint);
+            color: var(--t-primary);
+
+            .t-dropdown__item-icon {
+                color: var(--t-primary);
+            }
+        }
+
+        &:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        &:disabled {
+            color: var(--t-text-muted);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        &--danger {
+            color: var(--t-danger);
+
+            &:hover:not(:disabled) {
+                background-color: var(--t-danger-bg);
+                color: var(--t-danger-dark);
+
+                .t-dropdown__item-icon {
+                    color: var(--t-danger-dark);
+                }
+            }
+        }
+    }
+
+    &__item-icon {
+        font-size: 1rem;
+        color: var(--t-text-muted);
+        transition: var(--t-transition);
+        flex-shrink: 0;
+    }
+
+    &__item-label {
+        flex-grow: 1;
+    }
+
+    &__divider {
+        height: 1px;
+        background-color: var(--t-border-color);
+        margin: var(--t-space-2) 0;
+    }
+}
+
+@keyframes t-dropdown-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

@@ -1,0 +1,182 @@
+// client/src/features/template/components/data-display/DataTable/DataTable.scss
+@use '../../../styles/mixins' as *;
+
+.t-table-wrapper {
+    background: var(--t-bg-card);
+    border-radius: var(--t-rounded-lg);
+    border: 1px solid var(--t-border-color);
+    box-shadow: var(--t-shadow-md);
+    overflow: hidden;
+    font-family: var(--t-font-family);
+}
+
+// ── Toolbar ──────────────────────────────────────────────────────────
+.t-table-toolbar {
+    @include t-flex(space-between, center, row, var(--t-space-3));
+    padding: var(--t-space-4) var(--t-space-5);
+    border-bottom: 1px solid var(--t-border-color);
+    flex-wrap: wrap;
+    gap: var(--t-space-3);
+}
+
+.t-table-search {
+    @include t-flex(flex-start, center, row, var(--t-space-2));
+    background: var(--t-bg-input);
+    border: 1.5px solid var(--t-border-color);
+    border-radius: var(--t-radius);
+    padding: 7px var(--t-space-3);
+    flex: 1;
+    max-width: 280px;
+    transition: var(--t-transition);
+
+    &:focus-within {
+        border-color: var(--t-primary);
+        box-shadow: 0 0 0 3px var(--t-primary-faint);
+    }
+
+    i { color: var(--t-text-muted); font-size: 1rem; flex-shrink: 0; }
+
+    input {
+        border: none;
+        background: transparent;
+        outline: none;
+        font-family: var(--t-font-family);
+        font-size: var(--t-font-size-body-sm);
+        color: var(--t-text-main);
+        width: 100%;
+        &::placeholder { color: var(--t-text-muted); }
+    }
+}
+
+.t-table-count {
+    font-size: var(--t-font-size-caption);
+    color: var(--t-text-muted);
+    white-space: nowrap;
+    margin-left: auto;
+}
+
+// ── Table ─────────────────────────────────────────────────────────────
+.t-table-scroll { overflow-x: auto; }
+
+.t-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+        padding: var(--t-space-3) var(--t-space-5);
+        text-align: left;
+        font-size: var(--t-font-size-body-sm);
+        border-bottom: 1px solid var(--t-border-color);
+        white-space: nowrap;
+    }
+
+    th {
+        font-weight: var(--t-font-weight-semibold);
+        color: var(--t-text-muted);
+        background: var(--t-bg-input);
+        user-select: none;
+
+        &.t-th--sortable { cursor: pointer; }
+        &.t-th--sortable:hover { color: var(--t-primary); }
+    }
+
+    td { color: var(--t-text-main); }
+    tr:last-child td { border-bottom: none; }
+
+    tbody tr {
+        transition: var(--t-transition);
+
+        &:hover {
+            background-color: var(--t-primary-faint);
+        }
+
+        &.t-tr--clickable {
+            cursor: pointer;
+
+            &:active {
+                background-color: rgba(113, 75, 103, 0.14);
+            }
+        }
+
+        &.t-tr--selected {
+            background-color: var(--t-primary-faint);
+        }
+    }
+
+    &__sort-icon {
+        margin-left: 4px;
+        font-size: 0.75rem;
+    }
+
+    &__checkbox-cell { width: 40px; }
+}
+
+// ── States ────────────────────────────────────────────────────────────
+.t-table-empty,
+.t-table-loading {
+    padding: var(--t-space-8);
+    text-align: center;
+    color: var(--t-text-muted);
+    font-size: var(--t-font-size-body-sm);
+
+    i {
+        font-size: 2rem;
+        display: block;
+        margin-bottom: var(--t-space-2);
+        color: var(--t-border-strong);
+    }
+}
+
+.t-table-loading i { animation: t-spin 0.7s linear infinite; }
+
+// ── Pagination ────────────────────────────────────────────────────────
+.t-table-pagination {
+    @include t-flex(space-between, center, row, var(--t-space-3));
+    padding: var(--t-space-3) var(--t-space-5);
+    border-top: 1px solid var(--t-border-color);
+    flex-wrap: wrap;
+
+    &__info {
+        font-size: var(--t-font-size-caption);
+        color: var(--t-text-muted);
+    }
+
+    &__pages {
+        @include t-flex(center, center, row, var(--t-space-1));
+    }
+
+    &__btn {
+        min-width: 32px;
+        height: 32px;
+        border: 1.5px solid var(--t-border-color);
+        background: var(--t-bg-card);
+        border-radius: var(--t-rounded-sm);
+        font-size: var(--t-font-size-caption);
+        cursor: pointer;
+        color: var(--t-text-main);
+        font-family: var(--t-font-family);
+        transition: var(--t-transition);
+        padding: 0 var(--t-space-2);
+        @include t-flex(center, center);
+
+        &:hover:not(:disabled) { border-color: var(--t-primary); color: var(--t-primary); }
+
+        &--active {
+            background: var(--t-primary);
+            border-color: var(--t-primary);
+            color: var(--t-on-primary);
+        }
+
+        &:disabled { opacity: 0.4; cursor: not-allowed; }
+    }
+}
+
+// When nested in a Card, remove outer borders and shadows to avoid duplication
+.t-card {
+    .t-table-wrapper {
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+    }
+}
+
