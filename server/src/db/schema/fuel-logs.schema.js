@@ -22,6 +22,7 @@ export const fuelLogs = pgTable(
         totalCost: numeric('total_cost', { precision: 12, scale: 2 }).notNull(),
         stationName: text('station_name').notNull(),
         odometer: numeric('odometer', { precision: 10, scale: 2 }).notNull(),
+        receiptUrl: text('receipt_url'),
         createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
     },
     (table) => {

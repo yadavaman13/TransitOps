@@ -228,6 +228,7 @@ export async function getFuelLogsList() {
             totalCost: fuelLogs.totalCost,
             stationName: fuelLogs.stationName,
             odometer: fuelLogs.odometer,
+            receiptUrl: fuelLogs.receiptUrl,
             date: fuelLogs.createdAt
         })
         .from(fuelLogs)
