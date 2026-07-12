@@ -67,10 +67,8 @@ const RoleDashboardLayout = () => {
                 ];
             case 'DRIVER':
                 return [
-                    { title: 'Dashboard', icon: 'ri-dashboard-3-line', route: '/driver' },
-                    { title: 'My Trips', icon: 'ri-navigation-line', route: '/driver/trips' },
-                    { title: 'Fuel Logs', icon: 'ri-gas-station-line', route: '/driver/fuel-logs' },
-                    { title: 'Profile', icon: 'ri-user-line', route: '/driver/profile' },
+                    { title: 'Driver Dashboard', icon: 'ri-dashboard-3-line', route: '/driver' },
+                    // More items (My Trips, Fuel Logs, Profile) will be added once those pages exist.
                 ];
             case 'SAFETY_OFFICER':
                 return [
