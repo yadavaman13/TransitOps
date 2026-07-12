@@ -32,3 +32,8 @@ export const getReportsApi = async () => {
     const response = await financeApiInstance.get('/reports');
     return response.data;
 };
+
+export const createFuelLogApi = async (data) => {
+    const response = await axios.post('/api/fuel-logs', data, { withCredentials: true });
+    return response.data;
+};

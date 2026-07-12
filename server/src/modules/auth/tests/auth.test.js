@@ -178,6 +178,7 @@ describe('Authentication Module Integration Tests', () => {
             const loginData = {
                 email: testUser.email,
                 password: testUser.password,
+                role: 'DRIVER',
             };
             const res = await request(app)
                 .post('/api/auth/login')
@@ -203,6 +204,7 @@ describe('Authentication Module Integration Tests', () => {
             const loginData = {
                 email: testUser.email,
                 password: 'wrongpassword',
+                role: 'DRIVER',
             };
             const res = await request(app)
                 .post('/api/auth/login')
@@ -238,7 +240,7 @@ describe('Authentication Module Integration Tests', () => {
 
             const loginRes = await request(app)
                 .post('/api/auth/login')
-                .send({ email: testUser.email, password: testUser.password });
+                .send({ email: testUser.email, password: testUser.password, role: 'DRIVER' });
             cookie = loginRes.headers['set-cookie'];
         });
 
@@ -303,12 +305,12 @@ describe('Authentication Module Integration Tests', () => {
 
             const userLogin = await request(app)
                 .post('/api/auth/login')
-                .send({ email: testUser.email, password: testUser.password });
+                .send({ email: testUser.email, password: testUser.password, role: 'DRIVER' });
             userCookie = userLogin.headers['set-cookie'];
 
             const adminLogin = await request(app)
                 .post('/api/auth/login')
-                .send({ email: testAdmin.email, password: testAdmin.password });
+                .send({ email: testAdmin.email, password: testAdmin.password, role: 'FLEET_MANAGER' });
             adminCookie = adminLogin.headers['set-cookie'];
         });
 
@@ -407,7 +409,7 @@ describe('Authentication Module Integration Tests', () => {
 
             const loginRes = await request(app)
                 .post('/api/auth/login')
-                .send({ email: testUser.email, password: testUser.password });
+                .send({ email: testUser.email, password: testUser.password, role: 'DRIVER' });
             cookie = loginRes.headers['set-cookie'];
         });
 
@@ -455,6 +457,7 @@ describe('Authentication Module Integration Tests', () => {
             const loginRes = await request(app).post('/api/auth/login').send({
                 email: testUser.email,
                 password: 'newpassword123',
+                role: 'DRIVER',
             });
             expect(loginRes.statusCode).toBe(200);
         });
@@ -483,6 +486,7 @@ describe('Authentication Module Integration Tests', () => {
             const loginRes = await request(app).post('/api/auth/login').send({
                 email: testUser.email,
                 password: testUser.password,
+                role: 'DRIVER',
             });
 
             queueApiResponse(
