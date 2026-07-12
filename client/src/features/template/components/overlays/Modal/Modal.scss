@@ -1,0 +1,87 @@
+// client/src/features/template/components/overlays/Modal/Modal.scss
+@use '../../../styles/mixins' as *;
+
+@keyframes t-modal-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes t-modal-slide {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+.t-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(31, 26, 55, 0.55);
+    backdrop-filter: blur(2px);
+    z-index: 1000;
+    @include t-flex(center, center);
+    padding: var(--t-space-4);
+    animation: t-modal-fade 0.18s ease;
+}
+
+.t-modal {
+    background-color: var(--t-bg-card);
+    border-radius: var(--t-rounded-lg);
+    box-shadow: var(--t-shadow-lg);
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    animation: t-modal-slide 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &--sm         { max-width: 400px; }
+    &--md         { max-width: var(--t-modal-width); }
+    &--lg         { max-width: 780px; }
+    &--fullscreen { max-width: 100%; max-height: 100%; border-radius: 0; }
+
+    &__header {
+        @include t-flex(space-between, center, row, var(--t-space-3));
+        padding: var(--t-space-5) var(--t-space-6);
+        border-bottom: 1px solid var(--t-border-color);
+        flex-shrink: 0;
+    }
+
+    &__title {
+        font-size: var(--t-font-size-sm);
+        font-weight: var(--t-font-weight-semibold);
+        color: var(--t-text-main);
+        margin: 0;
+    }
+
+    &__close {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--t-text-muted);
+        font-size: 1.25rem;
+        @include t-flex(center, center);
+        width: 32px;
+        height: 32px;
+        border-radius: var(--t-rounded-md);
+        transition: var(--t-transition);
+        flex-shrink: 0;
+
+        &:hover { background: var(--t-primary-faint); color: var(--t-primary); }
+        &:focus-visible { outline: 2px solid var(--t-primary); }
+    }
+
+    &__body {
+        padding: var(--t-space-6);
+        overflow-y: auto;
+        flex: 1;
+        color: var(--t-text-main);
+        font-family: var(--t-font-family);
+        line-height: var(--t-line-height-base);
+    }
+
+    &__footer {
+        padding: var(--t-space-4) var(--t-space-6);
+        border-top: 1px solid var(--t-border-color);
+        @include t-flex(flex-end, center, row, var(--t-space-3));
+        flex-shrink: 0;
+        flex-wrap: wrap;
+    }
+}

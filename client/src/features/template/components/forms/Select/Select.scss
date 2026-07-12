@@ -1,0 +1,203 @@
+// client/src/features/template/components/forms/Select/Select.scss
+@use '../../../styles/mixins' as *;
+
+.t-select-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--t-space-1);
+    width: 100%;
+    min-width: 160px;
+
+    &--inline {
+        flex-direction: row;
+        align-items: center;
+        gap: var(--t-space-3);
+
+        .t-input-label {
+            margin-bottom: 0;
+            min-width: 80px;
+            flex-shrink: 0;
+        }
+    }
+
+    &--sm {
+        min-width: 120px;
+
+        .t-select-trigger {
+            padding: 6px var(--t-space-3);
+            font-size: var(--t-font-size-body-sm);
+        }
+
+        .t-select-caret {
+            font-size: 0.95rem;
+        }
+
+        .t-select-option {
+            padding: 6px var(--t-space-3);
+            font-size: var(--t-font-size-body-sm);
+        }
+    }
+}
+
+.t-select-field {
+    position: relative;
+    width: 100%;
+}
+
+.t-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px var(--t-space-4);
+    background-color: var(--t-bg-input);
+    border: 1.5px solid var(--t-border-color);
+    border-radius: var(--t-radius);
+    font-size: var(--t-font-size-base);
+    font-family: var(--t-font-family);
+    line-height: 1.5;
+    color: var(--t-text-main);
+    cursor: pointer;
+    outline: none;
+    transition: var(--t-transition);
+    user-select: none;
+    box-sizing: border-box;
+
+    &:focus, &--open {
+        border-color: var(--t-primary);
+        box-shadow: 0 0 0 3px var(--t-primary-faint);
+        background-color: var(--t-bg-card);
+    }
+
+    &--error {
+        border-color: var(--t-danger);
+        &:focus { box-shadow: 0 0 0 3px var(--t-danger-bg); }
+    }
+
+    &--disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        background-color: var(--t-bg-input);
+    }
+}
+
+.t-select-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: var(--t-space-2);
+}
+
+.t-select-caret {
+    color: var(--t-text-muted);
+    font-size: 1.1rem;
+    @include t-flex(center, center);
+    flex-shrink: 0;
+}
+
+.t-select-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    margin-top: var(--t-space-2);
+    background-color: var(--t-bg-card);
+    border: 1px solid var(--t-border-color);
+    border-radius: var(--t-radius);
+    box-shadow: var(--t-shadow-lg);
+    z-index: 110;
+    overflow: hidden;
+    animation: t-select-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.t-select-options {
+    list-style: none;
+    padding: var(--t-space-1) 0;
+    margin: 0;
+    max-height: 220px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+
+    // Custom scrollbar styling
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: var(--t-border-color);
+        border-radius: 3px;
+        &:hover {
+            background: var(--t-text-muted);
+        }
+    }
+}
+
+.t-select-option {
+    display: flex;
+    align-items: center;
+    gap: var(--t-space-2);
+    padding: var(--t-space-2) var(--t-space-4);
+    font-size: var(--t-font-size-body-sm);
+    color: var(--t-text-main);
+    cursor: pointer;
+    transition: var(--t-transition);
+
+    &:hover:not(&--disabled) {
+        background-color: var(--t-primary-faint);
+        color: var(--t-primary);
+    }
+
+    &--selected {
+        background-color: var(--t-primary-faint);
+        color: var(--t-primary);
+        font-weight: var(--t-font-weight-medium);
+    }
+
+    &--disabled {
+        color: var(--t-text-muted);
+        cursor: not-allowed;
+        opacity: 0.55;
+    }
+
+    &--clear {
+        color: var(--t-text-muted);
+        font-style: italic;
+    }
+}
+
+.t-select-checkbox {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--t-border-color);
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: var(--t-primary);
+    background-color: var(--t-bg-input);
+
+    .t-select-option--selected & {
+        border-color: var(--t-primary);
+        background-color: var(--t-primary-faint);
+    }
+}
+
+.t-select-error {
+    font-size: var(--t-font-size-caption);
+    color: var(--t-danger);
+}
+
+@keyframes t-select-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

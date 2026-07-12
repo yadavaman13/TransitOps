@@ -1,0 +1,51 @@
+// client/src/features/template/components/layout/AppLayout/AppLayout.scss
+@use '../../../styles/mixins' as *;
+
+.t-app-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--t-bg-app);
+    font-family: var(--t-font-family);
+
+    @include t-respond-below('md') {
+        flex-direction: column;
+    }
+
+    &__sidebar {
+        flex-shrink: 0;
+        width: var(--t-sidebar-width);
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        @include t-respond-below('md') {
+            width: 100%;
+            height: auto;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            overflow: visible;
+        }
+    }
+
+    &__main {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+    }
+
+    &__content {
+        flex: 1;
+        padding: var(--t-space-6);
+        width: 100%;
+        max-width: 100%;
+
+        @include t-respond-below('md') {
+            padding: var(--t-space-4);
+        }
+    }
+}

@@ -1,0 +1,97 @@
+@mixin button-base {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+        transform: none !important;
+    }
+
+    &:hover:not(:disabled) {
+        transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0) scale(0.98);
+    }
+}
+
+.btn {
+    @include button-base;
+
+    &.btn-primary {
+        background-color: var(--primary);
+        color: var(--on-primary);
+
+        &:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        &:active:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+    }
+
+    &.btn-secondary {
+        background-color: #f2efe8;
+        color: #111111;
+
+        &:hover:not(:disabled) {
+            background-color: #e7e2d8;
+            color: #111111;
+        }
+
+        &:active:not(:disabled) {
+            background-color: #ded8cc;
+            color: #111111;
+        }
+    }
+
+    &.btn-transparent {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+
+        &:hover:not(:disabled) {
+            color: var(--text-main);
+            background-color: var(--primary-faint);
+        }
+    }
+
+    &.btn-primary-transparent {
+        background: transparent;
+        border: none;
+        color: var(--primary);
+
+        &:hover:not(:disabled) {
+            color: var(--primary);
+            background-color: var(--primary-faint);
+        }
+    }
+
+    &.btn-auth-submit {
+        width: 100%;
+        background-color: var(--primary);
+        color: var(--on-primary);
+        border-radius: var(--border-radius);
+        padding: 14px 18px;
+
+        &:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        &:active:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+    }
+}

@@ -1,0 +1,64 @@
+// client/src/features/template/components/data-display/Tabs/Tabs.scss
+.t-tabs {
+    display: flex;
+    border-bottom: 2px solid var(--t-border-color);
+    overflow-x: auto;
+    overflow-y: hidden;
+    font-family: var(--t-font-family);
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &__tab {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--t-space-2);
+        padding: var(--t-space-3) var(--t-space-4);
+        font-size: var(--t-font-size-body-sm);
+        font-weight: var(--t-font-weight-medium);
+        color: var(--t-text-muted);
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        transition: var(--t-transition);
+        margin-bottom: -2px;
+        white-space: nowrap;
+        font-family: inherit;
+
+        i {
+            font-size: 1rem;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        &:not(&--active):hover {
+            color: var(--t-primary);
+            border-bottom-color: rgba(113, 75, 103, 0.3);
+            background-color: var(--t-primary-faint);
+            border-top-left-radius: var(--t-radius);
+            border-top-right-radius: var(--t-radius);
+
+            i {
+                transform: translateY(-1px);
+            }
+        }
+
+        &:active {
+            transform: scale(0.97);
+        }
+
+        &--active {
+            color: var(--t-primary);
+            font-weight: var(--t-font-weight-semibold);
+            border-bottom-color: var(--t-primary);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--t-primary);
+            outline-offset: -2px;
+        }
+    }
+}

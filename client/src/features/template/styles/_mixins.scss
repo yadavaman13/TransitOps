@@ -1,0 +1,60 @@
+// client/src/features/template/styles/_mixins.scss
+@use 'sass:map';
+@use './variables' as vars;
+
+@mixin t-flex($justify: center, $align: center, $direction: row, $gap: 0) {
+    display: flex;
+    justify-content: $justify;
+    align-items: $align;
+    flex-direction: $direction;
+    gap: $gap;
+}
+
+@mixin t-respond-below($bp) {
+    @if map.has-key(vars.$t-breakpoints, $bp) {
+        @media (max-width: (map.get(vars.$t-breakpoints, $bp) - 1px)) {
+            @content;
+        }
+    }
+}
+
+@mixin t-respond-to($bp) {
+    @if map.has-key(vars.$t-breakpoints, $bp) {
+        @media (min-width: map.get(vars.$t-breakpoints, $bp)) {
+            @content;
+        }
+    }
+}
+
+@mixin t-heading-md {
+    font-family: var(--t-font-family);
+    font-size: var(--t-font-size-md);
+    font-weight: var(--t-font-weight-semibold);
+    line-height: var(--t-line-height-md);
+}
+
+@mixin t-body-sm {
+    font-family: var(--t-font-family);
+    font-size: var(--t-font-size-body-sm);
+    font-weight: var(--t-font-weight-regular);
+    line-height: var(--t-line-height-body-sm);
+}
+
+@mixin t-label {
+    font-family: var(--t-font-family);
+    font-size: var(--t-font-size-label);
+    font-weight: var(--t-font-weight-semibold);
+    line-height: var(--t-line-height-label);
+}
+
+@mixin t-caption {
+    font-family: var(--t-font-family);
+    font-size: var(--t-font-size-caption);
+    font-weight: var(--t-font-weight-medium);
+    line-height: var(--t-line-height-caption);
+}
+
+// Spinner keyframe — shared across Button, Input loading states
+@keyframes t-spin {
+    to { transform: rotate(360deg); }
+}

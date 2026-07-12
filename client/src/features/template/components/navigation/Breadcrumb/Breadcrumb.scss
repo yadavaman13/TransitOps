@@ -1,0 +1,38 @@
+// client/src/features/template/components/navigation/Breadcrumb/Breadcrumb.scss
+.t-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--t-space-1);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: var(--t-font-family);
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: var(--t-space-1);
+        font-size: var(--t-font-size-body-sm);
+        color: var(--t-text-muted);
+    }
+
+    &__link {
+        color: var(--t-text-muted);
+        text-decoration: none;
+        transition: var(--t-transition);
+        &:hover { color: var(--t-primary); text-decoration: underline; }
+    }
+
+    &__sep {
+        color: var(--t-text-muted);
+        font-size: 0.75rem;
+        user-select: none;
+        opacity: 0.7;
+    }
+
+    &__current {
+        color: var(--t-text-main);
+        font-weight: var(--t-font-weight-medium);
+    }
+}

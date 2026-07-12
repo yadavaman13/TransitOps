@@ -1,0 +1,140 @@
+// client/src/features/template/components/ui/Button/Button.scss
+@use '../../../styles/mixins' as *;
+
+@mixin t-btn-base {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--t-space-2);
+    font-family: var(--t-font-family);
+    font-weight: var(--t-font-weight-semibold);
+    border: none;
+    border-radius: var(--t-radius);
+    cursor: pointer;
+    transition: var(--t-transition);
+    white-space: nowrap;
+    text-decoration: none;
+    outline: none;
+
+    &:focus-visible {
+        outline: 2px solid var(--t-primary);
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+        transform: none !important;
+    }
+
+    &:not(:disabled):hover {
+        transform: translateY(-1px);
+    }
+
+    &:not(:disabled):active {
+        transform: translateY(0) scale(0.98);
+    }
+}
+
+// ── Sizes ────────────────────────────────────────────────────────────
+.t-btn {
+    @include t-btn-base;
+
+    &--xs { padding: 4px 10px;  font-size: 0.75rem; }
+    &--sm { padding: 6px 14px;  font-size: var(--t-font-size-body-sm); }
+    &--md { padding: 10px 20px; font-size: var(--t-font-size-base); }
+    &--lg { padding: 13px 28px; font-size: var(--t-font-size-sm); }
+
+    &--full { width: 100%; }
+
+    // ── Variants ─────────────────────────────────────────────────────
+    &--primary {
+        background-color: var(--t-primary);
+        color: var(--t-on-primary);
+
+        &:not(:disabled):hover  { background-color: var(--t-primary-hover); }
+        &:not(:disabled):active { background-color: var(--t-primary-hover); }
+    }
+
+    &--secondary {
+        background-color: var(--t-bg-input);
+        color: var(--t-text-main);
+        border: 1.5px solid var(--t-border-color);
+
+        &:not(:disabled):hover {
+            border-color: var(--t-primary);
+            color: var(--t-primary);
+        }
+    }
+
+    &--outline {
+        background: transparent;
+        border: 1.5px solid var(--t-primary);
+        color: var(--t-primary);
+
+        &:not(:disabled):hover { background-color: var(--t-primary-faint); }
+    }
+
+    &--ghost {
+        background: transparent;
+        border: none;
+        color: var(--t-text-muted);
+
+        &:not(:disabled):hover {
+            background-color: var(--t-primary-faint);
+            color: var(--t-text-main);
+        }
+    }
+
+    &--danger {
+        background-color: var(--t-danger);
+        color: #fff;
+
+        &:not(:disabled):hover  { background-color: var(--t-danger-dark); }
+        &:not(:disabled):active { background-color: var(--t-danger-dark); }
+    }
+
+    &--success {
+        background-color: var(--t-success);
+        color: #fff;
+
+        &:not(:disabled):hover { opacity: 0.88; }
+    }
+
+    &--text {
+        background: transparent;
+        border: none;
+        color: var(--t-primary);
+        padding-left: 0;
+        padding-right: 0;
+
+        &:not(:disabled):hover {
+            text-decoration: underline;
+            transform: none;
+        }
+    }
+
+    // ── Loading ───────────────────────────────────────────────────────
+    &--loading {
+        pointer-events: none;
+        opacity: 0.75;
+    }
+
+    &__spinner {
+        width: 1em;
+        height: 1em;
+        border: 2px solid currentColor;
+        border-top-color: transparent;
+        border-radius: 50%;
+        display: inline-block;
+        animation: t-spin 0.6s linear infinite;
+        flex-shrink: 0;
+    }
+
+    &__icon {
+        display: inline-flex;
+        align-items: center;
+        font-size: 1.1em;
+        line-height: 1;
+    }
+}
