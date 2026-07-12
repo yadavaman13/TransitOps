@@ -18,6 +18,9 @@ import ReportsPage from './features/fleet-manager/page/ReportsPage';
 import UsersPage from './features/fleet-manager/page/UsersPage';
 import SettingsPage from './features/fleet-manager/page/SettingsPage';
 import DriverDashboard from './features/driver/page/DriverDashboard';
+import DriverTripsPage from './features/driver/page/DriverTripsPage';
+import DriverFuelLogsPage from './features/driver/page/DriverFuelLogsPage';
+import DriverProfilePage from './features/driver/page/DriverProfilePage';
 import SafetyOfficerDashboard from './features/safety-officer/page/SafetyOfficerDashboard';
 import SafetyDriversPage from './features/safety-officer/page/SafetyDriversPage';
 import SafetyVehiclesPage from './features/safety-officer/page/SafetyVehiclesPage';
@@ -134,9 +137,19 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: <DriverDashboard />
+            },
+            {
+                path: 'trips',
+                element: <DriverTripsPage />
+            },
+            {
+                path: 'fuel-logs',
+                element: <DriverFuelLogsPage />
+            },
+            {
+                path: 'profile',
+                element: <DriverProfilePage />
             }
-            // To add a new child route / tab under Driver, register it here:
-            // e.g. { path: 'trips', element: <DriverTripsPage /> }
         ]
     },
     {
