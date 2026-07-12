@@ -7,6 +7,8 @@ import { maintenance } from './maintenance.schema.js';
 import { expenses } from './expenses.schema.js';
 import { notifications } from './notifications.schema.js';
 import { auditLogs } from './audit-logs.schema.js';
+import { vehicleDocuments } from './vehicle-documents.schema.js';
+import { settings } from './settings.schema.js';
 
 export {
     users,
@@ -18,4 +20,6 @@ export {
     expenses,
     notifications,
     auditLogs,
+    vehicleDocuments,
+    settings,
 };

@@ -4,6 +4,7 @@ integration.md
 .ai
 skills
 skills-lock.json
+*.md
 
 # IDE & Editor files
 .vscode/

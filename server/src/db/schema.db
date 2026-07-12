@@ -14,8 +14,18 @@ CREATE TABLE IF NOT EXISTS users (
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
     deleted_at TIMESTAMP WITH TIME ZONE,
+    phone TEXT,
+    profile_image TEXT,
+    status TEXT NOT NULL DEFAULT 'ACTIVE',
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    
+    -- Validations
+    CONSTRAINT user_email_format_check CHECK (email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$'),
+    CONSTRAINT user_phone_length_check CHECK (phone IS NULL OR char_length(phone) <= 10),
+    CONSTRAINT user_phone_digits_check CHECK (phone IS NULL OR phone ~ '^[0-9]+$'),
+    CONSTRAINT user_role_check CHECK (role IN ('FLEET_MANAGER', 'DRIVER', 'SAFETY_OFFICER', 'FINANCIAL_ANALYST', 'USER', 'ADMIN')),
+    CONSTRAINT user_status_check CHECK (status IN ('ACTIVE', 'INACTIVE'))
 );
 
 CREATE INDEX users_email_idx ON users(email);
