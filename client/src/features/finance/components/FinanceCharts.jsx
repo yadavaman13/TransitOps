@@ -91,7 +91,7 @@ export function CategoryBreakdownChart({ data = [] }) {
                         {hoveredIndex !== null ? data[hoveredIndex].category : 'Total'}
                     </span>
                     <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-main)', marginTop: '2px' }}>
-                        ₹${(hoveredValue !== null ? hoveredValue : total).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        ₹{(hoveredValue !== null ? hoveredValue : total).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </div>
                 </div>
             </div>
@@ -191,7 +191,7 @@ export function MonthlyTrendChart({ data = [] }) {
                                 textAnchor="end"
                                 fontWeight="500"
                             >
-                                ₹${val.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+                                ₹{val.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
                             </text>
                         </g>
                     );
@@ -279,9 +279,9 @@ export function MonthlyTrendChart({ data = [] }) {
                     }}
                 >
                     <div style={{ textTransform: 'uppercase', fontSize: '9px', opacity: 0.8 }}>{data[hoveredIdx].month}</div>
-                    <div style={{ marginTop: '2px' }}>Total Expense: <strong>₹${data[hoveredIdx].amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></div>
+                    <div style={{ marginTop: '2px' }}>Total Expense: <strong>₹{data[hoveredIdx].amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></div>
                     {data[hoveredIdx].fuelCost > 0 && (
-                        <div style={{ color: '#c89dbb' }}>Fuel Component: <strong>₹${data[hoveredIdx].fuelCost.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></div>
+                        <div style={{ color: '#c89dbb' }}>Fuel Component: <strong>₹{data[hoveredIdx].fuelCost.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></div>
                     )}
                 </div>
             )}
@@ -356,7 +356,7 @@ export function FuelCostTrendChart({ data = [] }) {
                                 textAnchor="end"
                                 fontWeight="500"
                             >
-                                ₹${val.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+                                ₹{val.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
                             </text>
                         </g>
                     );
@@ -437,7 +437,7 @@ export function FuelCostTrendChart({ data = [] }) {
                     }}
                 >
                     <div style={{ textTransform: 'uppercase', fontSize: '9px', opacity: 0.8 }}>{points[hoveredIdx].month}</div>
-                    <div style={{ marginTop: '2px' }}>Fuel Cost: <strong>₹${points[hoveredIdx].val.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></div>
+                    <div style={{ marginTop: '2px' }}>Fuel Cost: <strong>₹{points[hoveredIdx].val.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></div>
                 </div>
             )}
         </div>
