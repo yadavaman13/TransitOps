@@ -63,7 +63,8 @@
     user-select: none;
     box-sizing: border-box;
 
-    &:focus, &--open {
+    &:focus,
+    &--open {
         border-color: var(--t-primary);
         box-shadow: 0 0 0 3px var(--t-primary-faint);
         background-color: var(--t-bg-card);
@@ -71,7 +72,9 @@
 
     &--error {
         border-color: var(--t-danger);
-        &:focus { box-shadow: 0 0 0 3px var(--t-danger-bg); }
+        &:focus {
+            box-shadow: 0 0 0 3px var(--t-danger-bg);
+        }
     }
 
     &--disabled {
@@ -105,7 +108,7 @@
     border: 1px solid var(--t-border-color);
     border-radius: var(--t-radius);
     box-shadow: var(--t-shadow-lg);
-    z-index: 110;
+    z-index: 9999;
     overflow: hidden;
     animation: t-select-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
