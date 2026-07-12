@@ -13,7 +13,7 @@ router.get('/summary', restrictTo('ADMIN', 'FLEET_MANAGER', 'FINANCIAL_ANALYST')
 router.get('/vehicle/:vehicleId', restrictTo(...staffRoles), fuelLogController.getVehicleFuelLogs);
 
 // Standard CRUD routes
-router.post('/', restrictTo('ADMIN', 'FLEET_MANAGER', 'DRIVER'), fuelLogController.createFuelLog);
+router.post('/', restrictTo('ADMIN', 'FLEET_MANAGER', 'DRIVER', 'FINANCIAL_ANALYST'), fuelLogController.createFuelLog);
 router.get('/', restrictTo(...staffRoles, 'DRIVER'), fuelLogController.getFuelLogs);
 router.get('/:id', restrictTo(...staffRoles, 'DRIVER'), fuelLogController.getFuelLogDetails);
 router.patch('/:id', restrictTo(...writeRoles), fuelLogController.updateFuelLog);
