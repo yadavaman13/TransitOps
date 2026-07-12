@@ -89,11 +89,6 @@ export async function logout() {
 }
 
 export async function getMe() {
-    try {
-        const response = await authApiInstance.get('/get-me');
-        return response.data;
-    } catch (err) {
-        console.error('Failed to fetch user data', err);
-        return null;
-    }
+    const response = await authApiInstance.get('/get-me');
+    return response.data;
 }

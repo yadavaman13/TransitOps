@@ -183,8 +183,31 @@ export async function updateDriverStatus(id, status) {
         throw new AppError('Invalid status update', 400);
     }
 
-    return driverDao.updateDriverStatus(id, status);
+    // Business Rule: A driver cannot be suspended if they have active trips
+    if (status === 'SUSPENDED') {
+        const activeTrips = await db
+            .select()
+            .from(trips)
+            .where(
+                and(
+                    eq(trips.driverId, id),
+                    inArray(trips.status, ['DRAFT', 'DISPATCHED', 'STARTED'])
+                )
+            )
+            .limit(1);
+
+        if (activeTrips.length > 0) {
+            throw new AppError('Driver has active trips and cannot be suspended. Complete or cancel active trips first.', 400);
+        }
+    }
+
+    const updated = await driverDao.updateDriverStatus(id, status);
+    if (!updated) {
+        throw new AppError('Driver profile not found. Cannot update status.', 404);
+    }
+    return updated;
 }
+
 
 export async function updateDriverLicense(id, licenseNumber, licenseExpiry) {
     const driver = await driverDao.getDriverById(id);
@@ -220,7 +243,39 @@ export async function updateDriverSafetyScore(id, safetyScore) {
 }
 
 export async function suspendDriver(id) {
-    return updateDriverStatus(id, 'SUSPENDED');
+    // Fetch driver first so we have email/name for the notification
+    const driver = await driverDao.getDriverById(id);
+    if (!driver) {
+        throw new AppError('Driver not found', 404);
+    }
+
+    const result = await updateDriverStatus(id, 'SUSPENDED');
+
+    // Send suspension notification email (non-blocking)
+    const subject = 'Your TransitOps Driver Account Has Been Suspended';
+    const html = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #c0392b;">Account Suspension Notice</h2>
+            <p>Hi ${driver.name},</p>
+            <p>We are writing to inform you that your driver account on <strong>TransitOps</strong> has been <strong>suspended</strong> effective immediately.</p>
+            <p>As a result of this suspension:</p>
+            <ul>
+                <li>You will not be assigned to any future transit trips.</li>
+                <li>Your current availability status has been set to <strong>SUSPENDED</strong>.</li>
+            </ul>
+            <p>If you believe this is an error or would like to appeal this decision, please contact your Fleet Manager or Safety Officer.</p>
+            <br/>
+            <p style="color: #7f8c8d; font-size: 0.85rem;">This is an automated message from TransitOps. Please do not reply to this email.</p>
+        </div>
+    `;
+
+    try {
+        await sendEmail({ to: driver.email, subject, html });
+    } catch (mailError) {
+        console.error('Failed to send suspension notification email:', mailError);
+    }
+
+    return result;
 }
 
 export async function activateDriver(id) {

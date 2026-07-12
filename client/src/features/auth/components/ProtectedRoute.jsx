@@ -23,15 +23,15 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
         };
 
         loadUser();
-    }, [handleGetMe]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (!hasChecked || (loading && !error && !user)) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        console.error('Error fetching user data:', error);
-        return <Navigate to="/login" replace />;
+        return (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', color: '#888' }}>
+                Loading...
+            </div>
+        );
     }
 
     if (!user && !loading) {

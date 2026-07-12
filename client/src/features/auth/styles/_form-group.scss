@@ -1,54 +1,77 @@
 @use '../../shared/styles/mixins' as *;
 
+// ──────────────────────────────────────────────
+// Design:
+//   Input height = 52px  (padding: 22px top / 10px bottom + 1rem line-height)
+//   Label at rest: vertically centered in the input  →  top: 50%, translateY(-50%)
+//   Label when active: floats up to sit ON the border  →  top: 0, translateY(-50%)
+//   Label bg at rest   = --bg-input  (matches the field background — no white box)
+//   Label bg when active = --bg-card  (white pill cuts cleanly through the border line)
+// ──────────────────────────────────────────────
+
 .form-group {
     @include flex(flex-start, stretch, column, var(--space-2));
     width: 100%;
+    // Must be relative so the absolutely-positioned label stays inside the field
     position: relative;
 
+    // ── Input ──────────────────────────────────
     .form-input {
         width: 100%;
-        padding: var(--space-3) var(--space-4);
-        background-color: var(--bg-input);
+        // Tall asymmetric padding:
+        //   top: 22px  — creates the "float zone" above the text for the label
+        //   bottom: 10px — keeps visual balance
+        padding: 22px var(--space-4) 10px;
+        min-height: 52px;
+        background-color: var(--bg-card);
         border: 1px solid var(--border-color);
         border-radius: var(--border-radius);
         color: var(--text-main);
         font-family: inherit;
         font-size: var(--font-size-base);
+        line-height: 1.25;
         box-shadow: inset 0 1px 2px rgba(31, 26, 55, 0.02);
         transition: var(--transition-smooth);
 
+        // Hidden placeholder trick — allows :not(:placeholder-shown) to fire
         &::placeholder {
             color: transparent;
-            transition: var(--transition-smooth);
         }
 
+        // Focus ring
         &:focus {
             outline: none;
             border-color: var(--primary);
             background-color: var(--bg-card);
             box-shadow: 0 0 0 3px var(--primary-faint);
 
+            // Show a subtle placeholder hint when the user is typing
             &::placeholder {
                 color: var(--text-muted);
             }
+
+            // When focused, label bg must match the now-white field
+            & ~ .form-label {
+                background-color: var(--bg-card);
+            }
+        }
+
+        // ── Browser autofill override ──────────────────────────
+        // Browsers apply a coloured tint (yellow/blue) on autofill;
+        // we override it with a 1000px inset shadow trick.
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 1000px var(--bg-card) inset !important;
+            box-shadow: 0 0 0 1000px var(--bg-card) inset !important;
+            -webkit-text-fill-color: var(--text-main) !important;
+            caret-color: var(--text-main);
+            border-color: var(--border-color);
+            transition: background-color 99999s ease-in-out 0s; // prevents flash
         }
     }
 
-    .form-label {
-        position: absolute;
-        left: var(--space-4);
-        top: 22px;
-        transform: translateY(-50%);
-        font-size: var(--font-size-base);
-        font-weight: var(--font-weight-medium);
-        color: var(--text-muted);
-        background-color: var(--bg-card);
-        padding: 0 6px;
-        pointer-events: none;
-        transition: var(--transition-smooth);
-        border-radius: var(--rounded-pill);
-    }
-
+    // Custom chevron for <select>
     select.form-input {
         appearance: none;
         padding-right: var(--space-8) !important;
@@ -56,31 +79,68 @@
         background-repeat: no-repeat;
         background-position: right var(--space-3) center;
         background-size: 16px;
+        cursor: pointer;
     }
 
+    // ── Floating label ─────────────────────────
+    .form-label {
+        position: absolute;
+        left: var(--space-4);
+        // At rest: vertically centered in the 52px input (26px from top of .form-group)
+        // The input has a 1px border, so the center of the 50px inner area is at 26px
+        top: 26px;
+        transform: translateY(-50%);
+        font-size: var(--font-size-base);
+        font-weight: var(--font-weight-medium);
+        color: var(--text-muted);
+        // Match the input's white background so the label blends in at rest
+        background-color: var(--bg-card);
+        padding: 0 4px;
+        pointer-events: none;
+        transition: var(--transition-smooth);
+        border-radius: var(--rounded-pill);
+        white-space: nowrap;
+        line-height: 1;
+    }
+
+    // ── Active state — label floats above the border line ──────────────────────
+    // Triggers when:
+    //   1. The input is focused
+    //   2. The input has a value (placeholder hidden via :not(:placeholder-shown))
+    //   3. The browser autofills the field (:-webkit-autofill)
+    //   4. The select has a chosen option (form-label--active toggled in JSX)
     .form-input:focus ~ .form-label,
     .form-input:not(:placeholder-shown) ~ .form-label,
+    .form-input:-webkit-autofill ~ .form-label,
     .form-label--active {
         top: 0;
         font-size: var(--font-size-caption);
         font-weight: var(--font-weight-bold);
         color: var(--primary);
+        // White pill cuts cleanly through the border
+        background-color: var(--bg-card);
     }
 
-    .form-input:not(:focus):not(:placeholder-shown) ~ .form-label {
+    // Filled but not focused → label stays up but reverts to muted color
+    .form-input:not(:focus):not(:placeholder-shown) ~ .form-label,
+    .form-input:not(:focus):-webkit-autofill ~ .form-label {
         color: var(--text-muted);
+        background-color: var(--bg-card);
     }
 
+    // ── Password field — extra right padding for the eye button ──
     &.has-password {
         .form-input {
-            padding-right: 54px;
+            padding-right: 52px;
         }
     }
 
+    // ── Password visibility toggle ───────────────────────────────
     .password-toggle-btn {
         position: absolute;
         right: 12px;
-        top: 22px;
+        // Vertically centered in the 52px input
+        top: 26px;
         transform: translateY(-50%);
         background: transparent;
         border: none;
@@ -108,6 +168,7 @@
         }
     }
 
+    // ── Error state ──────────────────────────────────────────────
     &.error {
         .form-input {
             border-color: var(--danger);
@@ -131,4 +192,3 @@
         line-height: var(--line-height-caption);
     }
 }
-

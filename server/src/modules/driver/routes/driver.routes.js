@@ -25,7 +25,7 @@ router.delete('/:id', restrictTo(...allowedWriterRoles), driverController.delete
 
 // Status / Profile adjustments
 router.patch('/:id/status', restrictTo(...allowedWriterRoles), driverController.updateStatus);
-router.patch('/:id/license', restrictTo(...allowedWriterRoles), driverController.updateLicense);
+router.patch('/:id/license', restrictTo(...allowedSafetyRoles), driverController.updateLicense);
 
 // Safety / Suspension updates (Safety Officer, Manager, Admin)
 router.patch('/:id/safety-score', restrictTo(...allowedSafetyRoles), driverController.updateSafetyScore);

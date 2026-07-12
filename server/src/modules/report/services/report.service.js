@@ -437,6 +437,35 @@ export async function compileCSV(type) {
         return convertToCSV(headers, rows);
     }
 
+    if (type === 'maintenance') {
+        const records = await db
+            .select({
+                title: maintenance.title,
+                maintenanceType: maintenance.maintenanceType,
+                cost: maintenance.cost,
+                scheduledDate: maintenance.scheduledDate,
+                completedDate: maintenance.completedDate,
+                status: maintenance.status,
+                serviceCenter: maintenance.serviceCenter,
+                vehicleRegistration: vehicles.registrationNumber,
+            })
+            .from(maintenance)
+            .leftJoin(vehicles, eq(maintenance.vehicleId, vehicles.id));
+
+        const headers = ['Title', 'Vehicle', 'Type', 'Cost', 'Scheduled Date', 'Completed Date', 'Status', 'Service Center'];
+        const rows = records.map(r => [
+            r.title,
+            r.vehicleRegistration || 'Unknown',
+            r.maintenanceType,
+            r.cost,
+            r.scheduledDate ? new Date(r.scheduledDate).toLocaleDateString() : 'N/A',
+            r.completedDate ? new Date(r.completedDate).toLocaleDateString() : 'N/A',
+            r.status,
+            r.serviceCenter || 'N/A'
+        ]);
+        return convertToCSV(headers, rows);
+    }
+
     throw new AppError(`Invalid report type: ${type}`, 400);
 }
 
@@ -489,6 +518,35 @@ export async function compilePDF(type) {
             b.registrationNumber, b.brand, b.model, b.fuelCost, b.maintenanceCost, b.generalExpenseCost, b.totalOperationalCost
         ]);
         return generateSimplePDF('Operational Cost Analysis Report', headers, widths, rows);
+    }
+
+    if (type === 'maintenance') {
+        const records = await db
+            .select({
+                title: maintenance.title,
+                maintenanceType: maintenance.maintenanceType,
+                cost: maintenance.cost,
+                scheduledDate: maintenance.scheduledDate,
+                completedDate: maintenance.completedDate,
+                status: maintenance.status,
+                serviceCenter: maintenance.serviceCenter,
+                vehicleRegistration: vehicles.registrationNumber,
+            })
+            .from(maintenance)
+            .leftJoin(vehicles, eq(maintenance.vehicleId, vehicles.id));
+
+        const headers = ['TITLE', 'VEHICLE', 'TYPE', 'COST', 'SCHEDULED', 'COMPLETED', 'STATUS'];
+        const widths = [22, 14, 12, 10, 12, 12, 12];
+        const rows = records.map(r => [
+            r.title,
+            r.vehicleRegistration || 'Unknown',
+            r.maintenanceType,
+            r.cost,
+            r.scheduledDate ? new Date(r.scheduledDate).toLocaleDateString() : 'N/A',
+            r.completedDate ? new Date(r.completedDate).toLocaleDateString() : 'N/A',
+            r.status
+        ]);
+        return generateSimplePDF('Fleet Maintenance Report', headers, widths, rows);
     }
 
     throw new AppError(`Invalid report type: ${type}`, 400);
