@@ -4,6 +4,11 @@ import cors from 'cors';
 import morgan from 'morgan';
 import envConfig from './config/envConfig.js';
 import { authRouter, userRouter } from './modules/auth/index.js';
+import dashboardRouter from './modules/dashboard/index.js';
+import vehicleRouter from './modules/vehicle/index.js';
+import driverRouter from './modules/driver/index.js';
+import tripRouter from './modules/trip/index.js';
+import { errorHandler } from './modules/auth/middleware/errorHandler.js';
 import { notificationRouter } from './modules/notifications/index.js';
 import { vehicleDocumentRouter } from './modules/vehicle-documents/index.js';
 import { settingsRouter } from './modules/settings/index.js';
@@ -29,6 +34,13 @@ app.use(morgan('combined'));
 // Auth & User routes
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
+app.use('/api/dashboard', dashboardRouter);
+app.use('/api/vehicles', vehicleRouter);
+app.use('/api/drivers', driverRouter);
+app.use('/api/trips', tripRouter);
+
+// Centralized error handling
+app.use(errorHandler);
 
 // Module 13 — Notifications
 app.use('/api/notifications', notificationRouter);
