@@ -13,7 +13,8 @@ import {
     DatePicker,
     ConfirmDialog,
     Dropdown,
-    useToast
+    useToast,
+    FileUpload
 } from '../../template';
 import '../../template/styles/index.scss';
 import * as fleetApi from '../service/fleet.api';
@@ -555,11 +556,11 @@ const FuelExpensesPage = () => {
                         required
                         error={formErrors.description}
                     />
-                    <Input
-                        label="Receipt Attachment URL (Optional)"
-                        placeholder="e.g. https://storage.transitops.com/receipts/01.pdf"
+                    <FileUpload
+                        label="Receipt Attachment (Optional)"
                         value={expenseForm.receipt}
-                        onChange={handleExpenseField('receipt')}
+                        onChange={(url) => setExpenseForm(prev => ({ ...prev, receipt: url }))}
+                        error={formErrors.receipt}
                     />
                 </div>
             </Modal>

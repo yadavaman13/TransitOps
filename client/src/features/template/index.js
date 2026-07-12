@@ -18,6 +18,7 @@ export { default as Dropdown }    from './components/ui/Dropdown/index.js';
 export { default as Input }       from './components/forms/Input/index.js';
 export { default as Select }      from './components/forms/Select/index.js';
 export { default as DatePicker }  from './components/forms/DatePicker/index.js';
+export { default as FileUpload }  from './components/forms/FileUpload/index.js';
 export { default as Form, FormSection, FormRow, FormActions } from './components/forms/Form/index.js';
 
 // Data Display
