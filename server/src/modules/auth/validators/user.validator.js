@@ -33,6 +33,11 @@ export const updateProfileValidator = [
         .withMessage('Phone number must not exceed 10 digits')
         .matches(/^[0-9]+$/)
         .withMessage('Phone number must contain only digits'),
+    body('profileImage')
+        .optional()
+        .trim()
+        .isURL()
+        .withMessage('Profile image must be a valid URL'),
     body('emergencyContact')
         .optional()
         .trim()

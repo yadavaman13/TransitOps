@@ -20,11 +20,12 @@ import { eq } from 'drizzle-orm';
  * @param {object} updates name, email
  * @returns {object} updated user
  */
-export async function updateProfile(userId, { name, email, phone, emergencyContact }) {
+export async function updateProfile(userId, { name, email, phone, profileImage, emergencyContact }) {
     const updates = {};
     if (name) updates.name = name;
     if (email) updates.email = email;
-    if (phone) updates.phone = phone;
+    if (phone !== undefined) updates.phone = phone;
+    if (profileImage !== undefined) updates.profileImage = profileImage;
 
     const user = await updateUser(userId, updates);
     if (!user) {

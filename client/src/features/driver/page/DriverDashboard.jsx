@@ -69,8 +69,9 @@ const DriverDashboard = () => {
                     />
                 )}
                 {activeTab === 'checklist' && (
-                    <div style={{ padding: 'var(--t-space-8)', textAlign: 'center', color: 'var(--t-text-muted)' }}>
-                        ✅ Daily vehicle safety checklist is completed. Tire pressure, breaks, and fuel are okay.
+                    <div style={{ padding: 'var(--t-space-8)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: 'var(--t-text-muted)' }}>
+                        <i className="ri-checkbox-circle-fill" style={{ color: 'var(--t-color-success, #22c55e)', fontSize: '18px' }} />
+                        Daily vehicle safety checklist is completed. Tire pressure, brakes, and fuel are okay.
                     </div>
                 )}
             </Card>

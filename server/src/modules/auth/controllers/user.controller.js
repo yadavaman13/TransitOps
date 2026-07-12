@@ -23,6 +23,9 @@ export async function getMe(req, res, next) {
                     profileImage: user.profileImage,
                     isActive: user.isActive,
                     emailVerified: user.emailVerified,
+                    phone: user.phone,
+                    profileImage: user.profileImage,
+                    status: user.status,
                     createdAt: user.createdAt,
                     updatedAt: user.updatedAt,
                 },
@@ -38,8 +41,8 @@ export async function getMe(req, res, next) {
  */
 export async function updateProfile(req, res, next) {
     try {
-        const { name, email, phone, emergencyContact } = req.body;
-        const updatedUser = await userService.updateProfile(req.user.id, { name, email, phone, emergencyContact });
+        const { name, email, phone, profileImage, emergencyContact } = req.body;
+        const updatedUser = await userService.updateProfile(req.user.id, { name, email, phone, profileImage, emergencyContact });
         return sendResponse({
             res,
             statusCode: 200,
@@ -55,6 +58,9 @@ export async function updateProfile(req, res, next) {
                     profileImage: updatedUser.profileImage,
                     isActive: updatedUser.isActive,
                     emailVerified: updatedUser.emailVerified,
+                    phone: updatedUser.phone,
+                    profileImage: updatedUser.profileImage,
+                    status: updatedUser.status,
                     createdAt: updatedUser.createdAt,
                     updatedAt: updatedUser.updatedAt,
                 },
@@ -119,6 +125,9 @@ export async function adminListUsers(req, res, next) {
             isDeleted: user.isDeleted,
             deletedAt: user.deletedAt,
             emailVerified: user.emailVerified,
+            phone: user.phone,
+            profileImage: user.profileImage,
+            status: user.status,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
         }));
@@ -156,6 +165,9 @@ export async function adminGetUserById(req, res, next) {
                     isDeleted: user.isDeleted,
                     deletedAt: user.deletedAt,
                     emailVerified: user.emailVerified,
+                    phone: user.phone,
+                    profileImage: user.profileImage,
+                    status: user.status,
                     createdAt: user.createdAt,
                     updatedAt: user.updatedAt,
                 },
@@ -186,6 +198,9 @@ export async function adminUpdateRole(req, res, next) {
                     role: updatedUser.role,
                     isActive: updatedUser.isActive,
                     emailVerified: updatedUser.emailVerified,
+                    phone: updatedUser.phone,
+                    profileImage: updatedUser.profileImage,
+                    status: updatedUser.status,
                     createdAt: updatedUser.createdAt,
                     updatedAt: updatedUser.updatedAt,
                 },

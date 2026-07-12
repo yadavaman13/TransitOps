@@ -70,8 +70,9 @@ const SafetyOfficerDashboard = () => {
                     />
                 )}
                 {activeTab === 'audits' && (
-                    <div style={{ padding: 'var(--t-space-8)', textAlign: 'center', color: 'var(--t-text-muted)' }}>
-                        📝 All 18 driver background verification and medical audits completed successfully. 2 pending.
+                    <div style={{ padding: 'var(--t-space-8)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: 'var(--t-text-muted)' }}>
+                        <i className="ri-checkbox-circle-line" style={{ color: 'var(--t-color-success, #22c55e)', fontSize: '18px' }} />
+                        All 18 driver background verification and medical audits completed successfully. 2 pending.
                     </div>
                 )}
             </Card>

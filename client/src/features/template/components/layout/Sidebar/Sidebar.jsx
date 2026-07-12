@@ -126,8 +126,12 @@ const Sidebar = ({
                 {user && (
                     <div className="t-sidebar__footer">
                         <div className="t-sidebar__user-plate">
-                            <div className="t-sidebar__avatar" aria-hidden="true">
-                                {avatarLetter}
+                            <div className="t-sidebar__avatar" aria-hidden="true" style={{ padding: 0, overflow: 'hidden' }}>
+                                <img
+                                    src={user.profileImage || "https://ik.imagekit.io/2bzzjhgkg/defaul_profile_image.jpeg"}
+                                    alt={user.name}
+                                    style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
+                                />
                             </div>
                             <div className="t-sidebar__user-info">
                                 <span className="t-sidebar__user-name">{user.name}</span>
