@@ -10,6 +10,9 @@ import driverRouter from './modules/driver/index.js';
 import tripRouter from './modules/trip/index.js';
 import fuelLogRouter from './modules/fuel-log/index.js';
 import maintenanceRouter from './modules/maintenance/index.js';
+import expenseRouter from './modules/expense/index.js';
+import reportRouter from './modules/report/index.js';
+import analyticsRouter from './modules/analytics/index.js';
 import { errorHandler } from './modules/auth/middleware/errorHandler.js';
 import { notificationRouter } from './modules/notifications/index.js';
 import { vehicleDocumentRouter } from './modules/vehicle-documents/index.js';
@@ -42,6 +45,9 @@ app.use('/api/drivers', driverRouter);
 app.use('/api/trips', tripRouter);
 app.use('/api/fuel-logs', fuelLogRouter);
 app.use('/api/maintenance', maintenanceRouter);
+app.use('/api/expenses', expenseRouter);
+app.use('/api/reports', reportRouter);
+app.use('/api/analytics', analyticsRouter);
 
 // Centralized error handling
 app.use(errorHandler);
