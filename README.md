@@ -6,7 +6,7 @@
 | :--- | :--- | :--- |
 | **Aman Yadav** | Full Stack | Overall architecture, Backend API |
 | **Aryan Patel** | Full Stack | REST API design, route validation, JWT authentication |
-| **Iteshkumar Prajapati** | Full Stack | REST API design | UI/UX design system implementation, and client state | 
+| **Iteshkumar Prajapati** | Full Stack | REST API design | client state | 
 | **Ankur Singh** | Full Stack | Database migrations, and endpoint testing |
 
 ---

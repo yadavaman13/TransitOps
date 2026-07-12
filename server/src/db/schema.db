@@ -1,0 +1,214 @@
+-- PostgreSQL Database Schema for TransitOps Smart Transport Operations Platform (SDE Recommended)
+
+-- Enable uuid-ossp extension for UUID generation
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- 1. Users & Authentication (RBAC) - Kept exactly as original
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'USER',
+    email_verified BOOLEAN NOT NULL DEFAULT FALSE,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
+    deleted_at TIMESTAMP WITH TIME ZONE,
+    phone TEXT,
+    profile_image TEXT,
+    status TEXT NOT NULL DEFAULT 'ACTIVE',
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    
+    -- Validations
+    CONSTRAINT user_email_format_check CHECK (email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$'),
+    CONSTRAINT user_phone_length_check CHECK (phone IS NULL OR char_length(phone) <= 10),
+    CONSTRAINT user_phone_digits_check CHECK (phone IS NULL OR phone ~ '^[0-9]+$'),
+    CONSTRAINT user_role_check CHECK (role IN ('FLEET_MANAGER', 'DRIVER', 'SAFETY_OFFICER', 'FINANCIAL_ANALYST', 'USER', 'ADMIN')),
+    CONSTRAINT user_status_check CHECK (status IN ('ACTIVE', 'INACTIVE'))
+);
+
+CREATE INDEX users_email_idx ON users(email);
+CREATE INDEX users_role_idx ON users(role);
+CREATE INDEX users_is_deleted_idx ON users(is_deleted);
+
+-- 2. Driver Profile
+CREATE TABLE driver_profiles (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    license_number TEXT UNIQUE NOT NULL,
+    license_expiry TIMESTAMP WITH TIME ZONE NOT NULL,
+    joining_date TIMESTAMP WITH TIME ZONE NOT NULL,
+    phone TEXT NOT NULL,
+    emergency_contact TEXT NOT NULL,
+    blood_group TEXT,
+    safety_score NUMERIC(5, 2) NOT NULL DEFAULT 100.00,
+    experience_years INTEGER,
+    availability_status TEXT NOT NULL DEFAULT 'AVAILABLE', -- 'AVAILABLE', 'ON_TRIP', 'ON_LEAVE'
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    
+    -- Validations
+    CONSTRAINT phone_length_check CHECK (char_length(phone) <= 10),
+    CONSTRAINT phone_digits_check CHECK (phone ~ '^[0-9]+$'),
+    CONSTRAINT license_num_len_check CHECK (char_length(license_number) >= 5),
+    CONSTRAINT safety_score_range CHECK (safety_score >= 0.00 AND safety_score <= 100.00),
+    CONSTRAINT experience_years_check CHECK (experience_years >= 0)
+);
+
+CREATE INDEX driver_profiles_user_id_idx ON driver_profiles(user_id);
+CREATE INDEX driver_profiles_license_num_idx ON driver_profiles(license_number);
+CREATE INDEX driver_profiles_availability_idx ON driver_profiles(availability_status);
+
+-- 3. Vehicles
+CREATE TABLE vehicles (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    registration_number TEXT UNIQUE NOT NULL,
+    vehicle_number TEXT NOT NULL,
+    brand TEXT NOT NULL,
+    model TEXT NOT NULL,
+    manufacture_year INTEGER NOT NULL,
+    capacity_kg NUMERIC(10, 2) NOT NULL,
+    fuel_type TEXT NOT NULL, -- 'Diesel', 'Petrol', 'CNG', 'EV'
+    current_odometer NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
+    status TEXT NOT NULL DEFAULT 'AVAILABLE', -- 'AVAILABLE', 'ON_TRIP', 'MAINTENANCE', 'RETIRED'
+    purchase_date TIMESTAMP WITH TIME ZONE NOT NULL,
+    insurance_expiry TIMESTAMP WITH TIME ZONE NOT NULL,
+    pollution_expiry TIMESTAMP WITH TIME ZONE NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    
+    -- Validations
+    CONSTRAINT manufacture_year_check CHECK (manufacture_year >= 1900 AND manufacture_year <= 2100),
+    CONSTRAINT capacity_check CHECK (capacity_kg > 0.00),
+    CONSTRAINT odometer_check CHECK (current_odometer >= 0.00)
+);
+
+CREATE INDEX vehicles_reg_number_idx ON vehicles(registration_number);
+CREATE INDEX vehicles_status_idx ON vehicles(status);
+
+-- 4. Trips
+CREATE TABLE trips (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    trip_number TEXT UNIQUE NOT NULL, -- e.g. TRP-1001
+    vehicle_id UUID NOT NULL REFERENCES vehicles(id) ON DELETE RESTRICT,
+    driver_id UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    created_by UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    source TEXT NOT NULL,
+    destination TEXT NOT NULL,
+    cargo_name TEXT NOT NULL,
+    cargo_weight NUMERIC(10, 2) NOT NULL,
+    distance_km NUMERIC(10, 2) NOT NULL,
+    planned_start TIMESTAMP WITH TIME ZONE NOT NULL,
+    planned_end TIMESTAMP WITH TIME ZONE NOT NULL,
+    actual_start TIMESTAMP WITH TIME ZONE,
+    actual_end TIMESTAMP WITH TIME ZONE,
+    status TEXT NOT NULL DEFAULT 'DRAFT', -- 'DRAFT', 'DISPATCHED', 'COMPLETED', 'CANCELLED'
+    remarks TEXT,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    
+    -- Validations
+    CONSTRAINT cargo_weight_check CHECK (cargo_weight > 0.00),
+    CONSTRAINT distance_check CHECK (distance_km > 0.00)
+);
+
+CREATE INDEX trips_number_idx ON trips(trip_number);
+CREATE INDEX trips_vehicle_id_idx ON trips(vehicle_id);
+CREATE INDEX trips_driver_id_idx ON trips(driver_id);
+CREATE INDEX trips_status_idx ON trips(status);
+
+-- 5. Fuel Logs
+CREATE TABLE fuel_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    trip_id UUID NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+    vehicle_id UUID NOT NULL REFERENCES vehicles(id) ON DELETE CASCADE,
+    driver_id UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    litres NUMERIC(10, 2) NOT NULL,
+    price_per_litre NUMERIC(10, 2) NOT NULL,
+    total_cost NUMERIC(12, 2) NOT NULL,
+    station_name TEXT NOT NULL,
+    odometer NUMERIC(10, 2) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    
+    -- Validations
+    CONSTRAINT litres_check CHECK (litres > 0.00),
+    CONSTRAINT price_check CHECK (price_per_litre > 0.00),
+    CONSTRAINT total_cost_check CHECK (total_cost >= 0.00),
+    CONSTRAINT fuel_odometer_check CHECK (odometer >= 0.00)
+);
+
+CREATE INDEX fuel_logs_trip_id_idx ON fuel_logs(trip_id);
+CREATE INDEX fuel_logs_vehicle_id_idx ON fuel_logs(vehicle_id);
+CREATE INDEX fuel_logs_driver_id_idx ON fuel_logs(driver_id);
+
+-- 6. Maintenance
+CREATE TABLE maintenance (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    vehicle_id UUID NOT NULL REFERENCES vehicles(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    description TEXT,
+    maintenance_type TEXT NOT NULL, -- 'Repair', 'Oil Change', 'Tyres', 'Insurance', 'General Service'
+    cost NUMERIC(12, 2) NOT NULL,
+    service_center TEXT,
+    scheduled_date TIMESTAMP WITH TIME ZONE NOT NULL,
+    completed_date TIMESTAMP WITH TIME ZONE,
+    status TEXT NOT NULL DEFAULT 'PENDING', -- 'PENDING', 'IN_PROGRESS', 'COMPLETED'
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    
+    -- Validations
+    CONSTRAINT maintenance_cost_check CHECK (cost >= 0.00)
+);
+
+CREATE INDEX maintenance_vehicle_id_idx ON maintenance(vehicle_id);
+CREATE INDEX maintenance_status_idx ON maintenance(status);
+
+-- 7. Expenses
+CREATE TABLE expenses (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    trip_id UUID REFERENCES trips(id) ON DELETE SET NULL, -- Optional trip link
+    vehicle_id UUID NOT NULL REFERENCES vehicles(id) ON DELETE CASCADE,
+    category TEXT NOT NULL, -- 'Fuel', 'Toll', 'Parking', 'Repair', 'Insurance', 'Misc'
+    amount NUMERIC(12, 2) NOT NULL,
+    description TEXT,
+    receipt TEXT, -- Receipt scan path
+    created_by UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    
+    -- Validations
+    CONSTRAINT expense_amount_check CHECK (amount > 0.00)
+);
+
+CREATE INDEX expenses_trip_id_idx ON expenses(trip_id);
+CREATE INDEX expenses_vehicle_id_idx ON expenses(vehicle_id);
+CREATE INDEX expenses_category_idx ON expenses(category);
+
+-- 8. Notifications
+CREATE TABLE notifications (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    message TEXT NOT NULL,
+    is_read BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX notifications_user_id_idx ON notifications(user_id);
+
+-- 9. Audit Logs
+CREATE TABLE audit_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE SET NULL, -- User doing action
+    action TEXT NOT NULL,
+    entity TEXT NOT NULL, -- target table name (e.g. 'vehicles')
+    entity_id UUID NOT NULL,
+    old_value JSONB,
+    new_value JSONB,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX audit_logs_user_id_idx ON audit_logs(user_id);
+CREATE INDEX audit_logs_entity_idx ON audit_logs(entity);
+CREATE INDEX audit_logs_entity_id_idx ON audit_logs(entity_id);
