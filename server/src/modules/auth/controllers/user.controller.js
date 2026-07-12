@@ -1,5 +1,6 @@
 import * as userService from '../services/user.service.js';
 import { sendResponse } from '../../../utils/response.utlis.js';
+import { uploadImageOnImageKit } from '../../../services/image.service.js';
 
 /**
  * Get current logged in user details
@@ -18,6 +19,8 @@ export async function getMe(req, res, next) {
                     name: user.name,
                     email: user.email,
                     role: user.role,
+                    phone: user.phone,
+                    profileImage: user.profileImage,
                     isActive: user.isActive,
                     emailVerified: user.emailVerified,
                     phone: user.phone,
@@ -38,8 +41,8 @@ export async function getMe(req, res, next) {
  */
 export async function updateProfile(req, res, next) {
     try {
-        const { name, email, phone, profileImage } = req.body;
-        const updatedUser = await userService.updateProfile(req.user.id, { name, email, phone, profileImage });
+        const { name, email, phone, profileImage, emergencyContact } = req.body;
+        const updatedUser = await userService.updateProfile(req.user.id, { name, email, phone, profileImage, emergencyContact });
         return sendResponse({
             res,
             statusCode: 200,
@@ -51,6 +54,8 @@ export async function updateProfile(req, res, next) {
                     name: updatedUser.name,
                     email: updatedUser.email,
                     role: updatedUser.role,
+                    phone: updatedUser.phone,
+                    profileImage: updatedUser.profileImage,
                     isActive: updatedUser.isActive,
                     emailVerified: updatedUser.emailVerified,
                     phone: updatedUser.phone,
@@ -251,6 +256,46 @@ export async function createFinancialAnalyst(req, res, next) {
             success: true,
             message: 'Financial Analyst created successfully',
             data,
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
+/**
+ * Update current user profile image
+ */
+export async function updateProfileImage(req, res, next) {
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: 'No file uploaded',
+            });
+        }
+
+        const file = await uploadImageOnImageKit({ image: req.file });
+        const updatedUser = await userService.updateProfileImage(req.user.id, file.url);
+
+        return sendResponse({
+            res,
+            statusCode: 200,
+            message: 'Profile image updated successfully',
+            success: true,
+            data: {
+                user: {
+                    id: updatedUser.id,
+                    name: updatedUser.name,
+                    email: updatedUser.email,
+                    role: updatedUser.role,
+                    phone: updatedUser.phone,
+                    profileImage: updatedUser.profileImage,
+                    isActive: updatedUser.isActive,
+                    emailVerified: updatedUser.emailVerified,
+                    createdAt: updatedUser.createdAt,
+                    updatedAt: updatedUser.updatedAt,
+                },
+            },
         });
     } catch (error) {
         next(error);

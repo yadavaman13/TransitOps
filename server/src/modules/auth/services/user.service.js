@@ -10,6 +10,9 @@ import {
 import { AppError } from '../utils/appError.js';
 import { generatePassword } from '../../../utils/password-generator.utils.js';
 import { sendEmail } from '../../../services/mail/mail.service.js';
+import { db } from '../../../config/database.js';
+import { driverProfiles } from '../../../db/schema/driver-profiles.schema.js';
+import { eq } from 'drizzle-orm';
 
 /**
  * Update current user profile
@@ -17,7 +20,7 @@ import { sendEmail } from '../../../services/mail/mail.service.js';
  * @param {object} updates name, email
  * @returns {object} updated user
  */
-export async function updateProfile(userId, { name, email, phone, profileImage }) {
+export async function updateProfile(userId, { name, email, phone, profileImage, emergencyContact }) {
     const updates = {};
     if (name) updates.name = name;
     if (email) updates.email = email;
@@ -25,6 +28,33 @@ export async function updateProfile(userId, { name, email, phone, profileImage }
     if (profileImage !== undefined) updates.profileImage = profileImage;
 
     const user = await updateUser(userId, updates);
+    if (!user) {
+        throw new AppError('User not found', 404);
+    }
+
+    if (user.role === 'DRIVER') {
+        const profileUpdates = {};
+        if (phone) profileUpdates.phone = phone;
+        if (emergencyContact) profileUpdates.emergencyContact = emergencyContact;
+
+        if (Object.keys(profileUpdates).length > 0) {
+            await db
+                .update(driverProfiles)
+                .set({ ...profileUpdates, updatedAt: new Date() })
+                .where(eq(driverProfiles.userId, userId));
+        }
+    }
+    return user;
+}
+
+/**
+ * Update current user profile image
+ * @param {string} userId
+ * @param {string} imageUrl
+ * @returns {object} updated user
+ */
+export async function updateProfileImage(userId, imageUrl) {
+    const user = await updateUser(userId, { profileImage: imageUrl });
     if (!user) {
         throw new AppError('User not found', 404);
     }

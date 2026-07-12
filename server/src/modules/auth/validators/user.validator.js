@@ -29,8 +29,8 @@ export const updateProfileValidator = [
     body('phone')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 10 })
-        .withMessage('Phone number must be exactly 10 digits')
+        .isLength({ max: 10 })
+        .withMessage('Phone number must not exceed 10 digits')
         .matches(/^[0-9]+$/)
         .withMessage('Phone number must contain only digits'),
     body('profileImage')
@@ -38,6 +38,11 @@ export const updateProfileValidator = [
         .trim()
         .isURL()
         .withMessage('Profile image must be a valid URL'),
+    body('emergencyContact')
+        .optional()
+        .trim()
+        .notEmpty()
+        .withMessage('Emergency contact cannot be empty'),
     validateRequest,
 ];
 
