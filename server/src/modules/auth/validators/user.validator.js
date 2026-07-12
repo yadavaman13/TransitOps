@@ -26,6 +26,18 @@ export const updateProfileValidator = [
         .trim()
         .isEmail()
         .withMessage('A valid email is required'),
+    body('phone')
+        .optional()
+        .trim()
+        .isLength({ max: 10 })
+        .withMessage('Phone number must not exceed 10 digits')
+        .matches(/^[0-9]+$/)
+        .withMessage('Phone number must contain only digits'),
+    body('emergencyContact')
+        .optional()
+        .trim()
+        .notEmpty()
+        .withMessage('Emergency contact cannot be empty'),
     validateRequest,
 ];
 
