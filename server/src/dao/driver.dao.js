@@ -7,7 +7,7 @@ export async function createDriver(userData, profileData) {
     return await db.transaction(async (tx) => {
         const [user] = await tx.insert(users).values({
             ...userData,
-            role: 'Driver', // We use 'Driver' as role name
+            role: 'DRIVER', // We use 'DRIVER' as role name
             isActive: true,
             isDeleted: false,
         }).returning();
@@ -91,7 +91,7 @@ export async function listDrivers() {
         })
         .from(users)
         .leftJoin(driverProfiles, eq(users.id, driverProfiles.userId))
-        .where(and(eq(users.role, 'Driver'), eq(users.isDeleted, false)));
+        .where(and(eq(users.role, 'DRIVER'), eq(users.isDeleted, false)));
 }
 
 export async function listAvailableDrivers() {
@@ -112,7 +112,7 @@ export async function listAvailableDrivers() {
         .leftJoin(driverProfiles, eq(users.id, driverProfiles.userId))
         .where(
             and(
-                eq(users.role, 'Driver'),
+                eq(users.role, 'DRIVER'),
                 eq(users.isDeleted, false),
                 eq(users.isActive, true),
                 eq(driverProfiles.availabilityStatus, 'AVAILABLE')

@@ -12,7 +12,7 @@ export async function getDashboardKpis() {
     const [vAvailable] = await db.select({ count: sql`count(*)` }).from(vehicles).where(eq(vehicles.status, 'AVAILABLE'));
     const [vMaintenance] = await db.select({ count: sql`count(*)` }).from(vehicles).where(eq(vehicles.status, 'MAINTENANCE'));
     
-    const [dCount] = await db.select({ count: sql`count(*)` }).from(users).where(and(eq(users.role, 'Driver'), eq(users.isDeleted, false)));
+    const [dCount] = await db.select({ count: sql`count(*)` }).from(users).where(and(eq(users.role, 'DRIVER'), eq(users.isDeleted, false)));
     
     const [tActive] = await db.select({ count: sql`count(*)` }).from(trips).where(inArray(trips.status, ['DISPATCHED', 'STARTED']));
     

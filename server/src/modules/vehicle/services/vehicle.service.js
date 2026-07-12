@@ -27,7 +27,14 @@ export async function registerVehicle(data) {
         throw new AppError('Current odometer cannot be negative', 400);
     }
 
-    return vehicleDao.createVehicle(data);
+    const vehicleData = {
+        ...data,
+        purchaseDate: new Date(data.purchaseDate),
+        insuranceExpiry: new Date(data.insuranceExpiry),
+        pollutionExpiry: new Date(data.pollutionExpiry),
+    };
+
+    return vehicleDao.createVehicle(vehicleData);
 }
 
 export async function getVehicles(status) {
@@ -63,7 +70,12 @@ export async function updateVehicle(id, updates) {
         throw new AppError('Cargo capacity must be greater than 0', 400);
     }
 
-    return vehicleDao.updateVehicle(id, updates);
+    const vehicleUpdates = { ...updates };
+    if (updates.purchaseDate) vehicleUpdates.purchaseDate = new Date(updates.purchaseDate);
+    if (updates.insuranceExpiry) vehicleUpdates.insuranceExpiry = new Date(updates.insuranceExpiry);
+    if (updates.pollutionExpiry) vehicleUpdates.pollutionExpiry = new Date(updates.pollutionExpiry);
+
+    return vehicleDao.updateVehicle(id, vehicleUpdates);
 }
 
 export async function deleteVehicle(id) {

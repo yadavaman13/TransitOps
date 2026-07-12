@@ -22,8 +22,8 @@ export async function getTrips(req, res, next) {
             vehicleId: req.query.vehicleId,
         };
 
-        // If the logged in user is a Driver, they can only access their own trips
-        if (req.user.role === 'Driver') {
+        // If the logged in user is a DRIVER, they can only access their own trips
+        if (req.user.role === 'DRIVER') {
             filters.driverId = req.user.id;
         }
 
@@ -43,7 +43,7 @@ export async function getTripDetails(req, res, next) {
         const data = await tripService.getTripDetails(req.params.id);
         
         // If driver, verify they are assigned to this trip
-        if (req.user.role === 'Driver' && data.driverId !== req.user.id) {
+        if (req.user.role === 'DRIVER' && data.driverId !== req.user.id) {
             return res.status(403).json({
                 success: false,
                 message: 'You do not have permission to view this trip',
@@ -200,7 +200,7 @@ export async function getTripTimeline(req, res, next) {
         const data = await tripService.getTripTimeline(req.params.id);
         
         // If driver, verify they are assigned to this trip
-        if (req.user.role === 'Driver' && data.trip.driverId !== req.user.id) {
+        if (req.user.role === 'DRIVER' && data.trip.driverId !== req.user.id) {
             return res.status(403).json({
                 success: false,
                 message: 'You do not have permission to view this trip timeline',

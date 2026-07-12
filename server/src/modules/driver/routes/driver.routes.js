@@ -6,17 +6,17 @@ const router = Router();
 
 router.use(protect);
 
-const allowedReaderRoles = ['Fleet Manager', 'Safety Officer', 'ADMIN'];
-const allowedWriterRoles = ['Fleet Manager', 'ADMIN'];
-const allowedSafetyRoles = ['Fleet Manager', 'Safety Officer', 'ADMIN'];
+const allowedReaderRoles = ['FLEET_MANAGER', 'SAFETY_OFFICER', 'ADMIN'];
+const allowedWriterRoles = ['FLEET_MANAGER', 'ADMIN'];
+const allowedSafetyRoles = ['FLEET_MANAGER', 'SAFETY_OFFICER', 'ADMIN'];
 
 // Expiring licenses must be declared before parametric routes
 router.get('/expiring-license', restrictTo(...allowedReaderRoles), driverController.getExpiringLicenses);
 router.get('/available', restrictTo(...allowedWriterRoles), driverController.getAvailableDrivers);
 
 router.get('/', restrictTo(...allowedReaderRoles), driverController.getDrivers);
-router.get('/:id', restrictTo(...allowedReaderRoles, 'Driver'), driverController.getDriverDetails);
-router.get('/:id/trips', restrictTo(...allowedReaderRoles, 'Driver'), driverController.getDriverTrips);
+router.get('/:id', restrictTo(...allowedReaderRoles, 'DRIVER'), driverController.getDriverDetails);
+router.get('/:id/trips', restrictTo(...allowedReaderRoles, 'DRIVER'), driverController.getDriverTrips);
 
 // Write routes (Managers / Admins)
 router.post('/', restrictTo(...allowedWriterRoles), driverController.registerDriver);

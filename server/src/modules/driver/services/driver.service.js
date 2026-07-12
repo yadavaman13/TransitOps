@@ -229,7 +229,7 @@ export async function getExpiringLicenses() {
         .leftJoin(driverProfiles, eq(users.id, driverProfiles.userId))
         .where(
             and(
-                eq(users.role, 'Driver'),
+                eq(users.role, 'DRIVER'),
                 eq(users.isDeleted, false),
                 sql`${driverProfiles.licenseExpiry} >= ${now} AND ${driverProfiles.licenseExpiry} <= ${thirtyDaysFromNow}`
             )

@@ -7,8 +7,8 @@ const router = Router();
 router.use(protect);
 
 // Read-only routes accessible by all staff roles (Managers, Safety Officers, Analysts, Admins)
-const allowedReaderRoles = ['Fleet Manager', 'Safety Officer', 'Financial Analyst', 'ADMIN'];
-const allowedWriterRoles = ['Fleet Manager', 'ADMIN'];
+const allowedReaderRoles = ['FLEET_MANAGER', 'SAFETY_OFFICER', 'FINANCIAL_ANALYST', 'ADMIN'];
+const allowedWriterRoles = ['FLEET_MANAGER', 'ADMIN'];
 
 router.get('/', restrictTo(...allowedReaderRoles), vehicleController.getVehicles);
 router.get('/available', restrictTo(...allowedWriterRoles), vehicleController.getAvailableVehicles);
