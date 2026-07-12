@@ -183,6 +183,24 @@ export async function updateDriverStatus(id, status) {
         throw new AppError('Invalid status update', 400);
     }
 
+    // Business Rule: A driver cannot be suspended if they have active trips
+    if (status === 'SUSPENDED') {
+        const activeTrips = await db
+            .select()
+            .from(trips)
+            .where(
+                and(
+                    eq(trips.driverId, id),
+                    inArray(trips.status, ['DRAFT', 'DISPATCHED', 'STARTED'])
+                )
+            )
+            .limit(1);
+
+        if (activeTrips.length > 0) {
+            throw new AppError('Driver has active trips and cannot be suspended. Complete or cancel active trips first.', 400);
+        }
+    }
+
     return driverDao.updateDriverStatus(id, status);
 }
 

@@ -165,6 +165,28 @@ export async function updateDriver(userId, userUpdates, profileUpdates) {
 }
 
 export async function updateDriverStatus(userId, status) {
+    const existing = await db
+        .select()
+        .from(driverProfiles)
+        .where(eq(driverProfiles.userId, userId))
+        .limit(1);
+
+    if (existing.length === 0) {
+        const [profile] = await db
+            .insert(driverProfiles)
+            .values({
+                userId,
+                licenseNumber: 'DL-' + Math.floor(100000 + Math.random() * 900000),
+                licenseExpiry: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+                joiningDate: new Date(),
+                phone: '9999999999',
+                emergencyContact: '9999999999',
+                availabilityStatus: status,
+            })
+            .returning();
+        return profile;
+    }
+
     const [profile] = await db
         .update(driverProfiles)
         .set({ availabilityStatus: status, updatedAt: new Date() })

@@ -27,7 +27,11 @@ const RoleDashboardLayout = () => {
                 ];
             case 'SAFETY_OFFICER':
                 return [
-                    { title: 'Safety Overview', icon: 'ri-dashboard-3-line', route: '/safety-officer' },
+                    { title: 'Dashboard', icon: 'ri-dashboard-3-line', route: '/safety-officer' },
+                    { title: 'Drivers', icon: 'ri-contacts-line', route: '/safety-officer/drivers' },
+                    { title: 'Vehicles', icon: 'ri-truck-line', route: '/safety-officer/vehicles' },
+                    { title: 'Maintenance', icon: 'ri-tools-line', route: '/safety-officer/maintenance' },
+                    { title: 'Reports', icon: 'ri-file-chart-line', route: '/safety-officer/reports' },
                 ];
             case 'FINANCIAL_ANALYST':
                 return [
@@ -53,17 +57,11 @@ const RoleDashboardLayout = () => {
         />
     );
 
-    const topbar = (
-        <TopNavbar
-            title={`${formattedRole} Portal`}
-            user={{ name: user.name || user.email, role: formattedRole }}
-        />
-    );
 
     return (
         <ToastProvider>
             <div className="t-root">
-                <AppLayout sidebar={sidebar} topbar={topbar}>
+                <AppLayout sidebar={sidebar}>
                     <Outlet />
                 </AppLayout>
             </div>
